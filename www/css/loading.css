@@ -1,0 +1,16 @@
+/**
+ * User: pascal
+ * Date: 05.05.12
+ */
+div#loading {width: 99.1%; height: 98.5%; position: absolute; background-color: #4F6EBC;}
+div#loading div div {
+    width: 30px;
+    height: 30px;
+    background: #FFFFFF;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+    display: inline-block;
+}
+div#loading div{width: 140px; height: 30px; display:block; position: relative; left: 43%; top: 45%;}
+div#loading div div.active {background: #000000;}

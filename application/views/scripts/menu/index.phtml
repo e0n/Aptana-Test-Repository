@@ -1,0 +1,25 @@
+<!--
+  User: pascal
+  Date: 08.05.12
+ -->
+<script type="text/javascript">
+    $(document).ready(function(){
+        menuController.index();
+    });
+</script>
+<div id="Menu">
+    <?php foreach($this->menus as $menu):?>
+        <div id="<?php echo 'Menu_' . $menu[0]->_ID;?>">
+            <span><?php echo $menu[0]->_Name; ?></span>
+        </div>
+    <?php endforeach; ?>
+    <?php foreach($this->menus as $menu):?>
+        <ul id="<?php echo 'Menu_' . $menu[0]->_ID;?>">
+            <?php foreach($menu[1] as $entry):?>
+            <li id="<?php echo 'Entry_' . $entry->_ID ?>">
+                <span onclick="menuController.<?php echo $entry->_onClick; ?>()"><?php echo $entry->_name; ?></span>
+            </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endforeach; ?>
+</div>
