@@ -2,6 +2,7 @@
 /**
  * User: pascal
  * Date: 03.05.12
+ * edit comment 1
  */
 class ErrorController extends Zend_Controller_Action
 {
