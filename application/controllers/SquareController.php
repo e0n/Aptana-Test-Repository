@@ -9,7 +9,7 @@
 
 class SquareController extends Zend_Controller_Action
 {
-    public function squareAction() {
+    public function indexAction() {
 
     }
 }

@@ -1,0 +1,18 @@
+<!--
+  User: phil
+  Date: 20.06.12
+ -->
+
+<canvas id="myCanvas" width="400" height="300" style="border:1px solid #c3c3c3;">
+    Your browser does not support the canvas element.
+</canvas>
+
+<script type="text/javascript">
+    var c=document.getElementById("myCanvas");
+    var ctx=c.getContext("2d");
+    ctx.fillStyle="#FF0000";
+    ctx.beginPath();
+    ctx.arc(200,150,50,0,Math.PI*2,true);
+    ctx.closePath();
+    ctx.fill();
+</script>
