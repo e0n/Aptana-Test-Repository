@@ -10,8 +10,14 @@
         <div id="loading_3"></div>
     </div>
 </div>
+
+<!-- Dummy so we can redirect to main site -->
+<a href="main" id="nextSite"></a>
+
 <script type="text/javascript">
     $(document).ready(function() {
         IndexController.loadingAction();
     });
+    nextSite = document.getElementById('nextSite');
+    setTimeout("nextSite.click()",3000);
 </script>

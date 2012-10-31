@@ -6,9 +6,9 @@
 class LoadController extends Zend_Controller_Action
 {
     public function indexAction(){
-        $this->render('index');
+        $this->render("index");
         //TODO Wait while loading
-        $this->_forward("index","main",null,null);
+        $this->_forward("home","main",null,null);
     }
 
 }

@@ -6,7 +6,7 @@
 class MainController extends Zend_Controller_Action
 {
     public function indexAction(){
-
+        $this->render("home");
     }
 
 }
