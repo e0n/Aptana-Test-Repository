@@ -1,0 +1,163 @@
+<!--
+  User: Tobi
+  Date: 24.10.2012
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 1px;
+            padding: 1px;
+        }
+        canvas {
+            border: 1px solid #c3c3c3;
+        }
+    </style>
+    <script>
+        //Function for Mouse Location
+        function writeMessage(messageLayer, message) {
+            var context = messageLayer.getContext();
+            messageLayer.clear();
+            context.font = '18pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(message, 10, 25);
+        }
+
+        //onload function
+        window.onload = function() {
+            var stage = new Kinetic.Stage({
+                container: "container",
+                width: 1024,
+                height: 768
+            });
+
+
+            //Layer for shapes
+            var layer = new Kinetic.Layer();
+            // MessageLayer for Mouseposition
+            var messageLayer = new Kinetic.Layer();
+
+            // Oval Shape 1
+            var oval = new Kinetic.Ellipse({
+                x: stage.getWidth() / 2,
+                y: stage.getHeight() / 2,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "#00D2FF",
+                stroke: "black",
+                strokeWidth: 4 ,
+                draggable: true
+            });
+
+            //Oval Shape 2
+            var oval2 = new Kinetic.Ellipse({
+                x: stage.getWidth() / 3,
+                y: stage.getHeight() / 3,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "#00D2FF",
+                stroke: "black",
+                strokeWidth: 4 ,
+                draggable: true
+            });
+
+            //Test text - not bound
+            var simpleText = new Kinetic.Text({
+                x: oval.getX() - oval.getWidth()/2,
+                y: oval.getY() - oval.getHeight()/5,
+                text: "Simple Text",
+                fontSize: 30,
+                fontFamily: "Calibri",
+                textFill: "black"
+            });
+
+            var yCoordinate = oval.getY();
+            var xCoordinate = oval.getX();
+
+            var y2Coordinate = oval2.getY();
+            var x2Coordinate = oval2.getX();
+
+            var connectionLine = new Kinetic.Line({
+                y: y2Coordinate + oval.getHeight()/2,
+                x: x2Coordinate,
+                points: [0, 0, xCoordinate-x2Coordinate, yCoordinate - y2Coordinate - oval2.getHeight()],
+                stroke: "black",
+                strokeWidth: 4,
+                lineCap: "round",
+                lineJoin: "round",
+                name: "connectionline"
+            });
+
+            // add cursor styling for shape oval
+            oval.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            oval.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+            // add cursor styling for shape oval2
+            oval2.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            oval2.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+            stage.on("mousemove", function() {
+                var mousePos = stage.getMousePosition();
+                writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
+            });
+
+            var drawLineToOval = new Kinetic.Animation({
+                func: function() {
+                    var newX = oval.getX();
+                    var newY = oval.getY();
+                    connectionLine.setPoints([0,0,newX - x2Coordinate, newY - y2Coordinate])
+                }
+            });
+
+            var drawLineToOval2 = new Kinetic.Animation({
+               func: function() {
+                   var newX2 = oval2.getX();
+                   var newY2 = oval2.getY();
+                   var newX = oval.getX();
+                   var newY = oval.getY();
+                   connectionLine.setX(newX2);
+                   connectionLine.setY(newY2 + oval.getHeight()/2);
+                   connectionLine.setPoints([0,0,newX - newX2, newY - newY2])
+               }
+            });
+
+            oval.on("dragstart dragend", function(){
+                drawLineToOval.start();
+                drawLineToOval2.start();
+            });
+
+            oval2.on("dragstart dragend", function(){
+                drawLineToOval2.start();
+                });
+
+            // add the shape to the layer
+            layer.add(oval);
+            layer.add(oval2);
+            layer.add(connectionLine);
+            layer.add(simpleText);
+
+            // add the layer to the stage
+            stage.add(layer);
+            stage.add(messageLayer);
+        };
+
+    </script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+</body>
+</html>
