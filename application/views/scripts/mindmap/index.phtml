@@ -60,6 +60,38 @@
                 clickNode(oval, layer);
             });
 
+            var xChild = oval.getX();
+            var yChild = oval.getY();
+            var xParent = parentNode.getX();
+            var yParent = parentNode.getY();
+
+            var connectionLine = new Kinetic.Line({
+                y: yParent,
+                x: xParent,
+                points: [0, 0, xChild - xParent, yChild - yParent],
+                stroke: "black",
+                strokeWidth: 4,
+                lineCap: "round",
+                lineJoin: "round"
+            });
+
+            var drawLineToOval = new Kinetic.Animation({
+                func: function() {
+                    connectionLine.setX(xChild);
+                    connectionLine.setY(yChild);
+                    connectionLine.setPoints([0,0,xParent - xChild, yParent - yChild])
+                }
+            });
+
+            oval.on("dragstart dragend", function(){
+                drawLineToOval.start();
+            });
+
+            parentNode.on("dragstart dragend", function() {
+                drawLineToOval.start();
+            });
+
+            layer.add(connectionLine);
             layer.add(oval);
             layer.draw();
         }
@@ -214,13 +246,12 @@
             });
 
             base.on("dragstart dragend", function(){
-                drawLineToOval.start();
                 drawLineToOval2.start();
             });
 
             oval2.on("dragstart dragend", function(){
                 drawLineToOval2.start();
-                });
+            });
 
             // add the shape to the layer
             layer.add(connectionLine);
