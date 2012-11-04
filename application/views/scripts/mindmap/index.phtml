@@ -81,7 +81,7 @@
             });
 
             // Oval Shape 1
-            var oval = new Kinetic.Ellipse({
+            var base = new Kinetic.Ellipse({
                 x: stage.getWidth() / 2,
                 y: stage.getHeight() / 2,
                 radius: {
@@ -91,7 +91,6 @@
                 fill: "#00D2FF",
                 stroke: "black",
                 strokeWidth: 4 ,
-                draggable: true,
                 id: 'oval0'
             });
 
@@ -191,9 +190,8 @@
                 });
 
             // add the shape to the layer
-            layer.add(oval);
-            layer.add(oval2);
             layer.add(connectionLine);
+            layer.add(oval2);
             layer.add(button);
 
             // add the layer to the stage
