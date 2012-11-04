@@ -117,9 +117,9 @@
             var x2Coordinate = oval2.getX();
 
             var connectionLine = new Kinetic.Line({
-                y: y2Coordinate + oval.getHeight()/2,
+                y: y2Coordinate,
                 x: x2Coordinate,
-                points: [0, 0, xCoordinate-x2Coordinate, yCoordinate - y2Coordinate - oval2.getHeight()],
+                points: [0, 0, xCoordinate-x2Coordinate, yCoordinate - y2Coordinate],
                 stroke: "black",
                 strokeWidth: 4,
                 lineCap: "round",
@@ -176,7 +176,7 @@
                    var newX = oval.getX();
                    var newY = oval.getY();
                    connectionLine.setX(newX2);
-                   connectionLine.setY(newY2 + oval.getHeight()/2);
+                   connectionLine.setY(newY2);
                    connectionLine.setPoints([0,0,newX - newX2, newY - newY2])
                }
             });
@@ -191,9 +191,9 @@
                 });
 
             // add the shape to the layer
+            layer.add(connectionLine);
             layer.add(oval);
             layer.add(oval2);
-            layer.add(connectionLine);
             layer.add(button);
 
             // add the layer to the stage
