@@ -18,7 +18,7 @@
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
         var sumOfNodes = 2;
-        var markedOval;
+        var markedNode;
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -49,10 +49,11 @@
             layer.draw();
         }
 
-        function ovalClick(oval){
-            markedOval.setFill("#00D2FF");
-            markedOval = oval;
-            markedOval.setFill('red');
+        function clickNode(shape, layer) {
+            markedNode.setFill("#00D2FF");
+            markedNode = shape;
+            markedNode.setFill('green');
+            layer.draw();
         }
 
         //onload function
@@ -88,20 +89,19 @@
             });
 
             // Oval Shape 1
-            var oval = new Kinetic.Ellipse({
+            var base = new Kinetic.Ellipse({
                 x: stage.getWidth() / 2,
                 y: stage.getHeight() / 2,
                 radius: {
                     x: 100,
                     y: 50
                 },
-                fill: "#00D2FF",
+                fill: "red",
                 stroke: "black",
                 strokeWidth: 4 ,
-                draggable: true,
                 id: 'oval0'
             });
-            markedOval = oval;
+            markedNode = base;
 
             //Oval Shape 2
             var oval2 = new Kinetic.Ellipse({
@@ -118,8 +118,8 @@
                 id: 'oval1'
             });
 
-            var yCoordinate = oval.getY();
-            var xCoordinate = oval.getX();
+            var yCoordinate = base.getY();
+            var xCoordinate = base.getX();
 
             var y2Coordinate = oval2.getY();
             var x2Coordinate = oval2.getX();
@@ -137,14 +137,14 @@
 
             // add cursor styling for shape oval
 
-            oval.on("mouseover", function() {
+            base.on("mouseover", function() {
                 document.body.style.cursor = "pointer";
             });
-            oval.on("mouseout", function() {
+            base.on("mouseout", function() {
                 document.body.style.cursor = "default";
             });
-            oval.on("click", function() {
-                ovalClick(oval);
+            base.on("click", function() {
+                clickNode(base, layer);
             });
 
             // add cursor styling for shape oval2
@@ -155,7 +155,7 @@
                 document.body.style.cursor = "default";
             });
             oval2.on("click", function() {
-                ovalClick(oval2);
+                clickNode(oval2, layer);
             });
 
             // add cursor styling for shape oval
@@ -165,8 +165,9 @@
             button.on("mouseout", function() {
                 document.body.style.cursor = "default";
             });
+
             button.on("click", function(){
-               newNodeFactory(layer, markedOval);
+               newNodeFactory(layer, markedNode);
             });
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -177,8 +178,8 @@
 
             var drawLineToOval = new Kinetic.Animation({
                 func: function() {
-                    var newX = oval.getX();
-                    var newY = oval.getY();
+                    var newX = base.getX();
+                    var newY = base.getY();
                     connectionLine.setPoints([0,0,newX - x2Coordinate, newY - y2Coordinate])
                 }
             });
@@ -187,15 +188,15 @@
                func: function() {
                    var newX2 = oval2.getX();
                    var newY2 = oval2.getY();
-                   var newX = oval.getX();
-                   var newY = oval.getY();
+                   var newX = base.getX();
+                   var newY = base.getY();
                    connectionLine.setX(newX2);
                    connectionLine.setY(newY2);
                    connectionLine.setPoints([0,0,newX - newX2, newY - newY2])
                }
             });
 
-            oval.on("dragstart dragend", function(){
+            base.on("dragstart dragend", function(){
                 drawLineToOval.start();
                 drawLineToOval2.start();
             });
@@ -206,7 +207,7 @@
 
             // add the shape to the layer
             layer.add(connectionLine);
-            layer.add(oval);
+            layer.add(base);
             layer.add(oval2);
             layer.add(button);
 
