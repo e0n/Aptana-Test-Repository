@@ -18,6 +18,7 @@
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
         var sumOfNodes = 2;
+        var markedOval;
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -46,6 +47,12 @@
             sumOfNodes++;
             layer.add(oval);
             layer.draw();
+        }
+
+        function ovalClick(oval){
+            markedOval.setFill("#00D2FF");
+            markedOval = oval;
+            markedOval.setFill('red');
         }
 
         //onload function
@@ -94,6 +101,7 @@
                 draggable: true,
                 id: 'oval0'
             });
+            markedOval = oval;
 
             //Oval Shape 2
             var oval2 = new Kinetic.Ellipse({
@@ -135,12 +143,19 @@
             oval.on("mouseout", function() {
                 document.body.style.cursor = "default";
             });
+            oval.on("click", function() {
+                ovalClick(oval);
+            });
+
             // add cursor styling for shape oval2
             oval2.on("mouseover", function() {
                 document.body.style.cursor = "pointer";
             });
             oval2.on("mouseout", function() {
                 document.body.style.cursor = "default";
+            });
+            oval2.on("click", function() {
+                ovalClick(oval2);
             });
 
             // add cursor styling for shape oval
@@ -150,9 +165,8 @@
             button.on("mouseout", function() {
                 document.body.style.cursor = "default";
             });
-
             button.on("click", function(){
-               newNodeFactory(layer, oval);
+               newNodeFactory(layer, markedOval);
             });
 
             //function for mouse coordinates on shape - only for debugging and development
