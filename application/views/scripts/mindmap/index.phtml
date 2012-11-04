@@ -71,24 +71,29 @@
                 lineJoin: "round"
             });
 
-            var drawLineToOval = new Kinetic.Animation({
+            var drawConnectionLine = new Kinetic.Animation({
                 func: function() {
-                    connectionLine.setX(xChild);
-                    connectionLine.setY(yChild);
-                    connectionLine.setPoints([0,0,xParent - xChild, yParent - yChild])
+                    var xChild = oval.getX();
+                    var yChild = oval.getY();
+                    var xParent = parentNode.getX();
+                    var yParent = parentNode.getY();
+                    connectionLine.setX(xParent);
+                    connectionLine.setY(yParent);
+                    connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
                 }
             });
 
             oval.on("dragstart dragend", function(){
-                drawLineToOval.start();
+                drawConnectionLine.start();
             });
 
             parentNode.on("dragstart dragend", function() {
-                drawLineToOval.start();
+                drawConnectionLine.start();
             });
 
             layer.add(connectionLine);
             layer.add(oval);
+            layer.add(parentNode);
             layer.draw();
         }
 
