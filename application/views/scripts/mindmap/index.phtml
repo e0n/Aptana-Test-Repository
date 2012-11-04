@@ -14,6 +14,10 @@
         canvas {
             border: 1px solid #c3c3c3;
         }
+        .lala {
+            background-color: red;
+
+        }
     </style>
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
@@ -128,6 +132,8 @@
                 draggable: true ,
                 id: 'oval1'
             });
+
+            $("#oval1").addClass("lala");
 
             var yCoordinate = base.getY();
             var xCoordinate = base.getX();
