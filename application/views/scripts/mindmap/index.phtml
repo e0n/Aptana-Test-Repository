@@ -16,6 +16,9 @@
         }
     </style>
     <script>
+        //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
+        var sumOfNodes = 2;
+
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
             var context = messageLayer.getContext();
@@ -23,6 +26,26 @@
             context.font = '18pt Calibri';
             context.fillStyle = 'black';
             context.fillText(message, 10, 25);
+            context.fillText(sumOfNodes, 250, 25);
+        }
+
+        function newNodeFactory(layer, parentNode){
+            var oval = new Kinetic.Ellipse({
+                x: parentNode.getX() + 100,
+                y: parentNode.getY() + 100,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "#00D2FF",
+                stroke: "black",
+                strokeWidth: 4 ,
+                id: 'oval'+sumOfNodes,
+                draggable: true
+            });
+            sumOfNodes++;
+            layer.add(oval);
+            layer.draw();
         }
 
         //onload function
@@ -36,8 +59,26 @@
 
             //Layer for shapes
             var layer = new Kinetic.Layer();
-            // MessageLayer for Mouseposition
+            // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
+
+            //Button for FactoryMethod of creating new Nodes
+            var button = new Kinetic.Text({
+                x: 10,
+                y: 35,
+                stroke: '#555',
+                strokeWidth: 2,
+                fill: '#ddd',
+                text: 'New Node',
+                fontSize: 14,
+                fontFamily: 'Calibri',
+                textFill: '#555',
+                width: 120,
+                padding: 20,
+                align: 'center',
+                fontStyle: 'italic',
+                cornerRadius: 5
+            });
 
             // Oval Shape 1
             var oval = new Kinetic.Ellipse({
@@ -50,7 +91,8 @@
                 fill: "#00D2FF",
                 stroke: "black",
                 strokeWidth: 4 ,
-                draggable: true
+                draggable: true,
+                id: 'oval0'
             });
 
             //Oval Shape 2
@@ -64,17 +106,8 @@
                 fill: "#00D2FF",
                 stroke: "black",
                 strokeWidth: 4 ,
-                draggable: true
-            });
-
-            //Test text - not bound
-            var simpleText = new Kinetic.Text({
-                x: oval.getX() - oval.getWidth()/2,
-                y: oval.getY() - oval.getHeight()/5,
-                text: "Simple Text",
-                fontSize: 30,
-                fontFamily: "Calibri",
-                textFill: "black"
+                draggable: true ,
+                id: 'oval1'
             });
 
             var yCoordinate = oval.getY();
@@ -95,6 +128,7 @@
             });
 
             // add cursor styling for shape oval
+
             oval.on("mouseover", function() {
                 document.body.style.cursor = "pointer";
             });
@@ -108,6 +142,20 @@
             oval2.on("mouseout", function() {
                 document.body.style.cursor = "default";
             });
+
+            // add cursor styling for shape oval
+            button.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            button.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+
+            button.on("click", function(){
+               newNodeFactory(layer, oval);
+            });
+
+            //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
@@ -146,7 +194,7 @@
             layer.add(oval);
             layer.add(oval2);
             layer.add(connectionLine);
-            layer.add(simpleText);
+            layer.add(button);
 
             // add the layer to the stage
             stage.add(layer);
