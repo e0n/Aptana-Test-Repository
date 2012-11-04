@@ -17,8 +17,9 @@
     </style>
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
-        var sumOfNodes = 2;
+        var sumOfNodes = 0;
         var markedNode;
+        var markedNodeFillBackup;
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -95,12 +96,16 @@
             layer.add(oval);
             layer.add(parentNode);
             layer.draw();
+
+            return oval;
         }
 
         function clickNode(shape, layer) {
-            markedNode.setFill("#00D2FF");
+            markedNode.setFill(markedNodeFillBackup);
             markedNode = shape;
+            markedNodeFillBackup = markedNode.getFill();
             markedNode.setFill('green');
+
             layer.draw();
         }
 
@@ -150,41 +155,12 @@
                 id: 'oval0'
             });
             markedNode = base;
+            markedNodeFillBackup = base.getFill();
 
             //Oval Shape 2
-            var oval2 = new Kinetic.Ellipse({
-                x: stage.getWidth() / 3,
-                y: stage.getHeight() / 3,
-                radius: {
-                    x: 100,
-                    y: 50
-                },
-                fill: "#00D2FF",
-                stroke: "black",
-                strokeWidth: 4 ,
-                draggable: true ,
-                id: 'oval1'
-            });
-
-            var yCoordinate = base.getY();
-            var xCoordinate = base.getX();
-
-            var y2Coordinate = oval2.getY();
-            var x2Coordinate = oval2.getX();
-
-            var connectionLine = new Kinetic.Line({
-                y: y2Coordinate,
-                x: x2Coordinate,
-                points: [0, 0, xCoordinate-x2Coordinate, yCoordinate - y2Coordinate],
-                stroke: "black",
-                strokeWidth: 4,
-                lineCap: "round",
-                lineJoin: "round",
-                name: "connectionline"
-            });
+            var oval2 = newNodeFactory(layer, base);
 
             // add cursor styling for shape oval
-
             base.on("mouseover", function() {
                 document.body.style.cursor = "pointer";
             });
@@ -193,17 +169,6 @@
             });
             base.on("click", function() {
                 clickNode(base, layer);
-            });
-
-            // add cursor styling for shape oval2
-            oval2.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
-            });
-            oval2.on("mouseout", function() {
-                document.body.style.cursor = "default";
-            });
-            oval2.on("click", function() {
-                clickNode(oval2, layer);
             });
 
             // add cursor styling for shape oval
@@ -224,38 +189,7 @@
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
 
-            var drawLineToOval = new Kinetic.Animation({
-                func: function() {
-                    var newX = base.getX();
-                    var newY = base.getY();
-                    connectionLine.setPoints([0,0,newX - x2Coordinate, newY - y2Coordinate])
-                }
-            });
-
-            var drawLineToOval2 = new Kinetic.Animation({
-               func: function() {
-                   var newX2 = oval2.getX();
-                   var newY2 = oval2.getY();
-                   var newX = base.getX();
-                   var newY = base.getY();
-                   connectionLine.setX(newX2);
-                   connectionLine.setY(newY2);
-                   connectionLine.setPoints([0,0,newX - newX2, newY - newY2])
-               }
-            });
-
-            base.on("dragstart dragend", function(){
-                drawLineToOval2.start();
-            });
-
-            oval2.on("dragstart dragend", function(){
-                drawLineToOval2.start();
-            });
-
-            // add the shape to the layer
-            layer.add(connectionLine);
             layer.add(base);
-            layer.add(oval2);
             layer.add(button);
 
             // add the layer to the stage
