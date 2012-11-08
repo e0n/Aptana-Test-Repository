@@ -1,0 +1,207 @@
+<!--
+  User: Tobi
+  Date: 24.10.2012
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            margin: 1px;
+            padding: 1px;
+        }
+        canvas {
+            border: 1px solid #c3c3c3;
+        }
+    </style>
+    <script>
+        //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
+        var sumOfNodes = 0;
+        var markedNode;
+        var markedNodeFillBackup;
+
+        //Function for Mouse Location
+        function writeMessage(messageLayer, message) {
+            var context = messageLayer.getContext();
+            messageLayer.clear();
+            context.font = '18pt Calibri';
+            context.fillStyle = 'black';
+            context.fillText(message, 10, 25);
+            context.fillText(sumOfNodes, 250, 25);
+        }
+
+        function newNodeFactory(layer, parentNode){
+            var oval = new Kinetic.Ellipse({
+                x: parentNode.getX() + 100,
+                y: parentNode.getY() + 100,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "#00D2FF",
+                stroke: "black",
+                strokeWidth: 4 ,
+                id: 'oval'+sumOfNodes,
+                draggable: true
+            });
+            sumOfNodes++;
+
+            oval.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            oval.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+            oval.on("click", function() {
+                clickNode(oval, layer);
+            });
+
+            var xChild = oval.getX();
+            var yChild = oval.getY();
+            var xParent = parentNode.getX();
+            var yParent = parentNode.getY();
+
+            var connectionLine = new Kinetic.Line({
+                y: yParent,
+                x: xParent,
+                points: [0, 0, xChild - xParent, yChild - yParent],
+                stroke: "black",
+                strokeWidth: 4,
+                lineCap: "round",
+                lineJoin: "round"
+            });
+
+            var drawConnectionLine = new Kinetic.Animation({
+                func: function() {
+                    var xChild = oval.getX();
+                    var yChild = oval.getY();
+                    var xParent = parentNode.getX();
+                    var yParent = parentNode.getY();
+                    connectionLine.setX(xParent);
+                    connectionLine.setY(yParent);
+                    connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
+                }
+            });
+
+            oval.on("dragstart dragend", function(){
+                drawConnectionLine.start();
+            });
+
+            parentNode.on("dragstart dragend", function() {
+                drawConnectionLine.start();
+            });
+
+            layer.add(connectionLine);
+            layer.add(oval);
+            layer.add(parentNode);
+            layer.draw();
+
+            return oval;
+        }
+
+        function clickNode(shape, layer) {
+            markedNode.setFill(markedNodeFillBackup);
+            markedNode = shape;
+            markedNodeFillBackup = markedNode.getFill();
+            markedNode.setFill('green');
+
+            layer.draw();
+        }
+
+        //onload function
+        window.onload = function() {
+            var stage = new Kinetic.Stage({
+                container: "container",
+                width: 1024,
+                height: 768
+            });
+
+
+            //Layer for shapes
+            var layer = new Kinetic.Layer();
+            // MessageLayer for Mouseposition and other debug notes
+            var messageLayer = new Kinetic.Layer();
+
+            //Button for FactoryMethod of creating new Nodes
+            var button = new Kinetic.Text({
+                x: 10,
+                y: 35,
+                stroke: '#555',
+                strokeWidth: 2,
+                fill: '#ddd',
+                text: 'New Node',
+                fontSize: 14,
+                fontFamily: 'Calibri',
+                textFill: '#555',
+                width: 120,
+                padding: 20,
+                align: 'center',
+                fontStyle: 'italic',
+                cornerRadius: 5
+            });
+
+            // Oval Shape 1
+            var base = new Kinetic.Ellipse({
+                x: stage.getWidth() / 2,
+                y: stage.getHeight() / 2,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "red",
+                stroke: "black",
+                strokeWidth: 4 ,
+                id: 'oval0'
+            });
+            markedNode = base;
+            markedNodeFillBackup = base.getFill();
+
+            //Oval Shape 2
+            var oval2 = newNodeFactory(layer, base);
+
+            // add cursor styling for shape oval
+            base.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            base.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+            base.on("click", function() {
+                clickNode(base, layer);
+            });
+
+            // add cursor styling for shape oval
+            button.on("mouseover", function() {
+                document.body.style.cursor = "pointer";
+            });
+            button.on("mouseout", function() {
+                document.body.style.cursor = "default";
+            });
+
+            button.on("click", function(){
+               newNodeFactory(layer, markedNode);
+            });
+
+            //function for mouse coordinates on shape - only for debugging and development
+            stage.on("mousemove", function() {
+                var mousePos = stage.getMousePosition();
+                writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
+            });
+
+            layer.add(base);
+            layer.add(button);
+
+            // add the layer to the stage
+            stage.add(layer);
+            stage.add(messageLayer);
+        };
+
+    </script>
+</head>
+<body>
+
+    <div id="container"></div>
+
+</body>
+</html>
