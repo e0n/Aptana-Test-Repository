@@ -12,5 +12,11 @@ div#loading div div {
     border-radius: 50px;
     display: inline-block;
 }
-div#loading div{width: 140px; height: 30px; display:block; position: relative; left: 43%; top: 45%;}
+div#loading div {
+    display:block;
+    position: relative;
+    top: 40%;
+    text-align: center;
+}
 div#loading div div.active {background: #000000;}
+div#title{color: #000000;font-weight:bold;padding-bottom: 1%}

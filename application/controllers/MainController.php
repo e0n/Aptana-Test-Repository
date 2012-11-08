@@ -9,4 +9,8 @@ class MainController extends Zend_Controller_Action
         $this->render("home");
     }
 
+    public function homeAction(){
+
+    }
+
 }
