@@ -14,7 +14,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
         // Init view
         $view = new Zend_View();
         $view->doctype('XHTML1_STRICT');
-        $view->headTitle('Teamprojekt BrainstormingApp');
+        $view->headTitle('Open Your Mind');
         $view->env = APPLICATION_ENV;
 
         // Add it to the ViewRenderer
