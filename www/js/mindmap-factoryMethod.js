@@ -224,8 +224,7 @@ newNodeFactory = {
             stroke: "black",
             strokeWidth: 1 ,
             x: stage.getWidth() / 2,
-            y: stage.getHeight() / 2,
-            draggable: true
+            y: stage.getHeight() / 2
         });
 
         this.shape = new Kinetic.Ellipse({
