@@ -9,10 +9,14 @@ newNodeFactory = {
     // Creates a new node with ellipse shape
     // -----
 
-    newEllipseNode : function (layer, parentNode){
-        var oval = new Kinetic.Ellipse({
-            x: parentNode.getX() + 100,
-            y: parentNode.getY() + 100,
+    newEllipseNode : function (layer, parent){
+
+        var parentNode = parent.shape;
+        alert(parentNode.xConnectPosition);
+
+        this.shape = new Kinetic.Ellipse({
+            x: parentNode.xConnectPosition + 100,
+            y: parentNode.yConnectPosition + 100,
             radius: {
                 x: 100,
                 y: 50
@@ -20,26 +24,27 @@ newNodeFactory = {
             fill: "#00D2FF",
             stroke: "black",
             strokeWidth: 4 ,
-            id: 'oval'+sumOfNodes,
+            id: 'shape'+sumOfNodes,
             draggable: true
         });
         sumOfNodes++;
 
-        xConnectPosition = oval.getX();
-        yConnectPosition = oval.getY();
-
-        oval.on("mouseover", function() {
+        this.shape.on("mouseover", function() {
             document.body.style.cursor = "pointer";
         });
-        oval.on("mouseout", function() {
+        this.shape.on("mouseout", function() {
             document.body.style.cursor = "default";
         });
-        oval.on("click", function() {
-            clickNode(oval, layer);
+        this.shape.on("click", function() {
+            clickNode(this, layer);
         });
 
-        var xChild = oval.getX();
-        var yChild = oval.getY();
+        this.xConnectPosition = this.shape.getX();
+        this.yConnectPosition = this.shape.getY();
+
+        var xChild = this.shape.getX();
+        var yChild = this.shape.getY();
+
         var xParent = parentNode.getX();
         var yParent = parentNode.getY();
 
@@ -55,17 +60,17 @@ newNodeFactory = {
 
         var drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                var xChild = oval.getX();
-                var yChild = oval.getY();
-                var xParent = parentNode.getX();
-                var yParent = parentNode.getY();
+                xChild = this.shape.getX();
+                yChild = this.shape.getY();
+                xParent = parentNode.getX();
+                yParent = parentNode.getY();
                 connectionLine.setX(xParent);
                 connectionLine.setY(yParent);
                 connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
             }
         });
 
-        oval.on("dragstart dragend", function(){
+        this.shape.on("dragstart dragend", function(){
             drawConnectionLine.start();
         });
 
@@ -74,11 +79,9 @@ newNodeFactory = {
         });
 
         layer.add(connectionLine);
-        layer.add(oval);
+        layer.add(this.shape);
         layer.add(parentNode);
         layer.draw();
-
-        return oval;
     },
 
 
@@ -87,9 +90,10 @@ newNodeFactory = {
     // Creates a new node with rect shape
     // -----
 
-    newRectNode : function (layer, parentNode){
+    newRectNode : function (layer, parent){
 
-        var rect = new Kinetic.Rect({
+        var parentNode = parent.shape;
+        var shape = new Kinetic.Rect({
             x: parentNode.getX() + 100,
             y: parentNode.getY() + 100,
             height: 80,
@@ -97,26 +101,26 @@ newNodeFactory = {
             fill: "#00D2FF",
             stroke: "black",
             strokeWidth: 4 ,
-            id: 'oval'+sumOfNodes,
+            id: 'shape'+sumOfNodes,
             draggable: true
         });
         sumOfNodes++;
 
-        xConnectPosition = rect.getX();
-        yConnectPosition = rect.getY();
-
-        rect.on("mouseover", function() {
+        shape.on("mouseover", function() {
             document.body.style.cursor = "pointer";
         });
-        rect.on("mouseout", function() {
+        shape.on("mouseout", function() {
             document.body.style.cursor = "default";
         });
-        rect.on("click", function() {
-            clickNode(rect, layer);
+        shape.on("click", function() {
+            clickNode(shape, layer);
         });
 
-        var xChild = rect.getX();
-        var yChild = rect.getY();
+        this.xConnectPosition = shape.getX();
+        this.yConnectPosition = shape.getY();
+
+        var xChild = shape.getX();
+        var yChild = shape.getY();
         var xParent = parentNode.getX();
         var yParent = parentNode.getY();
 
@@ -132,8 +136,8 @@ newNodeFactory = {
 
         var drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                var xChild = rect.getX();
-                var yChild = rect.getY();
+                var xChild = shape.getX();
+                var yChild = shape.getY();
                 var xParent = parentNode.getX();
                 var yParent = parentNode.getY();
                 connectionLine.setX(xParent);
@@ -142,7 +146,7 @@ newNodeFactory = {
             }
         });
 
-        rect.on("dragstart dragend", function(){
+        shape.on("dragstart dragend", function(){
             drawConnectionLine.start();
         });
 
@@ -151,11 +155,11 @@ newNodeFactory = {
         });
 
         layer.add(connectionLine);
-        layer.add(rect);
+        layer.add(shape);
         layer.add(parentNode);
         layer.draw();
 
-        return rect;
+        return shape;
     },
 
 
@@ -166,7 +170,7 @@ newNodeFactory = {
     // -----
 
     createBaseNode: function(stage, layer){
-       var base = new Kinetic.Ellipse({
+        this.base = new Kinetic.Ellipse({
             x: stage.getWidth() / 2,
             y: stage.getHeight() / 2,
             radius: {
@@ -178,20 +182,22 @@ newNodeFactory = {
             strokeWidth: 4 ,
             id: 'oval0'
         });
-        xConnectPosition = base.getX();
-        yConnectPosition = base.getY();
+
+        this.xConnectPosition = this.base.getX();
+        alert(this.xConnectPosition);
+        this.yConnectPosition = this.base.getY();
 
         // add cursor styling for shape oval
-        base.on("mouseover", function() {
+        this.base.on("mouseover", function() {
             document.body.style.cursor = "pointer";
         });
-        base.on("mouseout", function() {
+        this.base.on("mouseout", function() {
             document.body.style.cursor = "default";
         });
-        base.on("click", function() {
-            clickNode(base, layer);
+        this.base.on("click", function() {
+            clickNode(this.base, layer);
         });
 
-        return base;
+        layer.add(this.base);
     }
 }
