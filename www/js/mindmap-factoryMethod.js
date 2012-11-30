@@ -90,9 +90,11 @@ newNodeFactory = {
     newRectNode : function (layer, parent){
 
         var parentNode = parent.shape;
-        var shape = new Kinetic.Rect({
-            x: parentNode.getX() + 100,
-            y: parentNode.getY() + 100,
+        var thisNode = this;
+
+        this.shape = new Kinetic.Rect({
+            x: parent.xConnectPosition + 100,
+            y: parent.yConnectPosition + 100,
             height: 80,
             width: 200,
             fill: "#00D2FF",
@@ -103,28 +105,26 @@ newNodeFactory = {
         });
         sumOfNodes++;
 
-        shape.on("mouseover", function() {
+        this.xConnectPosition = this.shape.getX() + this.shape.getWidth()/2;
+        this.yConnectPosition = this.shape.getY() + this.shape.getHeight()/2;
+
+        this.shape.on("mouseover", function() {
             document.body.style.cursor = "pointer";
         });
-        shape.on("mouseout", function() {
+        this.shape.on("mouseout", function() {
             document.body.style.cursor = "default";
         });
-        shape.on("click", function() {
-            clickNode(shape, layer);
+        this.shape.on("click", function() {
+            clickNode(thisNode, layer);
         });
 
-        this.xConnectPosition = shape.getX();
-        this.yConnectPosition = shape.getY();
-
-        var xChild = shape.getX();
-        var yChild = shape.getY();
-        var xParent = parentNode.getX();
-        var yParent = parentNode.getY();
+        var xParent = parent.xConnectPosition;
+        var yParent = parent.yConnectPosition;
 
         var connectionLine = new Kinetic.Line({
             y: yParent,
             x: xParent,
-            points: [0, 0, xChild - xParent, yChild - yParent],
+            points: [0, 0, this.xConnectPosition - xParent, this.yConnectPosition - yParent],
             stroke: "black",
             strokeWidth: 4,
             lineCap: "round",
@@ -133,17 +133,17 @@ newNodeFactory = {
 
         var drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                var xChild = shape.getX();
-                var yChild = shape.getY();
-                var xParent = parentNode.getX();
-                var yParent = parentNode.getY();
+                thisNode.xConnectPosition = thisNode.shape.getX() + thisNode.shape.getWidth()/2;
+                thisNode.yConnectPosition = thisNode.shape.getY() + thisNode.shape.getHeight()/2;
+                xParent = parent.xConnectPosition;
+                yParent = parent.yConnectPosition;
                 connectionLine.setX(xParent);
                 connectionLine.setY(yParent);
-                connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
+                connectionLine.setPoints([0,0,thisNode.xConnectPosition - xParent, thisNode.yConnectPosition - yParent]);
             }
         });
 
-        shape.on("dragstart dragend", function(){
+        this.shape.on("dragstart dragend", function(){
             drawConnectionLine.start();
         });
 
@@ -152,11 +152,9 @@ newNodeFactory = {
         });
 
         layer.add(connectionLine);
-        layer.add(shape);
+        layer.add(this.shape);
         layer.add(parentNode);
         layer.draw();
-
-        return shape;
     },
 
 
