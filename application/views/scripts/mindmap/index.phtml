@@ -75,19 +75,8 @@
             });
 
             // Oval Shape 1
-            var base = new Kinetic.Ellipse({
-                x: stage.getWidth() / 2,
-                y: stage.getHeight() / 2,
-                radius: {
-                    x: 100,
-                    y: 50
-                },
-                fill: "red",
-                stroke: "black",
-                strokeWidth: 4 ,
-                id: 'oval0'
-            });
-            markedNode = base;
+            var base = newNodeFactory.createBaseNode(stage);
+                markedNode = base;
             markedNodeFillBackup = base.getFill();
 
             //Oval Shape 2
