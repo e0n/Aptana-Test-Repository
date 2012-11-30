@@ -17,7 +17,7 @@
     </style>
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
-        var sumOfNodes = 0;
+
         var markedNode;
         var markedNodeFillBackup;
 
@@ -31,147 +31,7 @@
             context.fillText(sumOfNodes, 250, 25);
         }
 
-        function newRectangleNodeFactory(layer, parentNode){
-            var rect = new Kinetic.Rect({
-                x: parentNode.getX() + 100,
-                y: parentNode.getY() + 100,
-                width: 100,
-                height: 20,
-                stroke: "black",
-                strokeWidth: 1 ,
-                id: 'oval'+sumOfNodes,
-                draggable: true
-            });
-            sumOfNodes++;
 
-            rect.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
-            });
-            rect.on("mouseout", function() {
-                document.body.style.cursor = "default";
-            });
-            rect.on("click", function() {
-                clickNode(rect, layer);
-            });
-
-            var xChild = rect.getX();
-            var yChild = rect.getY();
-            var xParent = parentNode.getX();
-            var yParent = parentNode.getY();
-
-            var connectionLine = new Kinetic.Line({
-                y: yParent,
-                x: xParent,
-                points: [0, 0, xChild - xParent, yChild - yParent],
-                stroke: "black",
-                strokeWidth: 4,
-                lineCap: "round",
-                lineJoin: "round"
-            });
-
-            var drawConnectionLine = new Kinetic.Animation({
-                func: function() {
-                    var xChild = rect.getX();
-                    var yChild = rect.getY();
-                    var xParent = parentNode.getX();
-                    var yParent = parentNode.getY();
-                    connectionLine.setX(xParent);
-                    connectionLine.setY(yParent);
-                    connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
-                }
-            });
-
-            rect.on("dragstart dragend", function(){
-                drawConnectionLine.start();
-            });
-
-            parentNode.on("dragstart dragend", function() {
-                drawConnectionLine.start();
-            });
-
-            layer.add(connectionLine);
-            layer.add(rect);
-            layer.add(parentNode);
-            layer.draw();
-
-            return rect;
-        }
-
-        function newEllipseNodeFactory(layer, parentNode){
-            var oval = new Kinetic.Ellipse({
-                x: parentNode.getX() + 100,
-                y: parentNode.getY() + 100,
-                radius: {
-                    x: 100,
-                    y: 50
-                },
-                fill: "#00D2FF",
-                stroke: "black",
-                strokeWidth: 4 ,
-                id: 'oval'+sumOfNodes,
-                draggable: true
-            });
-            sumOfNodes++;
-
-            this.getXConnectPosition = function () {
-                return this.oval.getX();
-            };
-            this.getYConnectPosition = function () {
-                return this.oval.getY();
-            };
-
-            oval.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
-            });
-            oval.on("mouseout", function() {
-                document.body.style.cursor = "default";
-            });
-            oval.on("click", function() {
-                clickNode(oval, layer);
-            });
-
-            var xChild = oval.getX();
-            var yChild = oval.getY();
-            var xParent = parentNode.getX();
-            var yParent = parentNode.getY();
-
-            var connectionLine = new Kinetic.Line({
-                y: yParent,
-                x: xParent,
-                points: [0, 0, xChild - xParent, yChild - yParent],
-                stroke: "black",
-                strokeWidth: 4,
-                lineCap: "round",
-                lineJoin: "round"
-            });
-
-            var drawConnectionLine = new Kinetic.Animation({
-                func: function() {
-                    var xChild = oval.getX();
-                    var yChild = oval.getY();
-                    var xParent = parentNode.getX();
-                    var yParent = parentNode.getY();
-                    connectionLine.setX(xParent);
-                    connectionLine.setY(yParent);
-                    connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
-                }
-            });
-
-            oval.on("dragstart dragend", function(){
-                drawConnectionLine.start();
-            });
-
-            parentNode.on("dragstart dragend", function() {
-                drawConnectionLine.start();
-            });
-
-            layer.add(connectionLine);
-            layer.add(oval);
-            layer.add(parentNode);
-            layer.draw();
-
-            return oval;
-        }
 
         function clickNode(shape, layer) {
             markedNode.setFill(markedNodeFillBackup);
@@ -197,52 +57,26 @@
             var messageLayer = new Kinetic.Layer();
 
             //Button for FactoryMethod of creating new Nodes
-            var button = new Kinetic.Text({
-                x: 10,
-                y: 35,
-                stroke: '#555',
-                strokeWidth: 2,
-                fill: '#ddd',
-                text: 'New Node',
-                fontSize: 14,
-                fontFamily: 'Calibri',
-                textFill: '#555',
-                width: 120,
-                padding: 20,
-                align: 'center',
-                fontStyle: 'italic',
-                cornerRadius: 5
-            });
+            var newEllipseNodeButton = debugGUI.buildNewNodeButton();
 
             // Oval Shape 1
-            function createFirstNode() {
-                var base = new Kinetic.Ellipse({
-                    x: stage.getWidth() / 2,
-                    y: stage.getHeight() / 2,
-                    radius: {
-                        x: 100,
-                        y: 50
-                    },
-                    fill: "red",
-                    stroke: "black",
-                    strokeWidth: 4 ,
-                    id: 'oval0'
-                });
-                this.getXConnectPosition = function () {
-                    return stage.getWidth() / 2;
-                };
-                this.getYConnectPosition = function () {
-                    return stage.getHeight() / 2;
-                };
-                return base;
-            }
-
-            var base = createFirstNode();
+            var base = new Kinetic.Ellipse({
+                x: stage.getWidth() / 2,
+                y: stage.getHeight() / 2,
+                radius: {
+                    x: 100,
+                    y: 50
+                },
+                fill: "red",
+                stroke: "black",
+                strokeWidth: 4 ,
+                id: 'oval0'
+            });
             markedNode = base;
             markedNodeFillBackup = base.getFill();
 
             //Oval Shape 2
-            var oval2 = newEllipseNodeFactory(layer, base);
+            var oval2 = newNodeFactory.newNodeFactory(layer, base);
 
             // add cursor styling for shape oval
             base.on("mouseover", function() {
@@ -255,15 +89,8 @@
                 clickNode(base, layer);
             });
 
-            // add cursor styling for shape oval
-            button.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
-            });
-            button.on("mouseout", function() {
-                document.body.style.cursor = "default";
-            });
-            button.on("click", function(){
-               newEllipseNodeFactory(layer, markedNode);
+            newEllipseNodeButton.on("click", function(){
+                newNodeFactory.newNodeFactory(layer, markedNode);
             });
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -273,7 +100,7 @@
             });
 
             layer.add(base);
-            layer.add(button);
+            layer.add(newEllipseNodeButton);
 
             // add the layer to the stage
             stage.add(layer);
