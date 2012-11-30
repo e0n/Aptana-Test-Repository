@@ -4,10 +4,12 @@
  */
 newNodeFactory = {
     var: sumOfNodes = 0,
-    var: xConnectPosition = 0,
-    var: yConnectPosition = 0,
 
-    newNodeFactory : function (layer, parentNode){
+    // -----
+    // Creates a new node with ellipse shape
+    // -----
+
+    newEllipseNode : function (layer, parentNode){
 
         var oval = new Kinetic.Ellipse({
             x: parentNode.getX() + 100,
@@ -80,7 +82,91 @@ newNodeFactory = {
         return oval;
     },
 
-    createBaseNode: function(stage){
+
+
+    // -----
+    // Creates a new node with rect shape
+    // -----
+
+    newRectNode : function (layer, parentNode){
+
+        var rect = new Kinetic.Rect({
+            x: parentNode.getX() + 100,
+            y: parentNode.getY() + 100,
+            height: 80,
+            width: 200,
+            fill: "#00D2FF",
+            stroke: "black",
+            strokeWidth: 4 ,
+            id: 'oval'+sumOfNodes,
+            draggable: true
+        });
+        sumOfNodes++;
+
+        xConnectPosition = rect.getX();
+        yConnectPosition = rect.getY();
+
+        rect.on("mouseover", function() {
+            document.body.style.cursor = "pointer";
+        });
+        rect.on("mouseout", function() {
+            document.body.style.cursor = "default";
+        });
+        rect.on("click", function() {
+            clickNode(rect, layer);
+        });
+
+        var xChild = rect.getX();
+        var yChild = rect.getY();
+        var xParent = parentNode.getX();
+        var yParent = parentNode.getY();
+
+        var connectionLine = new Kinetic.Line({
+            y: yParent,
+            x: xParent,
+            points: [0, 0, xChild - xParent, yChild - yParent],
+            stroke: "black",
+            strokeWidth: 4,
+            lineCap: "round",
+            lineJoin: "round"
+        });
+
+        var drawConnectionLine = new Kinetic.Animation({
+            func: function() {
+                var xChild = rect.getX();
+                var yChild = rect.getY();
+                var xParent = parentNode.getX();
+                var yParent = parentNode.getY();
+                connectionLine.setX(xParent);
+                connectionLine.setY(yParent);
+                connectionLine.setPoints([0,0,xChild - xParent, yChild - yParent]);
+            }
+        });
+
+        rect.on("dragstart dragend", function(){
+            drawConnectionLine.start();
+        });
+
+        parentNode.on("dragstart dragend", function() {
+            drawConnectionLine.start();
+        });
+
+        layer.add(connectionLine);
+        layer.add(rect);
+        layer.add(parentNode);
+        layer.draw();
+
+        return rect;
+    },
+
+
+
+
+    // -----
+    // Creates the base Node with ellipse shape
+    // -----
+
+    createBaseNode: function(stage, layer){
        var base = new Kinetic.Ellipse({
             x: stage.getWidth() / 2,
             y: stage.getHeight() / 2,
@@ -93,6 +179,20 @@ newNodeFactory = {
             strokeWidth: 4 ,
             id: 'oval0'
         });
+        xConnectPosition = base.getX();
+        yConnectPosition = base.getY();
+
+        // add cursor styling for shape oval
+        base.on("mouseover", function() {
+            document.body.style.cursor = "pointer";
+        });
+        base.on("mouseout", function() {
+            document.body.style.cursor = "default";
+        });
+        base.on("click", function() {
+            clickNode(base, layer);
+        });
+
         return base;
     }
 }

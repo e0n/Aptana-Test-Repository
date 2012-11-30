@@ -56,40 +56,34 @@
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
-            //Button for FactoryMethod of creating new Nodes
-            var newEllipseNodeButton = debugGUI.buildNewNodeButton();
-
             // Oval Shape 1
-            var base = newNodeFactory.createBaseNode(stage);
-                markedNode = base;
+            var base = newNodeFactory.createBaseNode(stage, layer);
+            layer.add(base);
+
+            markedNode = base;
             markedNodeFillBackup = base.getFill();
 
             //Oval Shape 2
-            var oval2 = newNodeFactory.newNodeFactory(layer, base);
+            var oval2 = newNodeFactory.newEllipseNode(layer, base);
 
-            // add cursor styling for shape oval
-            base.on("mouseover", function() {
-                document.body.style.cursor = "pointer";
+            //Button for FactoryMethod of creating new Nodes
+            var newEllipseButton = debugGUI.buildNewEllipseButton();
+            newEllipseButton.on("click", function(){
+                newNodeFactory.newEllipseNode(layer, markedNode);
             });
-            base.on("mouseout", function() {
-                document.body.style.cursor = "default";
-            });
-            base.on("click", function() {
-                clickNode(base, layer);
-            });
+            layer.add(newEllipseButton);
 
-            newEllipseNodeButton.on("click", function(){
-                newNodeFactory.newNodeFactory(layer, markedNode);
+            var newRectButton = debugGUI.buildNewRectButton();
+            newRectButton.on("click", function(){
+                newNodeFactory.newRectNode(layer, markedNode);
             });
+            layer.add(newRectButton);
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
-
-            layer.add(base);
-            layer.add(newEllipseNodeButton);
 
             // add the layer to the stage
             stage.add(layer);
