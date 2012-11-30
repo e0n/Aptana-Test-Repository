@@ -72,5 +72,21 @@ newNodeFactory = {
         layer.draw();
 
         return oval;
+    },
+
+    createBaseNode: function(stage){
+       var base = new Kinetic.Ellipse({
+            x: stage.getWidth() / 2,
+            y: stage.getHeight() / 2,
+            radius: {
+                x: 100,
+                y: 50
+            },
+            fill: "red",
+            stroke: "black",
+            strokeWidth: 4 ,
+            id: 'oval0'
+        });
+        return base;
     }
 }
