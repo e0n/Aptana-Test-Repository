@@ -32,7 +32,7 @@
         }
 
 
-
+        // Marks nodes and saves fill color
         function clickNode(shape, layer) {
             markedNode.setFill(markedNodeFillBackup);
             markedNode = shape;
@@ -56,34 +56,40 @@
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
+
             // Oval Shape 1
-            var base = newNodeFactory.createBaseNode(stage, layer);
-            layer.add(base);
+            var base = new newNodeFactory.createBaseNode(stage, layer);
 
             markedNode = base;
-            markedNodeFillBackup = base.getFill();
+            markedNodeFillBackup = base.shape;
+
+            alert(markedNodeFillBackup);
+
 
             //Oval Shape 2
-            var oval2 = newNodeFactory.newEllipseNode(layer, base);
+            var oval2 = new newNodeFactory.newEllipseNode(layer, base);
+
 
             //Button for FactoryMethod of creating new Nodes
             var newEllipseButton = debugGUI.buildNewEllipseButton();
             newEllipseButton.on("click", function(){
-                newNodeFactory.newEllipseNode(layer, markedNode);
+                new newNodeFactory.newEllipseNode(layer, markedNode);
             });
             layer.add(newEllipseButton);
 
             var newRectButton = debugGUI.buildNewRectButton();
             newRectButton.on("click", function(){
-                newNodeFactory.newRectNode(layer, markedNode);
+                new newNodeFactory.newRectNode(layer, markedNode);
             });
             layer.add(newRectButton);
+
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
+
 
             // add the layer to the stage
             stage.add(layer);
