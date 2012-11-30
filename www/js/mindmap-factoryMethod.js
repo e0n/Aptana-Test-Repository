@@ -10,7 +10,6 @@ newNodeFactory = {
     // -----
 
     newEllipseNode : function (layer, parentNode){
-
         var oval = new Kinetic.Ellipse({
             x: parentNode.getX() + 100,
             y: parentNode.getY() + 100,
