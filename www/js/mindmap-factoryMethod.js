@@ -11,9 +11,8 @@ newNodeFactory = {
 
     newEllipseNode : function (layer, parent){
 
-        this.patent = parent;
         this.layer = layer;
-        var parentNode = parent.group;
+        var parentNode = parent;
         var thisNode = this;
 
         this.group = new Kinetic.Group({
@@ -119,13 +118,13 @@ newNodeFactory = {
             drawConnectionLine.start();
         });
 
-        parentNode.on("dragstart dragend", function() {
+        parentNode.group.on("dragstart dragend", function() {
             drawConnectionLine.start();
         });
 
         layer.add(connectionLine);
         layer.add(this.group);
-        layer.add(parentNode);
+        layer.add(parentNode.group);
         layer.draw();
     },
 
@@ -135,7 +134,7 @@ newNodeFactory = {
 
     newRectNode : function (layer, parent){
 
-        var parentNode = parent.group;
+        var parentNode = parent;
         var thisNode = this;
 
         this.group = new Kinetic.Group({
@@ -237,7 +236,7 @@ newNodeFactory = {
             drawConnectionLine.start();
         });
 
-        parentNode.on("dragstart dragend", function() {
+        parentNode.group.on("dragstart dragend", function() {
             drawConnectionLine.start();
         });
 
