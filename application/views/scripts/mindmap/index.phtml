@@ -84,6 +84,17 @@
             });
             layer.add(newRectButton);
 
+            var newEditTextButton = debugGUI.buildNewEditTextButton();
+            newEditTextButton.on("click", function(){
+                var newText=prompt("Please enter a new name", markedNode.getText());
+
+                if (newText !=null )
+                {
+                    markedNode.setText(newText);
+                }
+            });
+            layer.add(newEditTextButton);
+
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
