@@ -67,6 +67,10 @@ newNodeFactory = {
             thisNode.text.setText(newText);
         };
 
+        this.getText = function() {
+            return thisNode.text.getText();
+        };
+
         //finishNode(thisNode);
 
 
@@ -188,6 +192,10 @@ newNodeFactory = {
             thisNode.text.setText(newText);
         };
 
+        this.getText = function() {
+            return thisNode.text.getText();
+        };
+
         sumOfNodes++;
 
         this.group.add(this.shape);
@@ -303,6 +311,10 @@ newNodeFactory = {
 
         this.setText = function(newText) {
             thisNode.text.setText(newText);
+        };
+
+        this.getText = function() {
+            return thisNode.text.getText();
         };
 
         this.group.add(this.shape);
