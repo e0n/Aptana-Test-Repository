@@ -34,10 +34,12 @@
 
         // Marks nodes and saves fill color
         function clickNode(node, layer) {
-            markedNode.shape.setFill(markedNodeFillBackup);
+            markedNode.fillBackground(markedNodeFillBackup);
+            //markedNode.shape.setFill(markedNodeFillBackup);
             markedNode = node;
-            markedNodeFillBackup = markedNode.shape.getFill();
-            markedNode.shape.setFill('green');
+            markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
+            markedNode.fillBackground('green');
+            //markedNode.shape.setFill('green');
 
             layer.draw();
         }
@@ -61,7 +63,8 @@
             var base = new newNodeFactory.createBaseNode(stage, layer);
 
             markedNode = base;
-            markedNodeFillBackup = base.shape.getFill();
+            markedNodeFillBackup = base.getBackground();
+            markedNode.fillBackground('green');
 
 
             //Oval Shape 2
