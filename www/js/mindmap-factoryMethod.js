@@ -12,6 +12,8 @@ newNodeFactory = {
     newEllipseNode : function (layer, parent){
 
         var thisNode = this;
+        this.parentNode = parent;
+        this.layer = layer;
 
         this.group = new Kinetic.Group({
             x: parent.xConnectPosition + 100,
@@ -76,15 +78,7 @@ newNodeFactory = {
 
         this.group.add(this.text);
 
-        this.group.on("mouseover", function() {
-            document.body.style.cursor = "pointer";
-        });
-        this.group.on("mouseout", function() {
-            document.body.style.cursor = "default";
-        });
-        this.group.on("click", function() {
-            clickNode(thisNode, layer);
-        });
+
 
         this.xConnectPosition = this.group.getX();
         this.yConnectPosition = this.group.getY();
@@ -108,7 +102,7 @@ newNodeFactory = {
             }
         });
 
-        var drawConnectionLine = new Kinetic.Animation({
+        this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
                 thisNode.xConnectPosition = thisNode.group.getX();
                 thisNode.yConnectPosition = thisNode.group.getY();
@@ -120,13 +114,24 @@ newNodeFactory = {
             }
         });
 
+        buildNodeFunctions(thisNode);
+        /*
+        this.group.on("mouseover", function() {
+            document.body.style.cursor = "pointer";
+        });
+        this.group.on("mouseout", function() {
+            document.body.style.cursor = "default";
+        });
+        this.group.on("click", function() {
+            clickNode(thisNode, layer);
+        });
         this.group.on("dragstart dragend", function(){
             drawConnectionLine.start();
         });
-
         parent.group.on("dragstart dragend", function() {
             drawConnectionLine.start();
         });
+        */
 
         layer.add(connectionLine);
         layer.add(this.group);
@@ -141,6 +146,8 @@ newNodeFactory = {
     newRectNode : function (layer, parent){
 
         var thisNode = this;
+        this.parentNode = parent;
+        this.layer = layer;
 
         this.group = new Kinetic.Group({
             stroke: '#555',
@@ -204,15 +211,7 @@ newNodeFactory = {
         this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
         this.yConnectPosition = this.group.getY() + this.text.getHeight()/2;
 
-        this.group.on("mouseover", function() {
-            document.body.style.cursor = "pointer";
-        });
-        this.group.on("mouseout", function() {
-            document.body.style.cursor = "default";
-        });
-        this.group.on("click", function() {
-            clickNode(thisNode, layer);
-        });
+
 
         var xParent = parent.xConnectPosition;
         var yParent = parent.yConnectPosition;
@@ -233,7 +232,7 @@ newNodeFactory = {
             }
         });
 
-        var drawConnectionLine = new Kinetic.Animation({
+        this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
                 thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getWidth()/2;
                 thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getHeight()/2;
@@ -245,13 +244,7 @@ newNodeFactory = {
             }
         });
 
-        this.group.on("dragstart dragend", function(){
-            drawConnectionLine.start();
-        });
-
-        parent.group.on("dragstart dragend", function() {
-            drawConnectionLine.start();
-        });
+        buildNodeFunctions(thisNode);
 
         layer.add(connectionLine);
 
@@ -338,4 +331,22 @@ newNodeFactory = {
     }
 
 };
+
+function buildNodeFunctions(thisNode) {
+    thisNode.group.on("mouseover", function() {
+        document.body.style.cursor = "pointer";
+    });
+    thisNode.group.on("mouseout", function() {
+        document.body.style.cursor = "default";
+    });
+    thisNode.group.on("click", function() {
+        clickNode(thisNode, thisNode.layer);
+    });
+    thisNode.group.on("dragstart dragend", function(){
+        thisNode.drawConnectionLine.start();
+    });
+    thisNode.parentNode.group.on("dragstart dragend", function() {
+        thisNode.drawConnectionLine.start();
+    });
+}
 
