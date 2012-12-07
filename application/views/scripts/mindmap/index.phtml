@@ -35,10 +35,12 @@
         // Marks nodes and saves fill color
         function clickNode(node, layer) {
             markedNode.fillBackground(markedNodeFillBackup);
+            markedNode.hideAnchors();
             //markedNode.shape.setFill(markedNodeFillBackup);
             markedNode = node;
             markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
             markedNode.fillBackground('green');
+            markedNode.showAnchors();
             //markedNode.shape.setFill('green');
 
             layer.draw();
