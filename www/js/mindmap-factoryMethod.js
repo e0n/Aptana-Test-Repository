@@ -65,20 +65,7 @@ newNodeFactory = {
             return thisNode.shape.getFill();
         };
 
-        this.setText = function(newText) {
-            thisNode.text.setText(newText);
-        };
-
-        this.getText = function() {
-            return thisNode.text.getText();
-        };
-
-        //finishNode(thisNode);
-
-
         this.group.add(this.text);
-
-
 
         this.xConnectPosition = this.group.getX();
         this.yConnectPosition = this.group.getY();
@@ -115,23 +102,6 @@ newNodeFactory = {
         });
 
         buildNodeFunctions(thisNode);
-        /*
-        this.group.on("mouseover", function() {
-            document.body.style.cursor = "pointer";
-        });
-        this.group.on("mouseout", function() {
-            document.body.style.cursor = "default";
-        });
-        this.group.on("click", function() {
-            clickNode(thisNode, layer);
-        });
-        this.group.on("dragstart dragend", function(){
-            drawConnectionLine.start();
-        });
-        parent.group.on("dragstart dragend", function() {
-            drawConnectionLine.start();
-        });
-        */
 
         layer.add(connectionLine);
         layer.add(this.group);
@@ -193,14 +163,6 @@ newNodeFactory = {
 
         this.getBackground = function() {
             return thisNode.text.getFill();
-        };
-
-        this.setText = function(newText) {
-            thisNode.text.setText(newText);
-        };
-
-        this.getText = function() {
-            return thisNode.text.getText();
         };
 
         sumOfNodes++;
@@ -303,11 +265,11 @@ newNodeFactory = {
         };
 
         this.setText = function(newText) {
-            thisNode.text.setText(newText);
+            this.text.setText(newText);
+            layer.draw();
         };
-
         this.getText = function() {
-            return thisNode.text.getText();
+            return this.text.getText();
         };
 
         this.group.add(this.shape);
@@ -348,5 +310,12 @@ function buildNodeFunctions(thisNode) {
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();
     });
+    thisNode.setText = function(newText) {
+        thisNode.text.setText(newText);
+        thisNode.layer.draw();
+    };
+    thisNode.getText = function() {
+        return thisNode.text.getText();
+    };
 }
 
