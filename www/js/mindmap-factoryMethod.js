@@ -28,9 +28,15 @@ newNodeFactory = {
                 y: 50
             },
             fill: "#FFFFFF",
-            stroke: "black",
-            strokeWidth: 1 ,
+            stroke: 'black',
+            strokeWidth: 3,
             id: 'shape'+sumOfNodes,
+            shadow: {
+                color: 'black',
+                blur: 10,
+                offset: [10, 10],
+                opacity: 0.2
+            },
             draggable: true
         });
         sumOfNodes++;
@@ -75,7 +81,13 @@ newNodeFactory = {
             stroke: "black",
             strokeWidth: 4,
             lineCap: "round",
-            lineJoin: "round"
+            lineJoin: "round",
+            shadow: {
+                color: 'black',
+                blur: 10,
+                offset: [10, 10],
+                opacity: 0.2
+            }
         });
 
         var drawConnectionLine = new Kinetic.Animation({
@@ -116,8 +128,8 @@ newNodeFactory = {
         var thisNode = this;
 
         this.group = new Kinetic.Group({
-            stroke: "black",
-            strokeWidth: 1 ,
+            stroke: '#555',
+            strokeWidth: 5,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
             draggable: true
@@ -129,8 +141,14 @@ newNodeFactory = {
             height: 80,
             width: 200,
             fill: "#FFFFFF",
-            stroke: "black",
-            strokeWidth: 1 ,
+            stroke: 'black',
+            strokeWidth: 3,
+            shadow: {
+                color: 'black',
+                blur: 10,
+                offset: [10, 10],
+                opacity: 0.2
+            },
             id: 'shape'+sumOfNodes
         });
         sumOfNodes++;
@@ -180,7 +198,13 @@ newNodeFactory = {
             stroke: "black",
             strokeWidth: 4,
             lineCap: "round",
-            lineJoin: "round"
+            lineJoin: "round",
+            shadow: {
+                color: 'black',
+                blur: 10,
+                offset: [10, 10],
+                opacity: 0.2
+            }
         });
 
         var drawConnectionLine = new Kinetic.Animation({
