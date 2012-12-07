@@ -11,8 +11,6 @@ newNodeFactory = {
 
     newEllipseNode : function (layer, parent){
 
-        this.layer = layer;
-        var parentNode = parent;
         var thisNode = this;
 
         this.group = new Kinetic.Group({
@@ -57,17 +55,17 @@ newNodeFactory = {
             cornerRadius: 5
         });
 
-        this.fillBackground = function( color ) {
+        this.fillBackground = function (color) {
             thisNode.shape.setFill(color);
-        }
+        };
 
         this.getBackground = function() {
             return thisNode.shape.getFill();
-        }
+        };
 
         this.setText = function(newText) {
             thisNode.text.setText(newText);
-        }
+        };
 
         //finishNode(thisNode);
 
@@ -122,13 +120,13 @@ newNodeFactory = {
             drawConnectionLine.start();
         });
 
-        parentNode.group.on("dragstart dragend", function() {
+        parent.group.on("dragstart dragend", function() {
             drawConnectionLine.start();
         });
 
         layer.add(connectionLine);
         layer.add(this.group);
-        layer.add(parentNode.group);
+        layer.add(parent.group);
         layer.draw();
     },
 
@@ -138,7 +136,6 @@ newNodeFactory = {
 
     newRectNode : function (layer, parent){
 
-        var parentNode = parent;
         var thisNode = this;
 
         this.group = new Kinetic.Group({
@@ -181,15 +178,15 @@ newNodeFactory = {
 
         this.fillBackground = function( color ) {
             thisNode.text.setFill(color);
-        }
+        };
 
         this.getBackground = function() {
             return thisNode.text.getFill();
-        }
+        };
 
         this.setText = function(newText) {
             thisNode.text.setText(newText);
-        }
+        };
 
         sumOfNodes++;
 
@@ -244,7 +241,7 @@ newNodeFactory = {
             drawConnectionLine.start();
         });
 
-        parentNode.group.on("dragstart dragend", function() {
+        parent.group.on("dragstart dragend", function() {
             drawConnectionLine.start();
         });
 
@@ -282,19 +279,34 @@ newNodeFactory = {
             id: 'oval0'
         });
 
+        this.text = new Kinetic.Text({
+            x: -thisNode.shape.getWidth()/2,
+            y: -thisNode.shape.getHeight()/4,
+            text: 'RootNode',
+            textFill: '#555',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            width: thisNode.shape.getWidth(),
+            padding: 5,
+            align: 'center',
+            fontStyle: 'italic',
+            cornerRadius: 5
+        });
+
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
-        }
+        };
 
         this.getBackground = function() {
             return thisNode.shape.getFill();
-        }
+        };
 
         this.setText = function(newText) {
-
-        }
+            thisNode.text.setText(newText);
+        };
 
         this.group.add(this.shape);
+        this.group.add(this.text);
 
         this.xConnectPosition = this.group.getX();
         this.yConnectPosition = this.group.getY();
