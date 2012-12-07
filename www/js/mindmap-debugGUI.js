@@ -63,7 +63,7 @@ debugGUI = {
         return button;
     },
 
-    editTextButton : function () {
+    buildNewEditTextButton : function () {
         var button = new Kinetic.Text({
             x: 270,
             y: 35,
