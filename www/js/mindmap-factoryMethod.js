@@ -65,6 +65,10 @@ newNodeFactory = {
             return thisNode.shape.getFill();
         }
 
+        this.setText = function(newText) {
+            thisNode.text.setText(newText);
+        }
+
         //finishNode(thisNode);
 
 
@@ -155,7 +159,7 @@ newNodeFactory = {
         this.text = new Kinetic.Text({
             x: 0,
             y: 0,
-            text: 'Test Inhalt Test Inhalt Test Inhalt Test Inhalt Test Inhalt Test Inhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalt Test Inhalt',
+            text: 'Test Inhalt Test Inhalt',
             textFill: '#555',
             fontSize: 15,
             fontFamily: 'Calibri',
@@ -284,6 +288,10 @@ newNodeFactory = {
 
         this.getBackground = function() {
             return thisNode.shape.getFill();
+        }
+
+        this.setText = function(newText) {
+
         }
 
         this.group.add(this.shape);
