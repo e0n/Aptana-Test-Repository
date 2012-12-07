@@ -183,6 +183,10 @@ newNodeFactory = {
             return thisNode.text.getFill();
         }
 
+        this.setText = function(newText) {
+            thisNode.text.setText(newText);
+        }
+
         sumOfNodes++;
 
         this.group.add(this.shape);
