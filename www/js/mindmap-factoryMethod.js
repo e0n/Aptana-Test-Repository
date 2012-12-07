@@ -103,6 +103,13 @@ newNodeFactory = {
 
         buildNodeFunctions(thisNode);
 
+        this.showAnchors = function() {
+
+        };
+        this.hideAnchors = function() {
+
+        };
+
         layer.add(connectionLine);
         layer.add(this.group);
         layer.add(parent.group);
@@ -130,7 +137,8 @@ newNodeFactory = {
         this.shape = new Kinetic.Rect({
             x: 0,
             y: 0,
-            width: 200,
+            stroke: '#555',
+            strokeWidth: 5,
             id: 'shape'+sumOfNodes
         });
 
@@ -141,8 +149,8 @@ newNodeFactory = {
             textFill: '#555',
             fontSize: 15,
             fontFamily: 'Calibri',
-            width: thisNode.shape.getWidth(),
-            padding: 5,
+            width: 200,
+            padding: 10,
             align: 'center',
             fontStyle: 'italic',
             fill: "#FFFFFF",
@@ -196,8 +204,8 @@ newNodeFactory = {
 
         this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getWidth()/2;
-                thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getHeight()/2;
+                thisNode.xConnectPosition = thisNode.group.getX();
+                thisNode.yConnectPosition = thisNode.group.getY();
                 xParent = parent.xConnectPosition;
                 yParent = parent.yConnectPosition;
                 connectionLine.setX(xParent);
@@ -207,6 +215,33 @@ newNodeFactory = {
         });
 
         buildNodeFunctions(thisNode);
+
+        addAnchor(thisNode, 0,0,"topLeft");
+        addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
+        addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
+        addAnchor(thisNode, 0,thisNode.text.getHeight(),"bottomLeft");
+
+        this.showAnchors = function() {
+            var topLeft = thisNode.group.get(".topLeft")[0];
+            topLeft.setVisible(true);
+            var topRight = thisNode.group.get(".topRight")[0];
+            topRight.setVisible(true);
+            var bottomRight = thisNode.group.get(".bottomRight")[0];
+            bottomRight.setVisible(true);
+            var bottomLeft = thisNode.group.get(".bottomLeft")[0];
+            bottomLeft.setVisible(true);
+        };
+
+        this.hideAnchors = function() {
+            var topLeft = thisNode.group.get(".topLeft")[0];
+            topLeft.setVisible(false);
+            var topRight = thisNode.group.get(".topRight")[0];
+            topRight.setVisible(false);
+            var bottomRight = thisNode.group.get(".bottomRight")[0];
+            bottomRight.setVisible(false);
+            var bottomLeft = thisNode.group.get(".bottomLeft")[0];
+            bottomLeft.setVisible(false);
+        };
 
         layer.add(connectionLine);
 
@@ -256,6 +291,12 @@ newNodeFactory = {
             cornerRadius: 5
         });
 
+        this.showAnchors = function() {
+
+        };
+        this.hideAnchors = function() {
+
+        };
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
@@ -317,5 +358,89 @@ function buildNodeFunctions(thisNode) {
     thisNode.getText = function() {
         return thisNode.text.getText();
     };
+}
+
+function update(thisNode, activeAnchor) {
+
+    var topLeft = thisNode.group.get(".topLeft")[0];
+
+    var topRight = thisNode.group.get(".topRight")[0];
+
+    var bottomRight = thisNode.group.get(".bottomRight")[0];
+
+    var bottomLeft = thisNode.group.get(".bottomLeft")[0];
+
+
+    // update anchor positions
+    switch (activeAnchor.getName()) {
+        case "topLeft":
+            topRight.attrs.y = activeAnchor.attrs.y;
+            bottomLeft.attrs.x = activeAnchor.attrs.x;
+            break;
+        case "topRight":
+            topLeft.attrs.y = activeAnchor.attrs.y;
+            bottomRight.attrs.x = activeAnchor.attrs.x;
+            break;
+        case "bottomRight":
+            bottomLeft.attrs.y = activeAnchor.attrs.y;
+            topRight.attrs.x = activeAnchor.attrs.x;
+            break;
+        case "bottomLeft":
+            bottomRight.attrs.y = activeAnchor.attrs.y;
+            topLeft.attrs.x = activeAnchor.attrs.x;
+            break;
+    }
+
+    thisNode.text.setPosition(topLeft.attrs.x, topLeft.attrs.y);
+
+    var width = topRight.attrs.x - topLeft.attrs.x;
+    var height = bottomLeft.attrs.y - topLeft.attrs.y;
+    if(width && height) {
+        thisNode.text.setSize(width, height);
+    }
+}
+
+function addAnchor(thisNode, x, y, name) {
+    var layer = thisNode.layer;
+
+    var anchor = new Kinetic.Circle({
+        x: x,
+        y: y,
+        stroke: "#666",
+        fill: "#ddd",
+        strokeWidth: 2,
+        radius: 8,
+        name: name,
+        draggable: true,
+        visible: false
+    });
+
+    anchor.on("dragmove", function() {
+        update(thisNode, this);
+        layer.draw();
+    });
+    anchor.on("mousedown touchstart", function() {
+        thisNode.group.setDraggable(false);
+        this.moveToTop();
+    });
+    anchor.on("dragend", function() {
+        thisNode.group.setDraggable(true);
+        layer.draw();
+    });
+    // add hover styling
+    anchor.on("mouseover", function() {
+        var layer = thisNode.layer;
+        document.body.style.cursor = "pointer";
+        this.setStrokeWidth(4);
+        layer.draw();
+    });
+    anchor.on("mouseout", function() {
+        var layer = thisNode.layer;
+        document.body.style.cursor = "default";
+        this.setStrokeWidth(2);
+        layer.draw();
+    });
+
+    thisNode.group.add(anchor);
 }
 
