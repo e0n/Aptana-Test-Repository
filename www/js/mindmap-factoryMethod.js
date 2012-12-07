@@ -11,6 +11,8 @@ newNodeFactory = {
 
     newEllipseNode : function (layer, parent){
 
+        this.patent = parent;
+        this.layer = layer;
         var parentNode = parent.group;
         var thisNode = this;
 
@@ -27,10 +29,10 @@ newNodeFactory = {
                 x: 100,
                 y: 50
             },
-            fill: "#FFFFFF",
             stroke: 'black',
             strokeWidth: 3,
             id: 'shape'+sumOfNodes,
+            fill: "#FFFFFF",
             shadow: {
                 color: 'black',
                 blur: 10,
@@ -50,12 +52,23 @@ newNodeFactory = {
             fontSize: 15,
             fontFamily: 'Calibri',
             width: thisNode.shape.getWidth(),
-            height: thisNode.shape.getHeight(),
             padding: 5,
             align: 'center',
             fontStyle: 'italic',
             cornerRadius: 5
         });
+
+        this.fillBackground = function( color ) {
+            thisNode.shape.setFill(color);
+        }
+
+        this.getBackground = function() {
+            return thisNode.shape.getFill();
+        }
+
+        //finishNode(thisNode);
+
+
         this.group.add(this.text);
 
         this.group.on("mouseover", function() {
@@ -116,8 +129,6 @@ newNodeFactory = {
         layer.draw();
     },
 
-
-
     // -----
     // Creates a new node with rect shape
     // -----
@@ -138,8 +149,21 @@ newNodeFactory = {
         this.shape = new Kinetic.Rect({
             x: 0,
             y: 0,
-            height: 80,
             width: 200,
+            id: 'shape'+sumOfNodes
+        });
+
+        this.text = new Kinetic.Text({
+            x: 0,
+            y: 0,
+            text: 'Test Inhalt Test Inhalt Test Inhalt Test Inhalt Test Inhalt Test Inhaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaalt Test Inhalt',
+            textFill: '#555',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            width: thisNode.shape.getWidth(),
+            padding: 5,
+            align: 'center',
+            fontStyle: 'italic',
             fill: "#FFFFFF",
             stroke: 'black',
             strokeWidth: 3,
@@ -149,34 +173,24 @@ newNodeFactory = {
                 offset: [10, 10],
                 opacity: 0.2
             },
-            id: 'shape'+sumOfNodes
-        });
-        sumOfNodes++;
-
-        this.text = new Kinetic.Text({
-            x: 0,
-            y: 0,
-            text: 'Test Inhalt',
-            textFill: '#555',
-            fontSize: 15,
-            fontFamily: 'Calibri',
-            width: thisNode.shape.getWidth(),
-            height: thisNode.shape.getHeight(),
-            padding: 5,
-            stroke: "black",
-            strokeWidth: 1,
-            align: 'center',
-            fontStyle: 'italic',
             cornerRadius: 5
         });
 
+        this.fillBackground = function( color ) {
+            thisNode.text.setFill(color);
+        }
 
+        this.getBackground = function() {
+            return thisNode.text.getFill();
+        }
+
+        sumOfNodes++;
 
         this.group.add(this.shape);
         this.group.add(this.text);
 
-        this.xConnectPosition = this.group.getX() + this.shape.getWidth()/2;
-        this.yConnectPosition = this.group.getY() + this.shape.getHeight()/2;
+        this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
+        this.yConnectPosition = this.group.getY() + this.text.getHeight()/2;
 
         this.group.on("mouseover", function() {
             document.body.style.cursor = "pointer";
@@ -209,8 +223,8 @@ newNodeFactory = {
 
         var drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                thisNode.xConnectPosition = thisNode.group.getX() + thisNode.shape.getWidth()/2;
-                thisNode.yConnectPosition = thisNode.group.getY() + thisNode.shape.getHeight()/2;
+                thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getWidth()/2;
+                thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getHeight()/2;
                 xParent = parent.xConnectPosition;
                 yParent = parent.yConnectPosition;
                 connectionLine.setX(xParent);
@@ -233,9 +247,6 @@ newNodeFactory = {
         layer.add(parent.group);
         layer.draw();
     },
-
-
-
 
     // -----
     // Creates the base Node with ellipse shape
@@ -263,6 +274,15 @@ newNodeFactory = {
             strokeWidth: 4 ,
             id: 'oval0'
         });
+
+        this.fillBackground = function( color ) {
+            thisNode.shape.setFill(color);
+        }
+
+        this.getBackground = function() {
+            return thisNode.shape.getFill();
+        }
+
         this.group.add(this.shape);
 
         this.xConnectPosition = this.group.getX();
@@ -281,4 +301,6 @@ newNodeFactory = {
 
         layer.add(this.group);
     }
+
 };
+
