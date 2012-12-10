@@ -4,11 +4,11 @@
  -->
 <div class="container">
     <header>
-        <h1>Login or Registration to <span>Open Your Mind</span></h1>
+        <h1>Open Your Mind</h1>
     </header>
     <section>
         <div id="container_demo" >
-            <!-- hidden anchor to stop jump http://www.css3create.com/Astuce-Empecher-le-scroll-avec-l-utilisation-de-target#wrap4  -->
+            <!-- hidden anchor to stop jump -->
             <a class="hiddenanchor" id="toregister"></a>
             <a class="hiddenanchor" id="tologin"></a>
 
@@ -16,12 +16,22 @@
 
                 <div id="login" class="animate form">
 
-                    <form  action="auth/login" autocomplete="on">
+                    <form  action="login/login" autocomplete="on" method="post">
                         <h1>Log in</h1>
                         <p class="change_link">
                             Not a member yet ?
-                            <a href="#toregister" class="to_register">Join</a><a href="load">Try it out</a>
+                            <a href="#toregister" class="to_register">Sign up</a>
+                             or
+                            <a href="login/tryout">Try it out</a>
                         </p>
+                        <? if(isset($this->errorMessage)){ ?>
+                            <p class="error">
+                                <?
+                                    echo $this->errorMessage;
+                                    unset($this->errorMessage);
+                                ?>
+                            </p>
+                        <? } ?>
                         <p>
                             <label for="username" class="uname" data-icon="u" > Your email or username </label>
                             <input id="username" name="username" required="required" type="text" placeholder="myusername or myemail@mail.com"/>
@@ -30,28 +40,31 @@
                             <label for="password" class="youpasswd" data-icon="p"> Your password </label>
                             <input id="password" name="password" required="required" type="password" placeholder="eg. 123456" />
                         </p>
-                        <p class="keeplogin">
-                            <input type="checkbox" name="loginkeeping" id="loginkeeping" value="loginkeeping" />
-                            <label for="loginkeeping">Keep me logged in</label>
-                        </p>
                         <p class="login button">
                             <input type="submit" />
                         </p>
                         <div>
-                            <span class="uvFieldEtcLabel">or sign in with (not working)</span>
-                            <a data-provider="facebook"><a href="" tabindex="0" title="Sign in via Facebook"><img class="favicon" src="../www/images/fb.png" alt="facebook"></a></a>
+                            <span>or sign in with (not working)</span>
+                            <a data-provider="facebook"><a href="" tabindex="0" title="Sign in via Facebook"><img class="favicon" src="<?=$this->baseUrl('../www/images/fb.png')?>" alt="facebook"></a></a>
                         </div>
-
                     </form>
                 </div>
 
                 <div id="register" class="animate form">
-                    <form  action="aNonExistentScript.php" autocomplete="on">
+                    <form  action="login/signup" autocomplete="on" method="post">
                         <h1> Sign up </h1>
                         <p class="change_link">
                             Already a member ?
                             <a href="#tologin" class="to_register"> Go and log in </a>
                         </p>
+                        <? if(isset($this->errorMessage)){ ?>
+                        <p class="error">
+                            <?
+                                echo $this->errorMessage;
+                                unset($this->errorMessage);
+                            ?>
+                        </p>
+                        <? } ?>
                         <p>
                             <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
                             <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="username" />
@@ -71,10 +84,17 @@
                         <p class="signin button">
                             <input type="submit" value="Sign up"/>
                         </p>
+                        <div>
+                            <span>or sign in with (not working)</span>
+                            <a data-provider="facebook"><a href="" tabindex="0" title="Sign in via Facebook"><img class="favicon" src="<?=$this->baseUrl('../www/images/fb.png')?>" alt="facebook"></a></a>
+                        </div>
                     </form>
                 </div>
 
             </div>
         </div>
     </section>
+    <footer>
+
+    </footer>
 </div>
