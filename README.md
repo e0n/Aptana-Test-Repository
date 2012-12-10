@@ -1,7 +1,7 @@
 Open Your Mind
 ================================
 
-*A HTML5 and PHP Brainmap implementation.
+* A HTML5 and PHP Brainmap implementation.
 
 About the project
 -----------------
@@ -17,7 +17,7 @@ We use:
 
 <pre>
 .......................__ ............
-......<ROFL ROFL ROFL ROFL>.
+...... ROFL ROFL ROFL ROFL .
 ........................| |...........
 ................... __\||/____......
 .\\...............|'-|--| .\\....\.....
