@@ -16,6 +16,6 @@ class LoadController extends Zend_Controller_Action
 
     //TODO this is only temporal, load heavy stuff instead
     public function nextsiteAction(){
-        $this->_redirect('main');
+        $this->_redirect('mindmap');
     }
 }
