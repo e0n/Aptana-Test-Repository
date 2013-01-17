@@ -28,12 +28,6 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
 
     public function checkUnique($username)
     {
-        $result = $this->getTable()->find($username);
-        if (0 == count($result)) {
-            return false;//todo not working, always saying 0
-        }
-        return true;
-
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
 
