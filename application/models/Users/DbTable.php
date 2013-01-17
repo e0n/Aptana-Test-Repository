@@ -7,5 +7,6 @@ class Model_Users_DbTable extends Zend_Db_Table_Abstract
 {
    /** Table name */
    protected $_name = 'users';
+    /** Primary key */
    protected $_primary = "id";
 }
