@@ -39,7 +39,7 @@
             //markedNode.shape.setFill(markedNodeFillBackup);
             markedNode = node;
             markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
-            markedNode.fillBackground('green');
+            markedNode.fillBackground('3D9DB3');
             markedNode.showAnchors();
             //markedNode.shape.setFill('green');
 
@@ -66,12 +66,28 @@
 
             markedNode = base;
             markedNodeFillBackup = base.getBackground();
-            markedNode.fillBackground('green');
+            markedNode.fillBackground('3D9DB3');
 
 
             //Oval Shape 2
             var oval2 = new newNodeFactory.newEllipseNode(layer, base);
 
+
+            //Button for showing the marked node
+            //this functionality would be used later for hide/minimize (and reshow) parts of the mindmap
+            var newShowButton = debugGUI.buildNewShowButton();
+            newShowButton.on("click", function(){
+                markedNode.showChildren(layer);
+            });
+            layer.add(newShowButton);
+
+            //Button for hiding the marked node
+            //this functionality would be used later for hide/minimize parts of the mindmap
+            var newHideButton = debugGUI.buildNewHideButton();
+            newHideButton.on("click", function(){
+                markedNode.hideChildren(layer);
+            });
+            layer.add(newHideButton);
 
             //Button for FactoryMethod of creating new Nodes
             var newEllipseButton = debugGUI.buildNewEllipseButton();
@@ -111,7 +127,7 @@
 
     </script>
 
-            Welcome <?=$this->username?>,<br>
+            <Welcome <?=$this->username?>,<br>
             <a href="login/logout" >Click here to logout</a>
 
 </head>
