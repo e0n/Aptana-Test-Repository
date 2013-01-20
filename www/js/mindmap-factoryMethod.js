@@ -18,7 +18,8 @@ newNodeFactory = {
         this.group = new Kinetic.Group({
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
-            draggable: true
+            draggable: true,
+            visible: true
         });
 
         this.shape = new Kinetic.Ellipse({
@@ -28,12 +29,13 @@ newNodeFactory = {
                 x: 100,
                 y: 50
             },
-            stroke: 'black',
-            strokeWidth: 3,
+           // disabled because of STYLE REASOOONZZZ :-D
+           // stroke: 'C7C7C7',
+           // strokeWidth: 0,
             id: 'shape'+sumOfNodes,
-            fill: "#FFFFFF",
+            fill: "#F7F7F7",
             shadow: {
-                color: 'black',
+                color: '777777',
                 blur: 10,
                 offset: [10, 10],
                 opacity: 0.2
@@ -41,6 +43,7 @@ newNodeFactory = {
             draggable: true
         });
         sumOfNodes++;
+        addHovers(this.group, 'ease-in');
         this.group.add(this.shape);
 
         this.text = new Kinetic.Text({
@@ -77,12 +80,12 @@ newNodeFactory = {
             y: yParent,
             x: xParent,
             points: [0, 0, this.xConnectPosition - xParent, this.yConnectPosition - yParent],
-            stroke: "black",
-            strokeWidth: 4,
+            stroke: "C7C7C7",
+            strokeWidth: 2,
             lineCap: "round",
             lineJoin: "round",
             shadow: {
-                color: 'black',
+                color: '777777',
                 blur: 10,
                 offset: [10, 10],
                 opacity: 0.2
@@ -102,6 +105,16 @@ newNodeFactory = {
         });
 
         buildNodeFunctions(thisNode);
+
+        this.showChildren = function(layer) {
+            this.group.show();
+            layer.draw();
+        };
+
+        this.hideChildren = function(layer) {
+            this.group.hide();
+            layer.draw();
+        };
 
         this.showAnchors = function() {
 
@@ -127,7 +140,7 @@ newNodeFactory = {
         this.layer = layer;
 
         this.group = new Kinetic.Group({
-            stroke: '#555',
+            stroke: 'C7C7C7',
             strokeWidth: 5,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
@@ -137,7 +150,7 @@ newNodeFactory = {
         this.shape = new Kinetic.Rect({
             x: 0,
             y: 0,
-            stroke: '#555',
+            stroke: 'C7C7C7',
             strokeWidth: 5,
             id: 'shape'+sumOfNodes
         });
@@ -154,7 +167,7 @@ newNodeFactory = {
             align: 'center',
             fontStyle: 'italic',
             fill: "#FFFFFF",
-            stroke: 'black',
+            stroke: 'C7C7C7',
             strokeWidth: 3,
             shadow: {
                 color: 'black',
@@ -177,6 +190,7 @@ newNodeFactory = {
 
         this.group.add(this.shape);
         this.group.add(this.text);
+        addHovers(this.group, 'ease-in');
 
         this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
         this.yConnectPosition = this.group.getY() + this.text.getHeight()/2;
@@ -190,8 +204,8 @@ newNodeFactory = {
             y: yParent,
             x: xParent,
             points: [0, 0, this.xConnectPosition - xParent, this.yConnectPosition - yParent],
-            stroke: "black",
-            strokeWidth: 4,
+            stroke: "C7C7C7",
+            strokeWidth: 2,
             lineCap: "round",
             lineJoin: "round",
             shadow: {
@@ -258,7 +272,7 @@ newNodeFactory = {
         var thisNode = this;
 
         this.group = new Kinetic.Group({
-            stroke: "black",
+            stroke: "C7C7C7",
             strokeWidth: 1 ,
             x: stage.getWidth() / 2,
             y: stage.getHeight() / 2
@@ -271,9 +285,9 @@ newNodeFactory = {
                 x: 100,
                 y: 50
             },
-            fill: "red",
-            stroke: "black",
-            strokeWidth: 4 ,
+            fill: "F7F7F7",
+            stroke: "C7C7C7",
+            strokeWidth: 2 ,
             id: 'oval0'
         });
 
@@ -444,3 +458,26 @@ function addAnchor(thisNode, x, y, name) {
     thisNode.group.add(anchor);
 }
 
+
+function addHovers(shape, easing) {
+    shape.on('mouseover touchstart', function() {
+        this.transitionTo({
+            scale: {
+                x: 1.1,
+                y: 1.1
+            },
+            duration: 0.3,
+            easing: easing
+        });
+    });
+    shape.on('mouseout touchend', function() {
+        this.transitionTo({
+            scale: {
+                x: 1,
+                y: 1
+            },
+            duration: 0.3,
+            easing: easing
+        });
+    });
+}
