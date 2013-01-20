@@ -348,17 +348,10 @@ p.change_link{
 	background: transparent;
 }
 
-/* TODO rules for handheld devices */
+/* Rules for handheld devices */
 @media screen and (max-device-width: 480px){
-    #wrapper{ width: 100%; }
+    #wrapper { width: 100%; }
     #wrapper p.button input { width: 100%; }
     #wrapper p { font-size: 18px;}
-
-    /* These are not working yet */
-    #wrapper input{ width: 95%; height: 20%; border-radius: 30px; }
-    body { font-size: 20px; background-image: none; height: 100%}
-    .sidebar, .content { float: none; }
-    .container,
-    p { color: #111; }
-    a { color: #dd0000; }
+    #wrapper input:not([type="checkbox"]){padding: 10px 5px 40px 32px; font-size: 35px;}
 }
