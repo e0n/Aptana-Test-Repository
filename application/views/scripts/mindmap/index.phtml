@@ -142,6 +142,27 @@
             });
             layer.add(newLoadMapButton);
 
+            var nodeToCopy;
+            //Button for copying a node
+            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            newLoadMapButton.setText('Copy');
+            newLoadMapButton.setPosition(770, 120);
+            newLoadMapButton.on("click", function(){
+                nodeToCopy = markedNode;
+            });
+            layer.add(newLoadMapButton);
+
+            //Button for pasting a node
+            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            newLoadMapButton.setText('Paste');
+            newLoadMapButton.setPosition(900, 120);
+            newLoadMapButton.on("click", function(){
+                var nodeToPaste = new newNodeFactory.newEllipseNode(layer, markedNode);
+                var text = nodeToCopy.getText();
+                nodeToPaste.setText(text);
+            });
+            layer.add(newLoadMapButton);
+
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
