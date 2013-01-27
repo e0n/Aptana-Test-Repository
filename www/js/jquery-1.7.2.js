@@ -154,7 +154,7 @@ jQuery.fn = jQuery.prototype = {
 
 					} else {
 						ret = jQuery.buildFragment( [ match[1] ], [ doc ] );
-						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childNodes;
+						selector = ( ret.cacheable ? jQuery.clone(ret.fragment) : ret.fragment ).childElements;
 					}
 
 					return jQuery.merge( this, selector );
@@ -4866,7 +4866,7 @@ var makeArray = function( array, results ) {
 // Also verifies that the returned array holds DOM nodes
 // (which is not the case in the Blackberry browser)
 try {
-	Array.prototype.slice.call( document.documentElement.childNodes, 0 )[0].nodeType;
+	Array.prototype.slice.call( document.documentElement.childElements, 0 )[0].nodeType;
 
 // Provide a fallback method if it does not work
 } catch( e ) {
@@ -5605,7 +5605,7 @@ jQuery.each({
 	contents: function( elem ) {
 		return jQuery.nodeName( elem, "iframe" ) ?
 			elem.contentDocument || elem.contentWindow.document :
-			jQuery.makeArray( elem.childNodes );
+			jQuery.makeArray( elem.childElements );
 	}
 }, function( name, fn ) {
 	jQuery.fn[ name ] = function( until, selector ) {
@@ -5836,7 +5836,7 @@ jQuery.fn.extend({
 	unwrap: function() {
 		return this.parent().each(function() {
 			if ( !jQuery.nodeName( this, "body" ) ) {
-				jQuery( this ).replaceWith( this.childNodes );
+				jQuery( this ).replaceWith( this.childElements );
 			}
 		}).end();
 	},
@@ -6027,7 +6027,7 @@ jQuery.fn.extend({
 			parent = value && value.parentNode;
 
 			// If we're in a fragment, just use that instead of building a new one
-			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childNodes.length === this.length ) {
+			if ( jQuery.support.parentNode && parent && parent.nodeType === 11 && parent.childElements.length === this.length ) {
 				results = { fragment: parent };
 
 			} else {
@@ -6036,7 +6036,7 @@ jQuery.fn.extend({
 
 			fragment = results.fragment;
 
-			if ( fragment.childNodes.length === 1 ) {
+			if ( fragment.childElements.length === 1 ) {
 				first = fragment = fragment.firstChild;
 			} else {
 				first = fragment.firstChild;
@@ -6253,7 +6253,7 @@ jQuery.each({
 			insert = jQuery( selector ),
 			parent = this.length === 1 && this[0].parentNode;
 
-		if ( parent && parent.nodeType === 11 && parent.childNodes.length === 1 && insert.length === 1 ) {
+		if ( parent && parent.nodeType === 11 && parent.childElements.length === 1 && insert.length === 1 ) {
 			insert[ original ]( this[0] );
 			return this;
 
@@ -6395,7 +6395,7 @@ jQuery.extend({
 						wrap = wrapMap[ tag ] || wrapMap._default,
 						depth = wrap[0],
 						div = context.createElement("div"),
-						safeChildNodes = safeFragment.childNodes,
+						safeChildNodes = safeFragment.childElements,
 						remove;
 
 					// Append wrapper element to unknown element safe doc fragment
@@ -6421,15 +6421,15 @@ jQuery.extend({
 						// String was a <table>, *may* have spurious <tbody>
 						var hasBody = rtbody.test(elem),
 							tbody = tag === "table" && !hasBody ?
-								div.firstChild && div.firstChild.childNodes :
+								div.firstChild && div.firstChild.childElements :
 
 								// String was a bare <thead> or <tfoot>
 								wrap[1] === "<table>" && !hasBody ?
-									div.childNodes :
+									div.childElements :
 									[];
 
 						for ( j = tbody.length - 1; j >= 0 ; --j ) {
-							if ( jQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childNodes.length ) {
+							if ( jQuery.nodeName( tbody[ j ], "tbody" ) && !tbody[ j ].childElements.length ) {
 								tbody[ j ].parentNode.removeChild( tbody[ j ] );
 							}
 						}
@@ -6440,7 +6440,7 @@ jQuery.extend({
 						div.insertBefore( context.createTextNode( rleadingWhitespace.exec(elem)[0] ), div.firstChild );
 					}
 
-					elem = div.childNodes;
+					elem = div.childElements;
 
 					// Clear elements from DocumentFragment (safeFragment or otherwise)
 					// to avoid hoarding elements. Fixes #11356
