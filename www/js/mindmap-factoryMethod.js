@@ -14,6 +14,7 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
+        this.childElements = [];
 
         this.group = new Kinetic.Group({
             x: parent.xConnectPosition + 100,
@@ -59,6 +60,42 @@ newNodeFactory = {
             fontStyle: 'italic',
             cornerRadius: 5
         });
+
+        this.newHideButton = new Kinetic.Text({
+            x: -thisNode.shape.getWidth()/2,
+            y: -thisNode.shape.getHeight()/2,
+            fill: '#ddd',
+            text: '-',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            textFill: '#555',
+            height: 19,
+            width: 12,
+            padding: 0,
+            align: 'left',
+            fontStyle: 'italic',
+            cornerRadius: 0
+        });
+
+        this.newShowButton = new Kinetic.Text({
+            x: -thisNode.shape.getWidth()/2+12,
+            y: -thisNode.shape.getHeight()/2,
+            fill: '#ddd',
+            text: '+',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            textFill: '#555',
+            height: 19,
+            width: 12,
+            padding: 0,
+            align: 'left',
+            fontStyle: 'italic',
+            cornerRadius: 0
+        });
+
+        this.group.add(this.newShowButton)
+        this.newShowButton.hide();
+        this.group.add(this.newHideButton)
 
         this.fillBackground = function (color) {
             thisNode.shape.setFill(color);
@@ -106,13 +143,32 @@ newNodeFactory = {
 
         buildNodeFunctions(thisNode);
 
+        this.connectionLine = connectionLine;
+
+        // Add the Child to the Parents child array
+        parent.childElements.push(this);
+
+        //function to show the hidden children
         this.showChildren = function(layer) {
-            this.group.show();
+            for(var count = 0; count < this.childElements.length; count++){
+                this.childElements[count].showChildren(layer);
+                this.childElements[count].group.show();
+                this.childElements[count].connectionLine.show();
+            }
+            this.newHideButton.show();
+            this.newShowButton.hide();
             layer.draw();
         };
 
+        //function to hide the children
         this.hideChildren = function(layer) {
-            this.group.hide();
+            for(var count = 0; count < this.childElements.length; count++){
+                this.childElements[count].hideChildren(layer);
+                this.childElements[count].group.hide();
+                this.childElements[count].connectionLine.hide();
+            }
+            this.newHideButton.hide();
+            this.newShowButton.show();
             layer.draw();
         };
 
@@ -138,10 +194,11 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
+        this.childElements = [];
 
         this.group = new Kinetic.Group({
-            stroke: 'C7C7C7',
-            strokeWidth: 5,
+            //stroke: 'C7C7C7',
+            //strokeWidth: 0,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
             draggable: true
@@ -150,8 +207,8 @@ newNodeFactory = {
         this.shape = new Kinetic.Rect({
             x: 0,
             y: 0,
-            stroke: 'C7C7C7',
-            strokeWidth: 5,
+            //stroke: 'C7C7C7',
+            //strokeWidth: 0,
             id: 'shape'+sumOfNodes
         });
 
@@ -166,9 +223,9 @@ newNodeFactory = {
             padding: 10,
             align: 'center',
             fontStyle: 'italic',
-            fill: "#FFFFFF",
-            stroke: 'C7C7C7',
-            strokeWidth: 3,
+            fill: "#F7F7F7",
+            //stroke: 'C7C7C7',
+            //strokeWidth: 0,
             shadow: {
                 color: 'black',
                 blur: 10,
@@ -195,6 +252,45 @@ newNodeFactory = {
         this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
         this.yConnectPosition = this.group.getY() + this.text.getHeight()/2;
 
+        this.newShowButton = new Kinetic.Text({
+            x: -thisNode.shape.getWidth()-35,
+            y: -thisNode.shape.getHeight()-15,
+            fill: '#ddd',
+            text: '+',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            textFill: '#555',
+            height: 19,
+            width: 12,
+            padding: 0,
+            align: 'left',
+            fontStyle: 'italic',
+            cornerRadius: 0
+        });
+
+        this.newHideButton = new Kinetic.Text({
+            x: -thisNode.shape.getWidth()-35,
+            y: -thisNode.shape.getHeight()-15,
+            fill: '#ddd',
+            text: '-',
+            fontSize: 15,
+            fontFamily: 'Calibri',
+            textFill: '#555',
+            height: 19,
+            width: 12,
+            padding: 0,
+            align: 'left',
+            fontStyle: 'italic',
+            cornerRadius: 0
+        });
+
+        addHoversForLittleButtons(this.newHideButton, 'ease-out');
+        addHoversForLittleButtons(this.newShowButton, 'ease-out');
+        this.group.add(this.newShowButton);
+        this.group.add(this.newHideButton);
+        this.newShowButton.hide();
+        this.newHideButton.hide();
+        this.areThereHiddenChildren = false;
 
 
         var xParent = parent.xConnectPosition;
@@ -229,6 +325,37 @@ newNodeFactory = {
         });
 
         buildNodeFunctions(thisNode);
+
+        this.connectionLine = connectionLine;
+
+        // Add the Child to the Parents child array
+        parent.childElements.push(this);
+
+        //function to show the hidden children
+        this.showChildren = function(layer) {
+            for(var count = 0; count < this.childElements.length; count++){
+                this.childElements[count].showChildren(layer);
+                this.childElements[count].group.show();
+                this.childElements[count].connectionLine.show();
+            }
+            this.newShowButton.hide();
+            this.areThereHiddenChildren = false;
+            layer.draw();
+        };
+
+        //function to hide the children
+        this.hideChildren = function(layer) {
+            for(var count = 0; count < this.childElements.length; count++){
+                this.childElements[count].hideChildren(layer);
+                this.childElements[count].group.hide();
+                this.childElements[count].connectionLine.hide();
+            }
+            this.newHideButton.hide();
+            this.newShowButton.show();
+            this.areThereHiddenChildren = true;
+            layer.draw();
+        };
+
 
         addAnchor(thisNode, 0,0,"topLeft");
         addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
@@ -270,6 +397,7 @@ newNodeFactory = {
 
     createBaseNode: function(stage, layer){
         var thisNode = this;
+        this.childElements = [];
 
         this.group = new Kinetic.Group({
             stroke: "C7C7C7",
@@ -352,12 +480,27 @@ newNodeFactory = {
 function buildNodeFunctions(thisNode) {
     thisNode.group.on("mouseover", function() {
         document.body.style.cursor = "pointer";
+/*        if(thisNode.childElements.length != 0 && thisNode.areThereHiddenChildren == false){
+            thisNode.newHideButton.show();
+        }*/
     });
     thisNode.group.on("mouseout", function() {
         document.body.style.cursor = "default";
+        /*        if(thisNode.childElements.length != 0 && thisNode.areThereHiddenChildren == false){
+            thisNode.newHideButton.hide();
+        }*/
     });
-    thisNode.group.on("click", function() {
+    thisNode.shape.on("click", function() {
         clickNode(thisNode, thisNode.layer);
+    });
+    thisNode.text.on("click", function() {
+        clickNode(thisNode, thisNode.layer);
+    });
+    thisNode.newHideButton.on("click", function(){
+        thisNode.hideChildren(thisNode.layer);
+    });
+    thisNode.newShowButton.on("click", function(){
+        thisNode.showChildren(thisNode.layer);
     });
     thisNode.group.on("dragstart dragend", function(){
         thisNode.drawConnectionLine.start();
@@ -373,7 +516,6 @@ function buildNodeFunctions(thisNode) {
         return thisNode.text.getText();
     };
 }
-
 function update(thisNode, activeAnchor) {
 
     var topLeft = thisNode.group.get(".topLeft")[0];
@@ -481,3 +623,29 @@ function addHovers(shape, easing) {
         });
     });
 }
+
+function addHoversForLittleButtons(shape, easing) {
+    shape.on('mouseover touchstart', function() {
+        this.moveToTop();
+        this.transitionTo({
+            scale: {
+                x: 2,
+                y: 2
+            },
+            duration: 0.3,
+            easing: easing
+        });
+    });
+    shape.on('mouseout touchend', function() {
+        this.moveToBottom();
+        this.transitionTo({
+            scale: {
+                x: 1,
+                y: 1
+            },
+            duration: 0.3,
+            easing: easing
+        });
+    });
+}
+
