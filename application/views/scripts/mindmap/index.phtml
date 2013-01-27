@@ -118,6 +118,57 @@
             });
             layer.add(newEditTextButton);
 
+            //Menu Buttons
+            //Button for creating a new, empty mindmap
+            var newNewMapButton = debugGUI.buildNewMenuButton();
+            newNewMapButton.setText('New Map');
+            newNewMapButton.setPosition(640, 35);
+            newNewMapButton.on("click", function(){
+                //Refresh TODO: ask to save
+                location.reload();
+            });
+            layer.add(newNewMapButton);
+
+            //Button for saving the mindmap
+            var newSaveMapButton = debugGUI.buildNewMenuButton();
+            newSaveMapButton.setText('Save Map');
+            newSaveMapButton.setPosition(770, 35);
+            newSaveMapButton.on("click", function(){
+                //TODO save the mindmap
+            });
+            layer.add(newSaveMapButton);
+
+            //Button for loading a saved mindmap
+            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            newLoadMapButton.setText('Load Map');
+            newLoadMapButton.setPosition(900, 35);
+            newLoadMapButton.on("click", function(){
+                //TODO load a saved mindmap
+                alert("No saved projects found");
+            });
+            layer.add(newLoadMapButton);
+
+            var nodeToCopy;
+            //Button for copying a node
+            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            newLoadMapButton.setText('Copy');
+            newLoadMapButton.setPosition(770, 120);
+            newLoadMapButton.on("click", function(){
+                nodeToCopy = markedNode;
+            });
+            layer.add(newLoadMapButton);
+
+            //Button for pasting a node
+            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            newLoadMapButton.setText('Paste');
+            newLoadMapButton.setPosition(900, 120);
+            newLoadMapButton.on("click", function(){
+                var nodeToPaste = new newNodeFactory.newEllipseNode(layer, markedNode);
+                var text = nodeToCopy.getText();
+                nodeToPaste.setText(text);
+            });
+            layer.add(newLoadMapButton);
+
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
@@ -133,13 +184,14 @@
 
     </script>
 
-            <Welcome <?=$this->username?>,<br>
+            Welcome <?=$this->username?>,<br>
             <a href="login/logout" >Click here to logout</a>
 
 </head>
 <body>
-
     <div id="container"></div>
-    <div align="center" >Copyright © Open Your Mind 2012-2013</div>
 </body>
+<footer>
+    <div align="center" >Copyright © Open Your Mind 2012-2013</div>
+</footer>
 </html>
