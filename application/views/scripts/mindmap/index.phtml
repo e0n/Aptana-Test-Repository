@@ -50,8 +50,8 @@
         window.onload = function() {
             var stage = new Kinetic.Stage({
                 container: "container",
-                width: 1024,
-                height: 768
+                width: 1750,
+                height: 890
             });
 
 
@@ -112,35 +112,38 @@
             });
             layer.add(newEditTextButton);
 
+
+            //nach MainMenuView ausgelagert
             //Menu Buttons
             //Button for creating a new, empty mindmap
-            var newNewMapButton = debugGUI.buildNewMenuButton();
+            /*var newNewMapButton = debugGUI.buildNewMenuButton();
             newNewMapButton.setText('New Map');
             newNewMapButton.setPosition(640, 35);
             newNewMapButton.on("click", function(){
                 //Refresh TODO: ask to save
                 location.reload();
             });
-            layer.add(newNewMapButton);
-
-            //Button for saving the mindmap
+            layer.add(newNewMapButton);*/
+            //nach MainMenuView ausgelagert
+            /*//Button for saving the mindmap
             var newSaveMapButton = debugGUI.buildNewMenuButton();
             newSaveMapButton.setText('Save Map');
             newSaveMapButton.setPosition(770, 35);
             newSaveMapButton.on("click", function(){
                 //TODO save the mindmap
             });
-            layer.add(newSaveMapButton);
+            layer.add(newSaveMapButton); */
 
+            //nach MainMenuView ausgelagert
             //Button for loading a saved mindmap
-            var newLoadMapButton = debugGUI.buildNewMenuButton();
+            /*var newLoadMapButton = debugGUI.buildNewMenuButton();
             newLoadMapButton.setText('Load Map');
             newLoadMapButton.setPosition(900, 35);
             newLoadMapButton.on("click", function(){
                 //TODO load a saved mindmap
                 alert("No saved projects found");
             });
-            layer.add(newLoadMapButton);
+            layer.add(newLoadMapButton); */
 
             var nodeToCopy;
             //Button for copying a node
@@ -166,6 +169,7 @@
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
+
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
@@ -176,13 +180,31 @@
             stage.add(messageLayer);
         };
 
-    </script>
 
-            Welcome <?=$this->username?>,<br>
-            <a href="login/logout" >Click here to logout</a>
+    </script>
 
 </head>
 <body>
+<header>
+    <div id="welcome">
+        Welcome <?=$this->username?>,<br>
+        <a href="login/logout" >Click here to logout</a>
+    </div>
+    <div id="mainmenu">
+        <div id="menubutton"></div>
+        <div id="menubody">
+            <div id="overlay"></div>
+            <div id="menuPointer"></div>
+            <div id="new"></div>
+            <div id="save"></div>
+            <div id="load"></div>
+            <div id="import"></div>
+            <div id="export"></div>
+            <div id="logout"></div>
+            <a href="#" id="text"></a>
+        </div>
+    </div>
+</header>
     <div id="container"></div>
 </body>
 <footer>

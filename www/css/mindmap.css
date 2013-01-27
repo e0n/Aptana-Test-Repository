@@ -1,0 +1,133 @@
+body {overflow: hidden;}
+div#container {padding-top: 1%; padding-left: 4%;}
+header div#welcome {float: right;}
+header div#mainmenu div#menubutton {
+    background-image: url(../../www/images/main-menu-hidden.png);
+    background-repeat: no-repeat;
+    height: 70px;
+    width: 70px;
+}
+header div#mainmenu div#menubutton:hover {
+    background-image: url(../../www/images/main-menu-hidden-hover.png);
+}
+header div#mainmenu div#menubody {
+    display: none;
+    z-index: 200;
+}
+#overlay {
+    position: fixed;
+    z-index:199;
+    top: 0px;
+    left: 0px;
+    height:100%;
+    width:100%;
+    background-color: #000000;
+    opacity: 0.85;
+}
+header div#mainmenu div#menubody div#menuPointer {
+    background-image: url(../../www/images/menu.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 500px;
+    width: 500px;
+    z-index: 200;
+    margin-top: 180px;/*cant touch this */
+    margin-left: 710px;
+}
+
+header div#mainmenu div#menubody div#new {
+    background-image: url(../../www/images/new.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 5%;
+    margin-left: 35%;
+}
+header div#mainmenu div#menubody div#new:hover {
+    background-image: url(../../www/images/new-hover.png);
+}
+
+header div#mainmenu div#menubody div#load {
+    background-image: url(../../www/images/load.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 3%;
+    margin-left: 57%;
+}
+header div#mainmenu div#menubody div#load:hover {
+    background-image: url(../../www/images/load-hover.png);
+}
+
+header div#mainmenu div#menubody div#save {
+    background-image: url(../../www/images/save.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 30%;
+    margin-left: 65%;
+}
+header div#mainmenu div#menubody div#save:hover {
+    background-image: url(../../www/images/save-hover.png);
+}
+
+header div#mainmenu div#menubody div#import {
+    background-image: url(../../www/images/import.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 57%;
+    margin-left: 57%;
+}
+header div#mainmenu div#menubody div#import:hover {
+    background-image: url(../../www/images/import-hover.png);
+}
+
+header div#mainmenu div#menubody div#export {
+    background-image: url(../../www/images/export.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 57%;
+    margin-left: 33%;
+}
+header div#mainmenu div#menubody div#export:hover {
+    background-image: url(../../www/images/export-hover.png);
+}
+
+header div#mainmenu div#menubody div#logout {
+    background-image: url(../../www/images/logout.png);
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 200px;
+    width: 200px;
+    z-index: 200;
+    margin-top: 32%;
+    margin-left: 25%;
+}
+header div#mainmenu div#menubody div#logout:hover {
+    background-image: url(../../www/images/logout-hover.png);
+}
+
+header div#mainmenu div#menubody a#text {
+    position: absolute;
+    z-index: 200;
+    margin-top: 48%;
+    margin-left: 50%;
+    color: #3D9DB3;
+    font-size: 35px;
+}
+
+header div#mainmenu div#menubody a#text:hover {
+    color: #3D9DB3;
+}
