@@ -3,7 +3,7 @@
  * Date: 27.01.13
  */
 
-function diff(x, y) {//berechnet den winkel ralativ zum bild
+function diff(x, y) {//berechnet den winkel relativ zum bild
     var centerItem = $('header div#mainmenu div#menubody div#menuPointer'),
         centerLoc = centerItem.offset();
     var dx = x - (centerLoc.left + (centerItem.width() / 2));
@@ -121,7 +121,7 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(logout).on('click', function(){
-            //TODO handle export
+            document.getElementById('logoutAction').click();
         });
 
     });
