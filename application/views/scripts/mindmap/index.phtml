@@ -118,39 +118,6 @@
             });
             layer.add(newEditTextButton);
 
-
-            //nach MainMenuView ausgelagert
-            //Menu Buttons
-            //Button for creating a new, empty mindmap
-            /*var newNewMapButton = debugGUI.buildNewMenuButton();
-            newNewMapButton.setText('New Map');
-            newNewMapButton.setPosition(640, 35);
-            newNewMapButton.on("click", function(){
-                //Refresh TODO: ask to save
-                location.reload();
-            });
-            layer.add(newNewMapButton);*/
-            //nach MainMenuView ausgelagert
-            /*//Button for saving the mindmap
-            var newSaveMapButton = debugGUI.buildNewMenuButton();
-            newSaveMapButton.setText('Save Map');
-            newSaveMapButton.setPosition(770, 35);
-            newSaveMapButton.on("click", function(){
-                //TODO save the mindmap
-            });
-            layer.add(newSaveMapButton); */
-
-            //nach MainMenuView ausgelagert
-            //Button for loading a saved mindmap
-            /*var newLoadMapButton = debugGUI.buildNewMenuButton();
-            newLoadMapButton.setText('Load Map');
-            newLoadMapButton.setPosition(900, 35);
-            newLoadMapButton.on("click", function(){
-                //TODO load a saved mindmap
-                alert("No saved projects found");
-            });
-            layer.add(newLoadMapButton); */
-
             var nodeToCopy;
             //Button for copying a node
             var newLoadMapButton = debugGUI.buildNewMenuButton();
@@ -166,7 +133,7 @@
             newLoadMapButton.setText('Paste');
             newLoadMapButton.setPosition(900, 120);
             newLoadMapButton.on("click", function(){
-                var nodeToPaste = new newNodeFactory.newEllipseNode(layer, markedNode);
+                var nodeToPaste = new newNodeFactory.newRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });
@@ -193,8 +160,8 @@
 <body>
 <header>
     <div id="welcome">
-        Welcome <?=$this->username?>,<br>
-        <a href="login/logout" >Click here to logout</a>
+        Welcome, <?=$this->username?><br>
+        <a id="logoutAction" href="login/logout" >Click here to logout</a>
     </div>
     <div id="mainmenu">
         <div id="menubutton"></div>
