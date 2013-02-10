@@ -15,6 +15,7 @@ newNodeFactory = {
         this.parentNode = parent;
         this.layer = layer;
         this.childElements = [];
+        this.typ = 'ellipse';
 
         this.group = new Kinetic.Group({
             x: parent.xConnectPosition + 100,
@@ -82,7 +83,7 @@ newNodeFactory = {
             y: -thisNode.shape.getHeight()/2,
             fill: '#ddd',
             text: '+',
-            fontSize: 15,
+            fontSize: 16,
             fontFamily: 'Calibri',
             textFill: '#555',
             height: 19,
@@ -195,6 +196,7 @@ newNodeFactory = {
         this.parentNode = parent;
         this.layer = layer;
         this.childElements = [];
+        this.typ = 'rect';
 
         this.group = new Kinetic.Group({
             //stroke: 'C7C7C7',
@@ -217,7 +219,7 @@ newNodeFactory = {
             y: 0,
             text: 'Test Inhalt Test Inhalt',
             textFill: '#555',
-            fontSize: 15,
+            fontSize: 16,
             fontFamily: 'Calibri',
             width: 200,
             padding: 10,

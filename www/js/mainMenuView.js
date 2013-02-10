@@ -15,10 +15,14 @@ function setMenuText(val){
     var text = 'header div#mainmenu div#menubody a#text';
     if(val != ''){
         $(text).html(val);
-        var left = $(text).offset().left - ($(text).width() / 2);
-        $(text).css('margin-left', left);
-        var top = $(text).offset().top - ($(text).height() / 2) - 130;
-        $(text).css('margin-top', top);
+        if(document.menuTextLeft == undefined) {
+            document.menuTextLeft = $(text).offset().left;
+        }
+        $(text).css('margin-left', document.menuTextLeft - ($(text).width() / 2));
+        if(document.menuTextTop == undefined){
+            document.menuTextTop = $(text).offset().top;
+        }
+        $(text).css('margin-top', document.menuTextTop - ($(text).height() / 2) - 130);
     } else {
         $(text).html('');
         $(text).css('margin-left', '50%');
@@ -47,6 +51,8 @@ $(document).ready(function() {
         $(overlay).on('click', function() {
             $(body).css('display', 'none'); //wird das overlay angeklickt soll das Menu wieder verschwinden
         });
+
+        setMenuText('');
 
         $(document).mousemove(function(event) {  //rotiere Menü mitte immer passend zum mauszeiger
             var x = event.pageX;
