@@ -36,7 +36,7 @@ newNodeFactory = {
             id: 'shape'+sumOfNodes,
             fill: "#F7F7F7",
             shadow: {
-                color: '777777',
+                color: '#777777',
                 blur: 10,
                 offset: [10, 10],
                 opacity: 0.2
@@ -117,12 +117,12 @@ newNodeFactory = {
             y: yParent,
             x: xParent,
             points: [0, 0, this.xConnectPosition - xParent, this.yConnectPosition - yParent],
-            stroke: "C7C7C7",
+            stroke: "#C7C7C7",
             strokeWidth: 2,
             lineCap: "round",
             lineJoin: "round",
             shadow: {
-                color: '777777',
+                color: '#777777',
                 blur: 10,
                 offset: [10, 10],
                 opacity: 0.2
@@ -300,7 +300,7 @@ newNodeFactory = {
             y: yParent,
             x: xParent,
             points: [0, 0, this.xConnectPosition - xParent, this.yConnectPosition - yParent],
-            stroke: "C7C7C7",
+            stroke: "#C7C7C7",
             strokeWidth: 2,
             lineCap: "round",
             lineJoin: "round",
@@ -400,7 +400,7 @@ newNodeFactory = {
         this.childElements = [];
 
         this.group = new Kinetic.Group({
-            stroke: "C7C7C7",
+            stroke: "#C7C7C7",
             strokeWidth: 1 ,
             x: stage.getWidth() / 2,
             y: stage.getHeight() / 2
@@ -413,8 +413,8 @@ newNodeFactory = {
                 x: 100,
                 y: 50
             },
-            fill: "F7F7F7",
-            stroke: "C7C7C7",
+            fill: "#F7F7F7",
+            stroke: "#C7C7C7",
             strokeWidth: 2 ,
             id: 'oval0'
         });
@@ -480,15 +480,9 @@ newNodeFactory = {
 function buildNodeFunctions(thisNode) {
     thisNode.group.on("mouseover", function() {
         document.body.style.cursor = "pointer";
-/*        if(thisNode.childElements.length != 0 && thisNode.areThereHiddenChildren == false){
-            thisNode.newHideButton.show();
-        }*/
     });
     thisNode.group.on("mouseout", function() {
         document.body.style.cursor = "default";
-        /*        if(thisNode.childElements.length != 0 && thisNode.areThereHiddenChildren == false){
-            thisNode.newHideButton.hide();
-        }*/
     });
     thisNode.shape.on("click", function() {
         clickNode(thisNode, thisNode.layer);
@@ -503,6 +497,9 @@ function buildNodeFunctions(thisNode) {
         thisNode.showChildren(thisNode.layer);
     });
     thisNode.group.on("dragstart dragend", function(){
+        // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
+        clickNode(thisNode, thisNode.layer);
+//        checkForCollision(thisNode, thisNode.parentNode);
         thisNode.drawConnectionLine.start();
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
@@ -564,7 +561,7 @@ function addAnchor(thisNode, x, y, name) {
         y: y,
         stroke: "#666",
         fill: "#ddd",
-        strokeWidth: 2,
+        strokeWidth: 1,
         radius: 8,
         name: name,
         draggable: true,
@@ -587,13 +584,13 @@ function addAnchor(thisNode, x, y, name) {
     anchor.on("mouseover", function() {
         var layer = thisNode.layer;
         document.body.style.cursor = "pointer";
-        this.setStrokeWidth(4);
+        this.setStrokeWidth(3);
         layer.draw();
     });
     anchor.on("mouseout", function() {
         var layer = thisNode.layer;
         document.body.style.cursor = "default";
-        this.setStrokeWidth(2);
+        this.setStrokeWidth(1);
         layer.draw();
     });
 
@@ -648,4 +645,48 @@ function addHoversForLittleButtons(shape, easing) {
         });
     });
 }
+/*
+function checkForCollision(newObject, parent){
+    var parentToInspect = parent;
+    if(parentToInspect.childElements.length != 0){
+       for(var count = 0; count < parentToInspect.childElements.length; count++ ){
+           if(newObject.group.getX() != parentToInspect.childElements[count].group.getX() && newObject.group.getY() != parentToInspect.childElements[count].group.getY()){
+                checkForOverlying(newObject, parentToInspect.childElements[count])
+                if(parentToInspect.childElements[count].childElements.length != 0){
+                    checkForCollision(newObject, parentToInspect.childElements[count]);
+                }
+                checkForCollision(newObject, parent.parentNode);
+           }
+        }
+    }
+}*/
+/*
+function checkForOverlying(newObject, objectToCompare){
+    while((newObject.group.getY() + newObject.group.getHeight()) > objectToCompare.group.getY() &&
+            (newObject.group.getX() + newObject.group.getWidth()) > objectToCompare.group.getX()) {
+                   newObject.group.setX(newObject.group.getX() - 80);
+                   newObject.group.setY(newObject.group.getY() - 80);
+                   checkForCollision(newObject, objectToCompare.parentNode);
+    }
 
+    while((newObject.group.getY() + newObject.group.getHeight()) > objectToCompare.group.getY() &&
+        newObject.group.getX() < (objectToCompare.group.getX() + objectToCompare.group.getWidth())) {
+                   newObject.group.setX(newObject.group.getX() + 80);
+                   newObject.group.setY(newObject.group.getY() - 80);
+                   checkForCollision(newObject, objectToCompare.parentNode);
+    }
+
+    while(newObject.group.getY() < (objectToCompare.group.getY() + objectToCompare.group.getHeight()) &&
+        newObject.group.getX() < (objectToCompare.group.getX() + objectToCompare.group.getWidth())) {
+                   newObject.group.setX(newObject.group.getX() + 80);
+                   newObject.group.setY(newObject.group.getY() + 80);
+                   checkForCollision(newObject, objectToCompare.parentNode);
+    }
+
+    while(newObject.group.getY() < (objectToCompare.group.getY() + objectToCompare.group.getHeight()) &&
+        (newObject.group.getX() + newObject.group.getWidth()) > objectToCompare.group.getX()) {
+                   newObject.group.setX(newObject.group.getX() + 80);
+                   newObject.group.setY(newObject.group.getY() - 80);
+                   checkForCollision(newObject, objectToCompare.parentNode);
+    }
+}*/
