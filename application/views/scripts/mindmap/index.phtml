@@ -34,6 +34,7 @@
 
         // Marks nodes and saves fill color
         function clickNode(node, layer) {
+            showselecedNodeMenu(node, layer);
             markedNode.fillBackground(markedNodeFillBackup);
             markedNode.hideAnchors();
             if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
@@ -182,5 +183,41 @@
 </body>
 <footer>
     <div align="center" >Copyright © Open Your Mind 2012-2013</div>
+    <div id="selectedNodeMenu" style="display: none;">
+        <div id="top">
+            <select id="font">
+                <option id="0">Times New Roman</option>
+                <option id="1">Arial</option>
+                <option id="2">serif</option>
+                <option id="3">sans-serif</option>
+                <option id="4">cursive</option>
+                <option id="5">fantasy</option>
+                <option id="6">monospace</option>
+            </select>
+            <select id="size">
+                <option id="8">8</option>
+                <option id="9">9</option>
+                <option id="10">10</option>
+                <option id="11">11</option>
+                <option id="12">12</option>
+                <option id="14">14</option>
+                <option id="16" selected="selected">16</option>
+                <option id="18">18</option>
+                <option id="20">20</option>
+                <option id="24">24</option>
+                <option id="28">28</option>
+                <option id="32">32</option>
+                <option id="36">36</option>
+                <option id="48">48</option>
+            </select>
+        </div>
+        <div id="bottom">
+            <a href="#" id="bold"><b>F</b></a>
+            <a href="#" id="italic"><i>K</i></a>
+            <a href="#" id="underline"><u>U</u></a>
+            <div id="colorSelector"></div>
+            <div id="borderColorSelector"></div>
+        </div>
+    </div>
 </footer>
 </html>
