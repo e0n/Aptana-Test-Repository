@@ -358,7 +358,6 @@ newNodeFactory = {
             layer.draw();
         };
 
-
         addAnchor(thisNode, 0,0,"topLeft");
         addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
         addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
@@ -504,6 +503,7 @@ function buildNodeFunctions(thisNode) {
         thisNode.drawConnectionLine.start();
     });
     thisNode.group.on("dragend", function(){
+        updateAnchorBounds(thisNode);
         checkForCollision(thisNode, thisNode.parentNode);
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
@@ -519,6 +519,8 @@ function buildNodeFunctions(thisNode) {
 }
 
 function update(thisNode, activeAnchor) {
+
+    updateAnchorBounds(thisNode);
 
     var topLeft = thisNode.group.get(".topLeft")[0];
 
@@ -570,6 +572,32 @@ function addAnchor(thisNode, x, y, name) {
         radius: 8,
         name: name,
         draggable: true,
+        dragBoundFunc: function(pos) {
+            var newX = 30;
+            var newY = 30;
+            switch (name) {
+                case "topLeft":
+                    newY = pos.y > thisNode.bottomBound ? thisNode.bottomBound : pos.y;
+                    newX = pos.x > thisNode.rightBound ? thisNode.rightBound : pos.x;
+                    break;
+                case "topRight":
+                    newY = pos.y > thisNode.bottomBound ? thisNode.bottomBound : pos.y;
+                    newX = pos.x < thisNode.leftBound ? thisNode.leftBound : pos.x;
+                    break;
+                case "bottomRight":
+                    newY = pos.y < thisNode.topBound ? thisNode.topBound : pos.y;
+                    newX = pos.x < thisNode.leftBound ? thisNode.leftBound : pos.x;
+                    break;
+                case "bottomLeft":
+                    newY = pos.y < thisNode.topBound ? thisNode.topBound : pos.y;
+                    newX = pos.x > thisNode.rightBound ? thisNode.rightBound : pos.x;
+                    break;
+            }
+            return {
+                x: newX,
+                y: newY
+            };
+        },
         visible: false
     });
 
@@ -600,6 +628,13 @@ function addAnchor(thisNode, x, y, name) {
     });
 
     thisNode.group.add(anchor);
+}
+
+function updateAnchorBounds(thisNode) {
+    thisNode.leftBound = thisNode.text.getX()                                + thisNode.group.getX();
+    thisNode.rightBound = thisNode.text.getX() + thisNode.text.getWidth()    + thisNode.group.getX();
+    thisNode.bottomBound = thisNode.text.getY() + thisNode.text.getHeight()  + thisNode.group.getY();
+    thisNode.topBound = thisNode.text.getY()                                 + thisNode.group.getY();
 }
 
 function addHovers(shape, easing) {
@@ -655,7 +690,6 @@ function checkForCollision(newObject, parent){
 //    var parentToInspect = parent;
     if(parent.childElements.length != 0){
        for(var count = 0; count < parent.childElements.length; count++ ){
-           alert("HALLO");
            if(newObject.text.getX() != parent.childElements[count].text.getX() && newObject.text.getY() != parent.childElements[count].text.getY()){
                 checkForOverlying(newObject, parent.childElements[count]);
                 if(parent.childElements[count].childElements.length != 0){
