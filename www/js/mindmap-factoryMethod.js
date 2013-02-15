@@ -94,9 +94,9 @@ newNodeFactory = {
             cornerRadius: 0
         });
 
-        this.group.add(this.newShowButton)
+        this.group.add(this.newShowButton);
         this.newShowButton.hide();
-        this.group.add(this.newHideButton)
+        this.group.add(this.newHideButton);
 
         this.fillBackground = function (color) {
             thisNode.shape.setFill(color);
@@ -316,8 +316,8 @@ newNodeFactory = {
 
         this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                thisNode.xConnectPosition = thisNode.group.getX();
-                thisNode.yConnectPosition = thisNode.group.getY();
+                thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getX() + thisNode.text.getWidth()/2;
+                thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getY() + thisNode.text.getHeight()/2;
                 xParent = parent.xConnectPosition;
                 yParent = parent.yConnectPosition;
                 connectionLine.setX(xParent);
@@ -518,6 +518,7 @@ function buildNodeFunctions(thisNode) {
         return thisNode.text.getText();
     };
 }
+
 function update(thisNode, activeAnchor) {
 
     var topLeft = thisNode.group.get(".topLeft")[0];
@@ -601,7 +602,6 @@ function addAnchor(thisNode, x, y, name) {
 
     thisNode.group.add(anchor);
 }
-
 
 function addHovers(shape, easing) {
     shape.on('mouseover touchstart', function() {
