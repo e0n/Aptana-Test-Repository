@@ -501,8 +501,10 @@ function buildNodeFunctions(thisNode) {
     thisNode.group.on("dragstart dragend", function(){
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
         clickNode(thisNode, thisNode.layer);
-//        checkForCollision(thisNode, thisNode.parentNode);
         thisNode.drawConnectionLine.start();
+    });
+    thisNode.group.on("dragend", function(){
+        checkForCollision(thisNode, thisNode.parentNode);
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();
@@ -647,48 +649,57 @@ function addHoversForLittleButtons(shape, easing) {
         });
     });
 }
-/*
+
 function checkForCollision(newObject, parent){
-    var parentToInspect = parent;
-    if(parentToInspect.childElements.length != 0){
-       for(var count = 0; count < parentToInspect.childElements.length; count++ ){
-           if(newObject.group.getX() != parentToInspect.childElements[count].group.getX() && newObject.group.getY() != parentToInspect.childElements[count].group.getY()){
-                checkForOverlying(newObject, parentToInspect.childElements[count])
-                if(parentToInspect.childElements[count].childElements.length != 0){
-                    checkForCollision(newObject, parentToInspect.childElements[count]);
+
+//    var parentToInspect = parent;
+    if(parent.childElements.length != 0){
+       for(var count = 0; count < parent.childElements.length; count++ ){
+           alert("HALLO");
+           if(newObject.text.getX() != parent.childElements[count].text.getX() && newObject.text.getY() != parent.childElements[count].text.getY()){
+
+                checkForOverlying(newObject, parent.childElements[count]);
+                if(parent.childElements[count].childElements.length != 0){
+                    checkForCollision(newObject, parent.childElements[count]);
                 }
                 checkForCollision(newObject, parent.parentNode);
            }
         }
     }
-}*/
-/*
+}
+
 function checkForOverlying(newObject, objectToCompare){
-    while((newObject.group.getY() + newObject.group.getHeight()) > objectToCompare.group.getY() &&
-            (newObject.group.getX() + newObject.group.getWidth()) > objectToCompare.group.getX()) {
-                   newObject.group.setX(newObject.group.getX() - 80);
-                   newObject.group.setY(newObject.group.getY() - 80);
+    while((newObject.text.getY() + newObject.text.getHeight()) > objectToCompare.text.getY() &&
+            (newObject.text.getX() + newObject.text.getWidth()) > objectToCompare.text.getX()) {
+//                     return true;
+                   newObject.text.setX(newObject.text.getX() - 80);
+                   newObject.text.setY(newObject.text.getY() - 80);
                    checkForCollision(newObject, objectToCompare.parentNode);
     }
 
-    while((newObject.group.getY() + newObject.group.getHeight()) > objectToCompare.group.getY() &&
-        newObject.group.getX() < (objectToCompare.group.getX() + objectToCompare.group.getWidth())) {
-                   newObject.group.setX(newObject.group.getX() + 80);
-                   newObject.group.setY(newObject.group.getY() - 80);
+    while((newObject.text.getY() + newObject.shape.getHeight()) > objectToCompare.text.getY() &&
+        newObject.text.getX() < (objectToCompare.text.getX() + objectToCompare.text.getWidth())) {
+//                     return true;
+                   newObject.text.setX(newObject.text.getX() + 80);
+                   newObject.text.setY(newObject.text.getY() - 80);
                    checkForCollision(newObject, objectToCompare.parentNode);
     }
 
-    while(newObject.group.getY() < (objectToCompare.group.getY() + objectToCompare.group.getHeight()) &&
-        newObject.group.getX() < (objectToCompare.group.getX() + objectToCompare.group.getWidth())) {
-                   newObject.group.setX(newObject.group.getX() + 80);
-                   newObject.group.setY(newObject.group.getY() + 80);
+    while(newObject.text.getY() < (objectToCompare.text.getY() + objectToCompare.text.getHeight()) &&
+        newObject.text.getX() < (objectToCompare.text.getX() + objectToCompare.text.getWidth())) {
+//                    return true;
+                   newObject.text.setX(newObject.text.getX() + 80);
+                   newObject.text.setY(newObject.text.getY() + 80);
                    checkForCollision(newObject, objectToCompare.parentNode);
     }
 
-    while(newObject.group.getY() < (objectToCompare.group.getY() + objectToCompare.group.getHeight()) &&
-        (newObject.group.getX() + newObject.group.getWidth()) > objectToCompare.group.getX()) {
-                   newObject.group.setX(newObject.group.getX() + 80);
-                   newObject.group.setY(newObject.group.getY() - 80);
+    while(newObject.text.getY() < (objectToCompare.text.getY() + objectToCompare.text.getHeight()) &&
+        (newObject.text.getX() + newObject.text.getWidth()) > objectToCompare.text.getX()) {
+//                     return true;
+                   newObject.text.setX(newObject.text.getX() + 80);
+                   newObject.text.setY(newObject.text.getY() - 80);
                    checkForCollision(newObject, objectToCompare.parentNode);
     }
-}*/
+}
+
+
