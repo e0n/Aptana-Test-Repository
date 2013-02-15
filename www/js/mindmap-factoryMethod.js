@@ -657,7 +657,6 @@ function checkForCollision(newObject, parent){
        for(var count = 0; count < parent.childElements.length; count++ ){
            alert("HALLO");
            if(newObject.text.getX() != parent.childElements[count].text.getX() && newObject.text.getY() != parent.childElements[count].text.getY()){
-
                 checkForOverlying(newObject, parent.childElements[count]);
                 if(parent.childElements[count].childElements.length != 0){
                     checkForCollision(newObject, parent.childElements[count]);
