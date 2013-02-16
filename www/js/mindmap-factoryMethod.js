@@ -509,6 +509,7 @@ function buildNodeFunctions(thisNode) {
         thisNode.drawConnectionLine.start();
     });
     thisNode.group.on("dragend", function(){
+        updateAnchorBounds(thisNode);
         checkForCollision(thisNode, rootNode);
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
@@ -524,6 +525,8 @@ function buildNodeFunctions(thisNode) {
 }
 
 function update(thisNode, activeAnchor) {
+
+    updateAnchorBounds(thisNode);
 
     var topLeft = thisNode.group.get(".topLeft")[0];
 
@@ -575,6 +578,32 @@ function addAnchor(thisNode, x, y, name) {
         radius: 8,
         name: name,
         draggable: true,
+        dragBoundFunc: function(pos) {
+            var newX = 30;
+            var newY = 30;
+            switch (name) {
+                case "topLeft":
+                    newY = pos.y > thisNode.bottomBound ? thisNode.bottomBound : pos.y;
+                    newX = pos.x > thisNode.rightBound ? thisNode.rightBound : pos.x;
+                    break;
+                case "topRight":
+                    newY = pos.y > thisNode.bottomBound ? thisNode.bottomBound : pos.y;
+                    newX = pos.x < thisNode.leftBound ? thisNode.leftBound : pos.x;
+                    break;
+                case "bottomRight":
+                    newY = pos.y < thisNode.topBound ? thisNode.topBound : pos.y;
+                    newX = pos.x < thisNode.leftBound ? thisNode.leftBound : pos.x;
+                    break;
+                case "bottomLeft":
+                    newY = pos.y < thisNode.topBound ? thisNode.topBound : pos.y;
+                    newX = pos.x > thisNode.rightBound ? thisNode.rightBound : pos.x;
+                    break;
+            }
+            return {
+                x: newX,
+                y: newY
+            };
+        },
         visible: false
     });
 
@@ -605,6 +634,13 @@ function addAnchor(thisNode, x, y, name) {
     });
 
     thisNode.group.add(anchor);
+}
+
+function updateAnchorBounds(thisNode) {
+    thisNode.leftBound = thisNode.text.getX()                                + thisNode.group.getX();
+    thisNode.rightBound = thisNode.text.getX() + thisNode.text.getWidth()    + thisNode.group.getX();
+    thisNode.bottomBound = thisNode.text.getY() + thisNode.text.getHeight()  + thisNode.group.getY();
+    thisNode.topBound = thisNode.text.getY()                                 + thisNode.group.getY();
 }
 
 function addHovers(shape, easing) {
@@ -656,17 +692,23 @@ function addHoversForLittleButtons(shape, easing) {
 }
 
 function checkForCollision(newObject, parent){
+    // Check if the newObject collidates with root node, but root node Ellipse sucks...
+    checkForOverlying(newObject,rootNode);
     for(var count = 0; count < parent.childElements.length; count++ ){
         if(newObject.id != parent.childElements[count].id){
             checkForOverlying(newObject, parent.childElements[count]);
             if(parent.childElements[count].childElements.length != 0){
                 checkForCollision(newObject, parent.childElements[count])
             }
+        } else if(newObject.childElements.length != 0){
+            checkForCollision(newObject, newObject);
         }
     }
 }
 
 function checkForOverlying(newObject, objectToCompare){
+    var newX = newObject.group.getX();
+    var newY = newObject.group.getY();
     //Fall 2
     if(
             (((newObject.group.getX() + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
@@ -677,7 +719,12 @@ function checkForOverlying(newObject, objectToCompare){
             ((newObject.group.getY() + newObject.text.getHeight()) > objectToCompare.group.getY())
             )
         ){
-        alert("Fall2")
+//        alert("Fall2")
+        newX = newX + 50;
+        newY = newY - 50;
+        newObject.group.setX(newX);
+        newObject.group.setY(newY);
+        checkForCollision(newObject, rootNode);
     }
 
     //Fall 3
@@ -689,7 +736,11 @@ function checkForOverlying(newObject, objectToCompare){
                 (newObject.group.getY()  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-        alert("Fall3")
+        newX = newX - 50;
+        newY = newY + 50;
+        newObject.group.setX(newX);
+        newObject.group.setY(newY);
+        checkForCollision(newObject, rootNode);
     }
 
 
@@ -702,7 +753,11 @@ function checkForOverlying(newObject, objectToCompare){
                 ((newObject.group.getY() + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-        alert("Fall4")
+        newX = newX + 50;
+        newY = newY + 50;
+        newObject.group.setX(newX);
+        newObject.group.setY(newY);
+        checkForCollision(newObject, rootNode);
     }
 
     //Fall 1
@@ -714,8 +769,26 @@ function checkForOverlying(newObject, objectToCompare){
                 ((newObject.group.getY() + newObject.text.getHeight())  > objectToCompare.group.getY())
                 )
         ){
-        alert("Fall1")
+        newX = newX - 50;
+        newY = newY - 50;
+        newObject.group.setX(newX);
+        newObject.group.setY(newY);
+        checkForCollision(newObject, rootNode);
     }
+
+    //TODO Muss noch gemacht werden, aktuell stimmen die werte nicht die group nach dem resizen liefert... dadurch nicht testbar (theorie stimmt ... trust me)
+    //Fall 5
+//    if(
+//        ((newObject.group.getX() > objectToCompare.group.getX()) &&
+//            (newObject.group.getY()  > objectToCompare.group.getY())
+//            )   &&
+//            (((newObject.group.getX() + newObject.text.getWidth()) < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+//                ((newObject.group.getY() + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+//                )
+//        ){
+//        alert("Fall5")
+//    }
+
 }
 
 
