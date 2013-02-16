@@ -201,11 +201,13 @@ newNodeFactory = {
         this.id = 'shape'+sumOfNodes;
 
         this.group = new Kinetic.Group({
-            //stroke: 'C7C7C7',
-            //strokeWidth: 0,
+//            stroke: 'C7C7C7',
+            strokeWidth: 5,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
-            draggable: true
+            draggable: true,
+            fill: '#FF0000',
+            visible: true
         });
 
         this.shape = new Kinetic.Rect({
@@ -216,6 +218,19 @@ newNodeFactory = {
             //TODO id entfernen
             id: 'shape'+sumOfNodes
         });
+
+        this.debugShape = new Kinetic.Rect({
+            x: -10,
+            y: -10,
+            height: 10,
+            width: 10,
+            fill: '#FF0000',
+            visible: true,
+            //strokeWidth: 0,
+            //TODO id entfernen
+            id: 'shape'+sumOfNodes
+        });
+        this.group.add(this.debugShape);
 
         this.text = new Kinetic.Text({
             x: 0,
@@ -362,10 +377,10 @@ newNodeFactory = {
         };
 
 
-        addAnchor(thisNode, 0,0,"topLeft");
-        addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
-        addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
-        addAnchor(thisNode, 0,thisNode.text.getHeight(),"bottomLeft");
+        this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
+        this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
+        this.bottomRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
+        this.bottomLeftAnchor = addAnchor(thisNode, 0,thisNode.text.getHeight(),"bottomLeft");
 
         this.showAnchors = function() {
             var topLeft = thisNode.group.get(".topLeft")[0];
@@ -388,6 +403,9 @@ newNodeFactory = {
             var bottomLeft = thisNode.group.get(".bottomLeft")[0];
             bottomLeft.setVisible(false);
         };
+
+        updateNoteGroup(thisNode);
+        updateAnchorBounds(thisNode);
 
         layer.add(connectionLine);
 
@@ -524,9 +542,31 @@ function buildNodeFunctions(thisNode) {
     };
 }
 
-function update(thisNode, activeAnchor) {
+// closes gap between group and text in a node, also shifts anchors afterwards
+function updateNoteGroup(thisNode) {
 
-    updateAnchorBounds(thisNode);
+    // correct X-Gap between group and text
+    thisNode.group.setX(thisNode.group.getX() + thisNode.text.getX());
+    thisNode.text.setX(0);
+
+    // shift anchors in x
+    thisNode.topLeftAnchor.setX(0);
+    thisNode.topRightAnchor.setX(thisNode.text.getWidth());
+    thisNode.bottomLeftAnchor.setX(0);
+    thisNode.bottomRightAnchor.setX(thisNode.text.getWidth());
+
+    // correct Y-Gap between group and text
+    thisNode.group.setY(thisNode.group.getY() + thisNode.text.getY());
+    thisNode.text.setY(0);
+
+    // shift anchors in y
+    thisNode.topLeftAnchor.setY(0);
+    thisNode.topRightAnchor.setY(0);
+    thisNode.bottomLeftAnchor.setY(thisNode.text.getHeight());
+    thisNode.bottomRightAnchor.setY(thisNode.text.getHeight());
+}
+
+function update(thisNode, activeAnchor) {
 
     var topLeft = thisNode.group.get(".topLeft")[0];
 
@@ -617,6 +657,7 @@ function addAnchor(thisNode, x, y, name) {
     });
     anchor.on("dragend", function() {
         thisNode.group.setDraggable(true);
+        updateNoteGroup(thisNode);
         layer.draw();
     });
     // add hover styling
@@ -634,13 +675,16 @@ function addAnchor(thisNode, x, y, name) {
     });
 
     thisNode.group.add(anchor);
+
+    return anchor;
 }
 
 function updateAnchorBounds(thisNode) {
-    thisNode.leftBound = thisNode.text.getX()                                + thisNode.group.getX();
-    thisNode.rightBound = thisNode.text.getX() + thisNode.text.getWidth()    + thisNode.group.getX();
-    thisNode.bottomBound = thisNode.text.getY() + thisNode.text.getHeight()  + thisNode.group.getY();
-    thisNode.topBound = thisNode.text.getY()                                 + thisNode.group.getY();
+    thisNode.leftBound =                                thisNode.group.getX();
+    thisNode.rightBound = thisNode.text.getWidth()    + thisNode.group.getX();
+
+    thisNode.bottomBound = thisNode.text.getHeight()  + thisNode.group.getY();
+    thisNode.topBound =                                 thisNode.group.getY();
 }
 
 function addHovers(shape, easing) {
