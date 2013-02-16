@@ -69,7 +69,7 @@
 
 
             // Oval Shape 1
-            var base = new newNodeFactory.createBaseNode(stage, layer);
+            var base = new newNodeFactory.CreateBaseNode(stage, layer);
 
             markedNode = base;
             markedNodeFillBackup = base.getBackground();
@@ -77,7 +77,7 @@
 
 
             //Oval Shape 2
-            var rectNode = new newNodeFactory.newRectNode(layer, base);
+            var rectNode = new newNodeFactory.NewRectNode(layer, base);
 
 
             //Button for showing the marked node
@@ -96,16 +96,27 @@
             });
             layer.add(newHideButton);
 
+            // this buttons deletes current marked node and all its children
+            var newDeleteButton = debugGUI.buildNewDeleteButton();
+            newDeleteButton.on("click", function(){
+                markedNode.deleteNode(layer);
+                markedNode = base;
+                markedNodeFillBackup = base.getBackground();
+                markedNode.fillBackground('#3D9DB3');
+                layer.draw();
+            });
+            layer.add(newDeleteButton);
+
             //Button for FactoryMethod of creating new Nodes
             var newEllipseButton = debugGUI.buildNewEllipseButton();
             newEllipseButton.on("click", function(){
-                new newNodeFactory.newEllipseNode(layer, markedNode);
+                new newNodeFactory.NewEllipseNode(layer, markedNode);
             });
             layer.add(newEllipseButton);
 
             var newRectButton = debugGUI.buildNewRectButton();
             newRectButton.on("click", function(){
-                new newNodeFactory.newRectNode(layer, markedNode);
+                new newNodeFactory.NewRectNode(layer, markedNode);
             });
             layer.add(newRectButton);
 
@@ -121,20 +132,20 @@
 
             var nodeToCopy;
             //Button for copying a node
-            var newLoadMapButton = debugGUI.buildNewMenuButton();
-            newLoadMapButton.setText('Copy');
-            newLoadMapButton.setPosition(770, 120);
-            newLoadMapButton.on("click", function(){
+            var newLoadMapButton1 = debugGUI.buildNewMenuButton();
+            newLoadMapButton1.setText('Copy');
+            newLoadMapButton1.setPosition(770, 120);
+            newLoadMapButton1.on("click", function(){
                 nodeToCopy = markedNode;
             });
-            layer.add(newLoadMapButton);
+            layer.add(newLoadMapButton1);
 
             //Button for pasting a node
             var newLoadMapButton = debugGUI.buildNewMenuButton();
             newLoadMapButton.setText('Paste');
             newLoadMapButton.setPosition(900, 120);
             newLoadMapButton.on("click", function(){
-                var nodeToPaste = new newNodeFactory.newRectNode(layer, markedNode);
+                var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });

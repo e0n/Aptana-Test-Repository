@@ -10,7 +10,7 @@ newNodeFactory = {
     // Creates a new node with ellipse shape
     // -----
 
-    newEllipseNode : function (layer, parent){
+    NewEllipseNode : function (layer, parent){
 
         var thisNode = this;
         this.parentNode = parent;
@@ -181,6 +181,10 @@ newNodeFactory = {
 
         };
 
+        this.deleteNode = function (layer) {
+
+        };
+
         layer.add(connectionLine);
         layer.add(this.group);
         layer.add(parent.group);
@@ -191,7 +195,7 @@ newNodeFactory = {
     // Creates a new node with rect shape
     // -----
 
-    newRectNode : function (layer, parent){
+    NewRectNode : function (layer, parent){
 
         var thisNode = this;
         this.parentNode = parent;
@@ -202,12 +206,12 @@ newNodeFactory = {
 
         this.group = new Kinetic.Group({
 //            stroke: 'C7C7C7',
-            strokeWidth: 5,
+//            strokeWidth: 5,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
-            draggable: true,
-            fill: '#FF0000',
-            visible: true
+            draggable: true
+//            fill: '#FF0000',
+//            visible: true
         });
 
         this.shape = new Kinetic.Rect({
@@ -262,11 +266,11 @@ newNodeFactory = {
         this.getBackground = function() {
             return thisNode.text.getFill();
         };
+        this.group.add(this.shape);
+        this.group.add(this.text);
 
         sumOfNodes++;
 
-        this.group.add(this.shape);
-        this.group.add(this.text);
         addHovers(this.group, 'ease-in');
 
         this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
@@ -376,6 +380,25 @@ newNodeFactory = {
             layer.draw();
         };
 
+        this.deleteNode = function (layer) {
+
+            while ( this.childElements.length != 0 ) {
+                this.childElements[0].deleteNode(layer);
+            }
+
+            for( var count = 0; count < this.parentNode.childElements.length; count++) {
+                if( this.parentNode.childElements[count] == this ) {
+                    this.parentNode.childElements[count] = this.parentNode.childElements[this.parentNode.childElements.length-1];
+                    this.parentNode.childElements.pop();
+                }
+            }
+
+            this.group.remove();
+            this.connectionLine.remove();
+
+            layer.draw();
+        };
+
 
         this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
         this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
@@ -418,7 +441,7 @@ newNodeFactory = {
     // Creates the base Node with ellipse shape
     // -----
 
-    createBaseNode: function(stage, layer){
+    CreateBaseNode: function(stage, layer){
         var thisNode = this;
         this.childElements = [];
         this.id = 'ovalX';
@@ -464,6 +487,11 @@ newNodeFactory = {
         this.hideAnchors = function() {
 
         };
+
+        this.deleteNode = function (layer) {
+
+        };
+
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
