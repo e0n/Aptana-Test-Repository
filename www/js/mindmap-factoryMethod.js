@@ -722,8 +722,9 @@ function checkForOverlying(newObject, objectToCompare){
 //        alert("Fall2")
         newX = newX + 50;
         newY = newY - 50;
-        newObject.group.setX(newX);
-        newObject.group.setY(newY);
+//        newObject.group.setX(newX);
+//        newObject.group.setY(newY);
+        move(newObject, newX, newY);
         checkForCollision(newObject, rootNode);
     }
 
@@ -738,8 +739,9 @@ function checkForOverlying(newObject, objectToCompare){
         ){
         newX = newX - 50;
         newY = newY + 50;
-        newObject.group.setX(newX);
-        newObject.group.setY(newY);
+//        newObject.group.setX(newX);
+//        newObject.group.setY(newY);
+        move(newObject, newX, newY);
         checkForCollision(newObject, rootNode);
     }
 
@@ -755,8 +757,9 @@ function checkForOverlying(newObject, objectToCompare){
         ){
         newX = newX + 50;
         newY = newY + 50;
-        newObject.group.setX(newX);
-        newObject.group.setY(newY);
+//        newObject.group.setX(newX);
+//        newObject.group.setY(newY);
+        move(newObject, newX, newY);
         checkForCollision(newObject, rootNode);
     }
 
@@ -771,8 +774,9 @@ function checkForOverlying(newObject, objectToCompare){
         ){
         newX = newX - 50;
         newY = newY - 50;
-        newObject.group.setX(newX);
-        newObject.group.setY(newY);
+//        newObject.group.setX(newX);
+//        newObject.group.setY(newY);
+        move(newObject, newX, newY);
         checkForCollision(newObject, rootNode);
     }
 
@@ -789,6 +793,15 @@ function checkForOverlying(newObject, objectToCompare){
 //        alert("Fall5")
 //    }
 
+}
+
+function move(object, newX, newY) {
+    object.group.transitionTo({
+        x: 350,
+        y: 350,
+        duration: 2,
+        easing: 'strong-ease-out'
+    })
 }
 
 
