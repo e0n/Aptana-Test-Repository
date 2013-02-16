@@ -5,6 +5,8 @@
 newNodeFactory = {
     var: sumOfNodes = 0,
     var: rootNode = null,
+    var: xOfObject = 0,
+    var: yOfObject = 0,
 
     // -----
     // Creates a new node with ellipse shape
@@ -556,7 +558,8 @@ function buildNodeFunctions(thisNode) {
     });
     thisNode.group.on("dragend", function(){
         updateAnchorBounds(thisNode);
-        checkForCollision(thisNode, rootNode);
+        autolayout(thisNode, rootNode);
+        move(thisNode, xOfObject, yOfObject);
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();
@@ -716,26 +719,27 @@ function updateAnchorBounds(thisNode) {
 }
 
 function addHovers(shape, easing) {
-    shape.on('mouseover touchstart', function() {
-        this.transitionTo({
-            scale: {
-                x: 1.1,
-                y: 1.1
-            },
-            duration: 0.3,
-            easing: easing
-        });
-    });
-    shape.on('mouseout touchend', function() {
-        this.transitionTo({
-            scale: {
-                x: 1,
-                y: 1
-            },
-            duration: 0.3,
-            easing: easing
-        });
-    });
+    //TODO Uncommented because of autolayout... ask tobi, if you like ps.: ER IST TOT, JIM!
+//    shape.on('mouseover touchstart', function() {
+//        this.transitionTo({
+//            scale: {
+//                x: 1.1,
+//                y: 1.1
+//            },
+//            duration: 0.3,
+//            easing: easing
+//        });
+//    });
+//    shape.on('mouseout touchend', function() {
+//        this.transitionTo({
+//            scale: {
+//                x: 1,
+//                y: 1
+//            },
+//            duration: 0.3,
+//            easing: easing
+//        });
+//    });
 }
 
 function addHoversForLittleButtons(shape, easing) {
@@ -763,6 +767,12 @@ function addHoversForLittleButtons(shape, easing) {
     });
 }
 
+function autolayout(newObject, parent){
+    xOfObject = newObject.group.getX();
+    yOfObject = newObject.group.getY();
+    checkForCollision(newObject,parent);
+}
+
 function checkForCollision(newObject, parent){
     // Check if the newObject collidates with root node, but root node Ellipse sucks...
     checkForOverlying(newObject,rootNode);
@@ -779,101 +789,98 @@ function checkForCollision(newObject, parent){
 }
 
 function checkForOverlying(newObject, objectToCompare){
-    var newX = newObject.group.getX();
-    var newY = newObject.group.getY();
     //Fall 2
     if(
-            (((newObject.group.getX() + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            (newObject.group.getY() < objectToCompare.group.getY())
+            (((xOfObject + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+            (yOfObject < objectToCompare.group.getY())
             )   &&
             (
-            (newObject.group.getX()  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            ((newObject.group.getY() + newObject.text.getHeight()) > objectToCompare.group.getY())
+            (xOfObject  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+            ((yOfObject + newObject.text.getHeight()) > objectToCompare.group.getY())
             )
         ){
-//        alert("Fall2")
-        newX = newX + 50;
-        newY = newY - 50;
-//        newObject.group.setX(newX);
-//        newObject.group.setY(newY);
-        move(newObject, newX, newY);
+//       alert("Fall2")
+        xOfObject = xOfObject + 49;
+        yOfObject = yOfObject - 49;
         checkForCollision(newObject, rootNode);
-    }
+    } else
 
     //Fall 3
     if(
-        ((newObject.group.getX() < objectToCompare.group.getX()) &&
-            ((newObject.group.getY() + newObject.text.getHeight()) > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+        ((xOfObject < objectToCompare.group.getX()) &&
+            ((yOfObject + newObject.text.getHeight()) > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
             )   &&
-            (((newObject.group.getX() + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
-                (newObject.group.getY()  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+            (((xOfObject + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
+                (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-        newX = newX - 50;
-        newY = newY + 50;
-//        newObject.group.setX(newX);
-//        newObject.group.setY(newY);
-        move(newObject, newX, newY);
+//        alert("Fall3")
+        xOfObject = xOfObject - 51;
+        yOfObject = yOfObject + 51;
         checkForCollision(newObject, rootNode);
-    }
+    } else
 
 
     //Fall 4
     if(
-        ((newObject.group.getX() < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            (newObject.group.getY()  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+        ((xOfObject < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+            (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
             )   &&
-            (((newObject.group.getX() + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                ((newObject.group.getY() + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+            (((xOfObject + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+                ((yOfObject + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-        newX = newX + 50;
-        newY = newY + 50;
-//        newObject.group.setX(newX);
-//        newObject.group.setY(newY);
-        move(newObject, newX, newY);
+//        alert("Fall4")
+        xOfObject = xOfObject + 53;
+        yOfObject = yOfObject + 53;
         checkForCollision(newObject, rootNode);
-    }
+    } else
 
     //Fall 1
     if(
-        ((newObject.group.getX() < objectToCompare.group.getX()) &&
-            (newObject.group.getY()  < objectToCompare.group.getY())
+        ((xOfObject < objectToCompare.group.getX()) &&
+            (yOfObject  < objectToCompare.group.getY())
             )   &&
-            (((newObject.group.getX() + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
-                ((newObject.group.getY() + newObject.text.getHeight())  > objectToCompare.group.getY())
+            (((xOfObject + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
+                ((yOfObject + newObject.text.getHeight())  > objectToCompare.group.getY())
                 )
         ){
-        newX = newX - 50;
-        newY = newY - 50;
-//        newObject.group.setX(newX);
-//        newObject.group.setY(newY);
-        move(newObject, newX, newY);
+//        alert("Fall1")
+        xOfObject = xOfObject - 56;
+        yOfObject = yOfObject - 56;
         checkForCollision(newObject, rootNode);
-    }
+    } else
 
-    //TODO Muss noch gemacht werden, aktuell stimmen die werte nicht die group nach dem resizen liefert... dadurch nicht testbar (theorie stimmt ... trust me)
     //Fall 5
-//    if(
-//        ((newObject.group.getX() > objectToCompare.group.getX()) &&
-//            (newObject.group.getY()  > objectToCompare.group.getY())
-//            )   &&
-//            (((newObject.group.getX() + newObject.text.getWidth()) < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-//                ((newObject.group.getY() + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-//                )
-//        ){
+    if(
+        ((xOfObject > objectToCompare.group.getX()) &&
+            (yOfObject  > objectToCompare.group.getY())
+            )   &&
+            (((xOfObject + newObject.text.getWidth()) < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+                ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+                )
+        ){
 //        alert("Fall5")
-//    }
-
+        xOfObject = xOfObject + 50;
+        yOfObject = yOfObject + 50;
+        checkForCollision(newObject, rootNode);
+//    } else if(xOfObject != newObject.group.getX() && yOfObject != newObject.group.getY()) {
+//        move(newObject, xOfObject, yOfObject);
+    }
 }
 
+
 function move(object, newX, newY) {
-    object.group.transitionTo({
-        x: 350,
-        y: 350,
-        duration: 2,
-        easing: 'strong-ease-out'
-    })
+//    object.group.setX(xOfObject);
+//    object.group.setY(yOfObject);
+    if(xOfObject != object.group.getX() && yOfObject != object.group.getY()){
+        object.group.transitionTo({
+            x: newX,
+            y: newY,
+            duration: 0.3,
+            easing: 'linear'
+        })
+    }
 }
 
 
