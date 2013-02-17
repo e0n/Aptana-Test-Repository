@@ -19,7 +19,13 @@
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
 
         var markedNode;
-        var markedNodeFillBackup;
+        //var markedNodeFillBackup;
+        var clickGroup = new Kinetic.Group({
+            x: 0,
+            y: 0,
+            draggable: true
+        });
+
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -33,22 +39,25 @@
 
 
         // Marks nodes and saves fill color
-        function clickNode(node, layer) {
+        function clickNode(node, layer, evt) {
             showselecedNodeMenu(node, layer);
-            markedNode.fillBackground(markedNodeFillBackup);
-            markedNode.hideAnchors();
-            if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                markedNode.newHideButton.hide();
+            if (evt.ctrlKey) {
+
+            } else {
+                markedNode.fillBackground(markedNode.backgroundColorBackup);
+                markedNode.hideAnchors();
+
+                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                    markedNode.newHideButton.hide();
+                }
+                markedNode = node;
+                markedNode.fillBackground('#3D9DB3');
+                markedNode.showAnchors();
+
+                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                    markedNode.newHideButton.show();
+                }
             }
-            //markedNode.shape.setFill(markedNodeFillBackup);
-            markedNode = node;
-            markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
-            markedNode.fillBackground('#3D9DB3');
-            markedNode.showAnchors();
-            if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                markedNode.newHideButton.show();
-            }
-            //markedNode.shape.setFill('green');
 
             layer.draw();
         }
@@ -72,7 +81,7 @@
             var base = new newNodeFactory.CreateBaseNode(stage, layer);
 
             markedNode = base;
-            markedNodeFillBackup = base.getBackground();
+            //markedNodeFillBackup = base.getBackground();
             markedNode.fillBackground('#3D9DB3');
 
 
@@ -101,7 +110,7 @@
             newDeleteButton.on("click", function(){
                 markedNode.deleteNode(layer);
                 markedNode = base;
-                markedNodeFillBackup = base.getBackground();
+                //markedNodeFillBackup = base.getBackground();
                 markedNode.fillBackground('#3D9DB3');
                 layer.draw();
             });
