@@ -558,7 +558,7 @@ function buildNodeFunctions(thisNode) {
     });
     thisNode.group.on("dragend", function(){
         updateAnchorBounds(thisNode);
-        autolayout(thisNode, rootNode);
+        autoLayout.autoLayout(thisNode, rootNode, rootNode);
         move(thisNode, xOfObject, yOfObject);
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
