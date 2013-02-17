@@ -5,8 +5,6 @@
 newNodeFactory = {
     var: sumOfNodes = 0,
     var: rootNode = null,
-    var: xOfObject = 0,
-    var: yOfObject = 0,
     var: markedArray = 0,
     var: dragGroup = 0,
 
@@ -19,7 +17,6 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
-        this.backgroundColorBackup = '#F7F7F7';
         this.childElements = [];
         this.typ = 'ellipse';
 
@@ -207,7 +204,6 @@ newNodeFactory = {
         this.layer = layer;
         this.childElements = [];
         this.typ = 'rect';
-        this.backgroundColorBackup = '#F7F7F7';
         this.id = 'shape'+sumOfNodes;
 
         this.group = new Kinetic.Group({
@@ -405,48 +401,6 @@ newNodeFactory = {
             layer.draw();
         };
 
-        this.toggleNode = function (node) {
-            var isNotInArray= true;
-            var resultNode = rootNode;
-            alert("rect: " + markedArray.length);
-            if( node.id != 'ovalX') {
-                for( var count = 0; count < markedArray.length; count++) {
-                    if (markedArray[count].id == node.id) {
-                        //alert("toggle off!");
-                        markedArray[count] = markedArray[markedArray.length-1];
-                        markedArray.pop();
-                        if(markedArray.length != 0) {
-                            resultNode = markedArray[0];
-                        }
-                        isNotInArray = false;
-                        node.fillBackground(node.backgroundColorBackup);
-                        node.hideAnchors();
-                        if(node.childElements.length != 0 && node.areThereHiddenChildren == false){
-                            node.newHideButton.hide();
-                        }
-
-                        break;
-                    }
-                }
-
-                if( isNotInArray ) {
-                    markedArray.push(node);
-                    resultNode = node;
-                }
-            }
-            return resultNode;
-        };
-
-        this.resetMarkedNodes = function(node) {
-            while (markedArray.length != 0) {
-                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
-                markedArray.shift();
-            }
-            if( node.id != 'ovalX') {
-                markedArray.push(node);
-            }
-        };
-
 
         this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
         this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
@@ -493,14 +447,7 @@ newNodeFactory = {
         var thisNode = this;
         this.childElements = [];
         this.id = 'ovalX';
-        this.backgroundColorBackup = '#F7F7F7';
         rootNode = thisNode;
-
-        dragGroup = new Kinetic.Group({
-            x: stage.getWidth() / 2,
-            y: stage.getHeight() / 2
-        });
-        markedArray = [];
 
         this.group = new Kinetic.Group({
             stroke: "#C7C7C7",
@@ -547,43 +494,6 @@ newNodeFactory = {
 
         };
 
-        this.toggleNode = function (node) {
-            var isNotInArray= true;
-            var resultNode = rootNode;
-
-            if( node.id != 'ovalX') {
-                for( var count = 0; count < markedArray.length; count++) {
-                    if (markedArray[count].id == node.id) {
-//                        alert("toggle off!");
-                        markedArray[count] = markedArray[markedArray.length-1];
-                        markedArray.pop();
-                        if(markedArray.length != 0) {
-                            resultNode = markedArray[0];
-                        }
-                        isNotInArray = false;
-                        break;
-                    }
-                }
-
-                if( isNotInArray ) {
-                    markedArray.push(node);
-                    resultNode = node;
-                }
-            }
-            return resultNode;
-        };
-
-        this.resetMarkedNodes = function(node) {
-            alert("base: " + markedArray.length);
-            while (markedArray.length != 0) {
-                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
-                markedArray.shift();
-            }
-            if( node.id != 'ovalX') {
-                markedArray.push(node);
-            }
-        };
-
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
@@ -614,8 +524,9 @@ newNodeFactory = {
             document.body.style.cursor = "default";
         });
         this.group.on("click", function() {
-            clickNode(thisNode, layer, event);
+            clickNode(thisNode, layer);
         });
+
         layer.add(this.group);
     }
 
@@ -629,12 +540,10 @@ function buildNodeFunctions(thisNode) {
         document.body.style.cursor = "default";
     });
     thisNode.shape.on("click", function() {
-        alert("shape is clicked oO");
-        //clickNode(thisNode, thisNode.layer, event);
+        clickNode(thisNode, thisNode.layer);
     });
     thisNode.text.on("click", function() {
-//        alert("text");
-        clickNode(thisNode, thisNode.layer, event);
+        clickNode(thisNode, thisNode.layer);
     });
     thisNode.newHideButton.on("click", function(){
         thisNode.hideChildren(thisNode.layer);
@@ -642,13 +551,9 @@ function buildNodeFunctions(thisNode) {
     thisNode.newShowButton.on("click", function(){
         thisNode.showChildren(thisNode.layer);
     });
-    thisNode.group.on("touchstart touchend", function() {
-        clickNode(thisNode, thisNode.layer, event);
-    });
     thisNode.group.on("dragstart dragend", function(){
-        //alert("group");
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
-//        clickNode(thisNode, thisNode.layer, event);
+        clickNode(thisNode, thisNode.layer);
         thisNode.drawConnectionLine.start();
     });
     thisNode.group.on("dragend", function(){
@@ -862,170 +767,5 @@ function addHoversForLittleButtons(shape, easing) {
     });
 }
 
-function autolayout(newObject, parent){
-    xOfObject = newObject.group.getX();
-    yOfObject = newObject.group.getY();
-    checkForCollision(newObject,parent);
-}
-
-function checkForCollision(newObject, parent){
-    // Check if the newObject collidates with root node, but root node Ellipse sucks...
-    checkForOverlying(newObject,rootNode);
-    for(var count = 0; count < parent.childElements.length; count++ ){
-        if(newObject.id != parent.childElements[count].id){
-            checkForOverlying(newObject, parent.childElements[count]);
-            if(parent.childElements[count].childElements.length != 0){
-                checkForCollision(newObject, parent.childElements[count])
-            }
-        } else if(newObject.childElements.length != 0){
-            checkForCollision(newObject, newObject);
-        }
-    }
-}
-
-function checkForOverlying(newObject, objectToCompare){
-    //Fall 2
-    if(
-            (((xOfObject + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            (yOfObject < objectToCompare.group.getY())
-            )   &&
-            (
-            (xOfObject  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            ((yOfObject + newObject.text.getHeight()) > objectToCompare.group.getY())
-            )
-        ){
-        xOfObject = xOfObject + 49;
-        yOfObject = yOfObject - 49;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    //Fall 3
-    if(
-        ((xOfObject < objectToCompare.group.getX()) &&
-            ((yOfObject + newObject.text.getHeight()) > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-            )   &&
-            (((xOfObject + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
-                (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject - 51;
-        yOfObject = yOfObject + 51;
-        checkForCollision(newObject, rootNode);
-    } else
-
-
-    //Fall 4
-    if(
-        ((xOfObject < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-            )   &&
-            (((xOfObject + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                ((yOfObject + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject + 53;
-        yOfObject = yOfObject + 53;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    //Fall 1
-    if(
-        ((xOfObject < objectToCompare.group.getX()) &&
-            (yOfObject  < objectToCompare.group.getY())
-            )   &&
-            (((xOfObject + newObject.text.getWidth()) > objectToCompare.group.getX()) &&
-                ((yOfObject + newObject.text.getHeight())  > objectToCompare.group.getY())
-                )
-        ){
-        xOfObject = xOfObject - 56;
-        yOfObject = yOfObject - 56;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    //Fall 5
-    if(
-        ((xOfObject > objectToCompare.group.getX()) &&
-            (yOfObject  > objectToCompare.group.getY())
-            )   &&
-            (((xOfObject + newObject.text.getWidth()) < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject + 50;
-        yOfObject = yOfObject + 50;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    // Fall 6
-    if(
-        ((xOfObject > objectToCompare.group.getX() ) &&
-            ((yOfObject + newObject.text.getHeight()) > objectToCompare.group.getY())
-            )   &&
-            (
-                ((xOfObject + newObject.text.getWidth())  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                    (yOfObject  < objectToCompare.group.getY())
-                )
-        ){
-        xOfObject = xOfObject - 55;
-        yOfObject = yOfObject - 60;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    // Fall 7
-    if(
-        ((xOfObject < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-            (yOfObject > objectToCompare.group.getY())
-            )   &&
-            (
-                ((xOfObject + newObject.text.getWidth())  > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                    ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject + 60;
-        yOfObject = yOfObject + 59;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    // Fall 8
-    if(
-        ((xOfObject > objectToCompare.group.getX() ) &&
-            (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-            )   &&
-            (
-                ((xOfObject + newObject.text.getWidth())  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
-                    ((yOfObject + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject + 55;
-        yOfObject = yOfObject + 49;
-        checkForCollision(newObject, rootNode);
-    } else
-
-    // Fall 9
-    if(
-        ((xOfObject < objectToCompare.group.getX() ) &&
-            (yOfObject > objectToCompare.group.getY())
-            )   &&
-            (
-                ((xOfObject + newObject.text.getWidth())  > objectToCompare.group.getX()) &&
-                    ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
-                )
-        ){
-        xOfObject = xOfObject - 49;
-        yOfObject = yOfObject - 55;
-        checkForCollision(newObject, rootNode);
-    }
-}
-
-function move(object, newX, newY) {
-    if(xOfObject != object.group.getX() && yOfObject != object.group.getY()){
-        object.group.transitionTo({
-            x: newX,
-            y: newY,
-            duration: 0.3,
-            easing: 'linear'
-        })
-    }
-}
 
 
