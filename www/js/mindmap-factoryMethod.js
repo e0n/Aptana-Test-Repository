@@ -17,6 +17,7 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
+        this.backgroundColorBackup = '#F7F7F7';
         this.childElements = [];
         this.typ = 'ellipse';
 
@@ -204,6 +205,7 @@ newNodeFactory = {
         this.layer = layer;
         this.childElements = [];
         this.typ = 'rect';
+        this.backgroundColorBackup = '#F7F7F7';
         this.id = 'shape'+sumOfNodes;
 
         this.group = new Kinetic.Group({
@@ -447,6 +449,7 @@ newNodeFactory = {
         var thisNode = this;
         this.childElements = [];
         this.id = 'ovalX';
+        this.backgroundColorBackup = '#F7F7F7';
         rootNode = thisNode;
 
         this.group = new Kinetic.Group({
