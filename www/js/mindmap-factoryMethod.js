@@ -799,7 +799,6 @@ function checkForOverlying(newObject, objectToCompare){
             ((yOfObject + newObject.text.getHeight()) > objectToCompare.group.getY())
             )
         ){
-//       alert("Fall2")
         xOfObject = xOfObject + 49;
         yOfObject = yOfObject - 49;
         checkForCollision(newObject, rootNode);
@@ -814,7 +813,6 @@ function checkForOverlying(newObject, objectToCompare){
                 (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-//        alert("Fall3")
         xOfObject = xOfObject - 51;
         yOfObject = yOfObject + 51;
         checkForCollision(newObject, rootNode);
@@ -830,7 +828,6 @@ function checkForOverlying(newObject, objectToCompare){
                 ((yOfObject + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-//        alert("Fall4")
         xOfObject = xOfObject + 53;
         yOfObject = yOfObject + 53;
         checkForCollision(newObject, rootNode);
@@ -845,7 +842,6 @@ function checkForOverlying(newObject, objectToCompare){
                 ((yOfObject + newObject.text.getHeight())  > objectToCompare.group.getY())
                 )
         ){
-//        alert("Fall1")
         xOfObject = xOfObject - 56;
         yOfObject = yOfObject - 56;
         checkForCollision(newObject, rootNode);
@@ -860,19 +856,74 @@ function checkForOverlying(newObject, objectToCompare){
                 ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
                 )
         ){
-//        alert("Fall5")
         xOfObject = xOfObject + 50;
         yOfObject = yOfObject + 50;
         checkForCollision(newObject, rootNode);
-//    } else if(xOfObject != newObject.group.getX() && yOfObject != newObject.group.getY()) {
-//        move(newObject, xOfObject, yOfObject);
+    } else
+
+    // Fall 6
+    if(
+        ((xOfObject > objectToCompare.group.getX() ) &&
+            ((yOfObject + newObject.text.getHeight()) > objectToCompare.group.getY())
+            )   &&
+            (
+                ((xOfObject + newObject.text.getWidth())  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+                    (yOfObject  < objectToCompare.group.getY())
+                )
+        ){
+        xOfObject = xOfObject - 55;
+        yOfObject = yOfObject - 60;
+        checkForCollision(newObject, rootNode);
+    } else
+
+    // Fall 7
+    if(
+        ((xOfObject < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+            (yOfObject > objectToCompare.group.getY())
+            )   &&
+            (
+                ((xOfObject + newObject.text.getWidth())  > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+                    ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+                )
+        ){
+        xOfObject = xOfObject + 60;
+        yOfObject = yOfObject + 59;
+        checkForCollision(newObject, rootNode);
+    } else
+
+    // Fall 8
+    if(
+        ((xOfObject > objectToCompare.group.getX() ) &&
+            (yOfObject  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+            )   &&
+            (
+                ((xOfObject + newObject.text.getWidth())  < (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
+                    ((yOfObject + newObject.text.getHeight())  > (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+                )
+        ){
+        xOfObject = xOfObject + 55;
+        yOfObject = yOfObject + 49;
+        checkForCollision(newObject, rootNode);
+    } else
+
+    // Fall 9
+    if(
+        ((xOfObject < objectToCompare.group.getX() ) &&
+            (yOfObject > objectToCompare.group.getY())
+            )   &&
+            (
+                ((xOfObject + newObject.text.getWidth())  > objectToCompare.group.getX()) &&
+                    ((yOfObject + newObject.text.getHeight())  < (objectToCompare.group.getY() + objectToCompare.text.getHeight()))
+                )
+        ){
+        xOfObject = xOfObject - 49;
+        yOfObject = yOfObject - 55;
+        checkForCollision(newObject, rootNode);
     }
 }
 
 
 function move(object, newX, newY) {
-//    object.group.setX(xOfObject);
-//    object.group.setY(yOfObject);
     if(xOfObject != object.group.getX() && yOfObject != object.group.getY()){
         object.group.transitionTo({
             x: newX,
