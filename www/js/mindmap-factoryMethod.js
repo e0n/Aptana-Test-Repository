@@ -429,7 +429,6 @@ newNodeFactory = {
                     resultNode = node;
                 }
             }
-            alert(markedArray.length);
             return resultNode;
         };
 
@@ -441,7 +440,6 @@ newNodeFactory = {
             if( node.id != 'ovalX') {
                 markedArray.push(node);
             };
-            alert(markedArray.length);
         };
 
 
@@ -568,7 +566,6 @@ newNodeFactory = {
                     resultNode = node;
                 }
             }
-            alert(markedArray.length);
             return resultNode;
         };
 
@@ -580,7 +577,6 @@ newNodeFactory = {
             if( node.id != 'ovalX') {
                 markedArray.push(node);
             }
-            alert(markedArray.length);
         };
 
         this.fillBackground = function( color ) {
