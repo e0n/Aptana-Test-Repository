@@ -7,6 +7,8 @@ newNodeFactory = {
     var: rootNode = null,
     var: xOfObject = 0,
     var: yOfObject = 0,
+    var: markedArray = 0,
+    var: dragGroup = 0,
 
     // -----
     // Creates a new node with ellipse shape
@@ -403,6 +405,48 @@ newNodeFactory = {
             layer.draw();
         };
 
+        this.toggleNode = function (node) {
+            var isNotInArray= true;
+            var resultNode = rootNode;
+            alert("rect: " + markedArray.length);
+            if( node.id != 'ovalX') {
+                for( var count = 0; count < markedArray.length; count++) {
+                    if (markedArray[count].id == node.id) {
+                        //alert("toggle off!");
+                        markedArray[count] = markedArray[markedArray.length-1];
+                        markedArray.pop();
+                        if(markedArray.length != 0) {
+                            resultNode = markedArray[0];
+                        }
+                        isNotInArray = false;
+                        node.fillBackground(node.backgroundColorBackup);
+                        node.hideAnchors();
+                        if(node.childElements.length != 0 && node.areThereHiddenChildren == false){
+                            node.newHideButton.hide();
+                        }
+
+                        break;
+                    }
+                }
+
+                if( isNotInArray ) {
+                    markedArray.push(node);
+                    resultNode = node;
+                }
+            }
+            return resultNode;
+        };
+
+        this.resetMarkedNodes = function(node) {
+            while (markedArray.length != 0) {
+                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
+                markedArray.shift();
+            }
+            if( node.id != 'ovalX') {
+                markedArray.push(node);
+            }
+        };
+
 
         this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
         this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
@@ -452,6 +496,12 @@ newNodeFactory = {
         this.backgroundColorBackup = '#F7F7F7';
         rootNode = thisNode;
 
+        dragGroup = new Kinetic.Group({
+            x: stage.getWidth() / 2,
+            y: stage.getHeight() / 2
+        });
+        markedArray = [];
+
         this.group = new Kinetic.Group({
             stroke: "#C7C7C7",
             strokeWidth: 1 ,
@@ -497,6 +547,43 @@ newNodeFactory = {
 
         };
 
+        this.toggleNode = function (node) {
+            var isNotInArray= true;
+            var resultNode = rootNode;
+
+            if( node.id != 'ovalX') {
+                for( var count = 0; count < markedArray.length; count++) {
+                    if (markedArray[count].id == node.id) {
+//                        alert("toggle off!");
+                        markedArray[count] = markedArray[markedArray.length-1];
+                        markedArray.pop();
+                        if(markedArray.length != 0) {
+                            resultNode = markedArray[0];
+                        }
+                        isNotInArray = false;
+                        break;
+                    }
+                }
+
+                if( isNotInArray ) {
+                    markedArray.push(node);
+                    resultNode = node;
+                }
+            }
+            return resultNode;
+        };
+
+        this.resetMarkedNodes = function(node) {
+            alert("base: " + markedArray.length);
+            while (markedArray.length != 0) {
+                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
+                markedArray.shift();
+            }
+            if( node.id != 'ovalX') {
+                markedArray.push(node);
+            }
+        };
+
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
@@ -527,9 +614,8 @@ newNodeFactory = {
             document.body.style.cursor = "default";
         });
         this.group.on("click", function() {
-            clickNode(thisNode, layer);
+            clickNode(thisNode, layer, event);
         });
-
         layer.add(this.group);
     }
 
@@ -543,10 +629,12 @@ function buildNodeFunctions(thisNode) {
         document.body.style.cursor = "default";
     });
     thisNode.shape.on("click", function() {
-        clickNode(thisNode, thisNode.layer);
+        alert("shape is clicked oO");
+        //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
-        clickNode(thisNode, thisNode.layer);
+//        alert("text");
+        clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.newHideButton.on("click", function(){
         thisNode.hideChildren(thisNode.layer);
@@ -554,9 +642,13 @@ function buildNodeFunctions(thisNode) {
     thisNode.newShowButton.on("click", function(){
         thisNode.showChildren(thisNode.layer);
     });
+    thisNode.group.on("touchstart touchend", function() {
+        clickNode(thisNode, thisNode.layer, event);
+    });
     thisNode.group.on("dragstart dragend", function(){
+        //alert("group");
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
-        clickNode(thisNode, thisNode.layer);
+//        clickNode(thisNode, thisNode.layer, event);
         thisNode.drawConnectionLine.start();
     });
     thisNode.group.on("dragend", function(){
@@ -924,7 +1016,6 @@ function checkForOverlying(newObject, objectToCompare){
         checkForCollision(newObject, rootNode);
     }
 }
-
 
 function move(object, newX, newY) {
     if(xOfObject != object.group.getX() && yOfObject != object.group.getY()){

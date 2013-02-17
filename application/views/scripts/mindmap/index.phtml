@@ -20,12 +20,14 @@
 
         var markedNode;
         //var markedNodeFillBackup;
+
         var clickGroup = new Kinetic.Group({
             x: 0,
             y: 0,
             draggable: true
         });
 
+        var clickArray = [];
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -39,21 +41,41 @@
 
 
         // Marks nodes and saves fill color
-        function clickNode(node, layer, evt) {
-            showselecedNodeMenu(node, layer);
-            if (evt.ctrlKey) {
-
-            } else {
-                markedNode.fillBackground(markedNode.backgroundColorBackup);
+        function clickNode(node, layer, event) {
+            if (event.ctrlKey) {
                 markedNode.hideAnchors();
-
                 if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                     markedNode.newHideButton.hide();
                 }
+                //markedNode.shape.setFill(markedNodeFillBackup);
+                markedNode = markedNode.toggleNode(node);
+                //markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
+                markedNode.fillBackground('#3D9DB3');
+                markedNode.showAnchors();
+                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                    markedNode.newHideButton.show();
+                }
+
+                //clickArray.push(node);
+
+            } else {
+                markedNode.resetMarkedNodes(node);
+//                while (clickArray.length != 0) {
+//                    clickArray[0].fillBackground(clickArray[0].backgroundColorBackup);
+//                    clickArray.shift();
+//                }
+//                clickArray.push(node);
+
+                showselecedNodeMenu(node, layer);
+                markedNode.fillBackground(markedNode.backgroundColorBackup);
+                markedNode.hideAnchors();
+                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                    markedNode.newHideButton.hide();
+                }
+
                 markedNode = node;
                 markedNode.fillBackground('#3D9DB3');
                 markedNode.showAnchors();
-
                 if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                     markedNode.newHideButton.show();
                 }
@@ -76,17 +98,15 @@
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
-
             // Oval Shape 1
             var base = new newNodeFactory.CreateBaseNode(stage, layer);
-
             markedNode = base;
             //markedNodeFillBackup = base.getBackground();
             markedNode.fillBackground('#3D9DB3');
 
 
             //Oval Shape 2
-            var rectNode = new newNodeFactory.NewRectNode(layer, base);
+            //var rectNode = new newNodeFactory.NewRectNode(layer, base);
 
 
             //Button for showing the marked node
