@@ -8,6 +8,7 @@
 class MindmapController extends Zend_Controller_Action
 {
     public function indexAction(){
+        /*
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
         if(!$data){
@@ -15,6 +16,7 @@ class MindmapController extends Zend_Controller_Action
         }
         $this->view->username = $data->username;
         $this->render();
+         * */
     }
 
 }
