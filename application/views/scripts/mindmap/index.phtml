@@ -30,6 +30,9 @@
 
         var clickArray = [];
 
+        var stage; //Global for accessing from mainMenuView
+        var firstStage;
+
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
             var context = messageLayer.getContext();
@@ -89,7 +92,7 @@
 
         //onload function
         window.onload = function() {
-            var stage = new Kinetic.Stage({
+            stage = new Kinetic.Stage({
                 container: "container",
                 width: 1750,
                 height: 890
@@ -255,8 +258,8 @@
             stage.add(layer);
             stage.add(messageLayer);
 
-            //TODO Save the layer to compare after changes have been made, for new map warning
-            //firstStage = stage;//.toJSON();
+            //Save the stage to compare after changes have been made, for new map warning
+            firstStage = stage;
 
         };
 
