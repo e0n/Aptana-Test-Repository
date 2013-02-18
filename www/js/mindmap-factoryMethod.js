@@ -17,6 +17,7 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
+        this.backgroundColorBackup = '#F7F7F7';
         this.childElements = [];
         this.typ = 'ellipse';
 
@@ -202,6 +203,7 @@ newNodeFactory = {
         var thisNode = this;
         this.parentNode = parent;
         this.layer = layer;
+        this.backgroundColorBackup = '#F7F7F7';
         this.childElements = [];
         this.typ = 'rect';
         this.id = 'shape'+sumOfNodes;
@@ -401,11 +403,52 @@ newNodeFactory = {
             layer.draw();
         };
 
+        this.toggleNode = function(node) {
+            var isNotInArry = true;
+            var resultNode = rootNode;
+
+            if (node.id != 'ovalX') {
+                for(var count = 0; count < markedArray.length; count++) {
+                    if( markedArray[count].id == node.id) {
+                        markedArray[count] = markedArray[markedArray.length-1];
+                        markedArray.pop();
+                        if(markedArray.length != 0) {
+                            resultNode = markedArray[0];
+                        }
+                        isNotInArry = false;
+                        node.fillBackground(node.backgroundColorBackup);
+                        node.hideAnchors();
+                        if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                            markedNode.newHideButton.hide();
+                        }
+                        break;
+                    }
+                }
+                if( isNotInArry ) {
+                    markedArray.push(node);
+                    resultNode = node;
+                }
+            }
+            return resultNode;
+        };
+
+        this.resetMarkedNodes = function(node) {
+            while(markedArray.length != 0) {
+                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
+                markedArray.shift();
+            }
+            if( node.id != 'ovalX') {
+                markedArray.push(node);
+            };
+        };
+
 
         this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
         this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
         this.bottomRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
         this.bottomLeftAnchor = addAnchor(thisNode, 0,thisNode.text.getHeight(),"bottomLeft");
+
+
 
         this.showAnchors = function() {
             var topLeft = thisNode.group.get(".topLeft")[0];
@@ -448,6 +491,9 @@ newNodeFactory = {
         this.childElements = [];
         this.id = 'ovalX';
         rootNode = thisNode;
+        this.backgroundColorBackup = '#F7F7F7';
+
+        markedArray = [];
 
         this.group = new Kinetic.Group({
             stroke: "#C7C7C7",
@@ -494,6 +540,45 @@ newNodeFactory = {
 
         };
 
+        this.toggleNode = function(node) {
+            var isNotInArry = true;
+            var resultNode = rootNode;
+
+            if (node.id != 'ovalX') {
+                for(var count = 0; count < markedArray.length; count++) {
+                    if( markedArray[count].id == node.id) {
+                        markedArray[count] = markedArray[markedArray.length-1];
+                        markedArray.pop();
+                        if(markedArray.length != 0) {
+                            resultNode = markedArray[0];
+                        }
+                        isNotInArry = false;
+                        node.fillBackground(node.backgroundColorBackup);
+                        node.hideAnchors();
+                        if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
+                            markedNode.newHideButton.hide();
+                        }
+                        break;
+                    }
+                }
+                if( isNotInArry ) {
+                    markedArray.push(node);
+                    resultNode = node;
+                }
+            }
+            return resultNode;
+        };
+
+        this.resetMarkedNodes = function(node) {
+            while(markedArray.length != 0) {
+                markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
+                markedArray.shift();
+            }
+            if( node.id != 'ovalX') {
+                markedArray.push(node);
+            }
+        };
+
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
@@ -524,7 +609,7 @@ newNodeFactory = {
             document.body.style.cursor = "default";
         });
         this.group.on("click", function() {
-            clickNode(thisNode, layer);
+            clickNode(thisNode, layer, event);
         });
 
         layer.add(this.group);
@@ -540,10 +625,11 @@ function buildNodeFunctions(thisNode) {
         document.body.style.cursor = "default";
     });
     thisNode.shape.on("click", function() {
-        clickNode(thisNode, thisNode.layer);
+        alert("SHADE CLICKED!");
+        //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
-        clickNode(thisNode, thisNode.layer);
+        clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.newHideButton.on("click", function(){
         thisNode.hideChildren(thisNode.layer);
@@ -551,15 +637,20 @@ function buildNodeFunctions(thisNode) {
     thisNode.newShowButton.on("click", function(){
         thisNode.showChildren(thisNode.layer);
     });
+    thisNode.group.on("touchstart touchend", function() {
+        //clickNode(thisNode, thisNode.layer, event);
+    });
     thisNode.group.on("dragstart dragend", function(){
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
-        clickNode(thisNode, thisNode.layer);
+        //clickNode(thisNode, thisNode.layer);
         thisNode.drawConnectionLine.start();
     });
     thisNode.group.on("dragend", function(){
+
         updateAnchorBounds(thisNode);
         autoLayout.autoLayout(thisNode, rootNode, rootNode);
         move(thisNode, xOfObject, yOfObject);
+
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();
