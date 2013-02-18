@@ -9,7 +9,7 @@
 debugGUI = {
     buildNewEllipseButton : function () {
         var button = new Kinetic.Text({
-            x: 10,
+            x: 140,
             y: 35,
             stroke: '#555',
             strokeWidth: 2,
@@ -37,7 +37,7 @@ debugGUI = {
 
     buildNewRectButton : function () {
         var button = new Kinetic.Text({
-            x: 140,
+            x: 10,
             y: 35,
             stroke: '#555',
             strokeWidth: 2,
@@ -65,8 +65,8 @@ debugGUI = {
 
     buildNewEditTextButton : function () {
         var button = new Kinetic.Text({
-            x: 270,
-            y: 35,
+            x: 10,
+            y: 390,
             stroke: '#555',
             strokeWidth: 2,
             fill: '#ddd',
@@ -121,8 +121,8 @@ debugGUI = {
 
     buildNewHideButton : function () {
         var button = new Kinetic.Text({
-            x: 140,
-            y: 120,
+            x: 10,
+            y: 210,
             stroke: '#555',
             strokeWidth: 2,
             fill: '#ddd',
@@ -149,8 +149,8 @@ debugGUI = {
 
     buildNewDeleteButton : function () {
         var button = new Kinetic.Text({
-            x: 270,
-            y: 120,
+            x: 10,
+            y: 300,
             stroke: '#555',
             strokeWidth: 2,
             fill: '#ddd',

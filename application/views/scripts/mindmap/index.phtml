@@ -227,7 +227,7 @@
             //Button for copying a node
             var newCopyButton = debugGUI.buildNewMenuButton();
             newCopyButton.setText('Copy');
-            newCopyButton.setPosition(770, 120);
+            newCopyButton.setPosition(270, 35);
             newCopyButton.on("click", function(){
                 nodeToCopy = markedNode;
             });
@@ -236,9 +236,9 @@
             //Button for pasting a node
             var newPasteButton = debugGUI.buildNewMenuButton();
             newPasteButton.setText('Paste');
-            newPasteButton.setPosition(900, 120);
+            newPasteButton.setPosition(400, 35);
             newPasteButton.on("click", function(){
-                var nodeToPaste = new newNodeFactory.newRectNode(layer, markedNode);
+                var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });
@@ -269,6 +269,7 @@
 </head>
 <body>
 <header>
+    <h1>Open Your Mind</h1>
     <div id="welcome">
         Welcome, <?=$this->username?><br>
         <a id="logoutAction" href="login/logout" >Click here to logout</a>
