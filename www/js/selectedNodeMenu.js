@@ -14,46 +14,46 @@ function showselecedNodeMenu(node, layer) {
     var underline = 'a#underline';
     $(menu).css('display', 'block');
     if(node.typ == 'rect'){
-        $(menu).css('top',  - node.group.getY());
-        $(menu).css('left',  node.group.getX() - (node.text.getWidth()/2));
+        $(menu).css('top',  layer.getHeight() - markedNode.group.getY());
+        $(menu).css('left',  markedNode.group.getX() - (markedNode.text.getWidth()/2));
     } else {
-        $(menu).css('top',  - (node.group.getY() - 40));
-        $(menu).css('left', node.group.getX());
+        $(menu).css('top', layer.getHeight() - (markedNode.group.getY() - 40));
+        $(menu).css('left', markedNode.group.getX());
     }
 
     $(size).change(function(){
-        node.text.setFontSize($(sizeSelected).val());
+        markedNode.text.setFontSize($(sizeSelected).val());
         layer.draw();
     });
 
     $(font).change(function(){
-        node.text.setFontFamily($(fontSelected).val());
+        markedNode.text.setFontFamily($(fontSelected).val());
         layer.draw();
     });
 
     $(bold).click(function(){
-        if(node.text.getFontStyle() == 'bold'){
-            node.text.setFontStyle('normal');
+        if(markedNode.text.getFontStyle() == 'bold'){
+            markedNode.text.setFontStyle('normal');
         } else {
-            node.text.setFontStyle('bold');
+            markedNode.text.setFontStyle('bold');
         }
         layer.draw();
     });
 
     $(italic).click(function(){
-        if(node.text.getFontStyle() == 'italic'){
-            node.text.setFontStyle('normal');
+        if(markedNode.text.getFontStyle() == 'italic'){
+            markedNode.text.setFontStyle('normal');
         } else {
-            node.text.setFontStyle('italic');
+            markedNode.text.setFontStyle('italic');
         }
         layer.draw();
     });
 
     $(underline).click(function(){
-        if(node.text.getFontStyle() == 'underline'){
-            node.text.setFontStyle('normal');
+        if(markedNode.text.getFontStyle() == 'underline'){
+            markedNode.text.setFontStyle('normal');
         } else {
-            node.text.setFontStyle('underline');
+            markedNode.text.setFontStyle('underline');
         }
         layer.draw();
     });
