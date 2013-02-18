@@ -95,7 +95,7 @@
                 height: 890
             });
 
-            // the following section is for zoom and drag
+            // the following section is for zoom and drag the stage
 //////////////////////////////////////////////////////////////////////////////////////////
             var backgroundLayer = new Kinetic.Layer({
                 width: 10000,
@@ -119,9 +119,6 @@
             background.on("mouseout touchend", function(){
                 stage.setDraggable(false);
             });
-            background.on("dragend", function(){
-               stage.getUserPosition();
-            });
 
             var zoom = function(e) {
                 var zoomAmount = e.wheelDeltaY*0.001;
@@ -130,27 +127,30 @@
                     if(zoomOffset == -5){
                         zoomAmount = 0;
                         zoomOffset = -4;
-                    }
+                    } else {
                     stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
                     stage.setScale(stage.getScale().x+zoomAmount);
                     stage.setX ( stage.getWidth()/2 );
                     stage.setY ( stage.getHeight()/2 );
+                    }
                 }
                 if(zoomAmount == 0.12){
                     zoomOffset = zoomOffset+1;
                     if(zoomOffset == 5){
                         zoomAmount = 0;
                         zoomOffset = 4;
-                    }
+                    } else {
                     stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
                     stage.setScale(stage.getScale().x+zoomAmount);
                     stage.setX ( stage.getWidth()/2 );
                     stage.setY ( stage.getHeight()/2 );
+                    }
                 }
                 stage.draw();
             };
             document.addEventListener("mousewheel", zoom, false);
 //////////////////////////////////////////////////////////////////////////////////////////
+
 
             //Layer for shapes
             var layer = new Kinetic.Layer();
