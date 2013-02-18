@@ -76,7 +76,9 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(neW).on('click', function(){
-            //TODO ask for save mindmap
+            //TODO ask for saving mindmap if it has changed
+            //something like if(Kinetic.Node.create(firstStage).toJSON() != stage.toJSON())
+            //   alert('Dont u wanna save it first?');
             location.reload();
         });
 
@@ -86,10 +88,14 @@ $(document).ready(function() {
         $(load).mouseleave(function() {
             setMenuText('');
         });
+        var testSavedStage;
         $(load).on('click', function(){
-            //TODO get saved json stage
-            //transform
-            //replace actual stage
+            //get saved json stage
+            jsonStage = testSavedStage;
+            // create a stage from JSON
+            aNewStage = Kinetic.Node.create(jsonStage, 'container');//or like Kinetic.Node.create(jsonStage);
+            //TODO replace actual stage
+            //http://www.html5canvastutorials.com/kineticjs/html5-canvas-load-complex-stage-with-kineticjs/
         });
 
         $(save).mouseover(function() {
@@ -99,10 +105,26 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(save).on('click', function(){
-            //TODO get stage
-            //stage = document.getElementById('container').get....;
-            //jsonStage = stage.toJSON();
-            //save json Stage
+            //Get global stage
+            jsonStage = stage.toJSON();
+            testSavedStage = jsonStage;//TODO temporal for testing from/to a variable
+            alert('stage was saved in testSavedStage variable');
+            //Send json to server
+            /*
+             var data = {};
+             data.push({"id":jsonStage});
+             $.ajax({
+             url: "<?php echo $this->baseUrl('mindmap/save'); ?>",
+             type: "POST",
+             dataType:'json',
+             data: data,
+             success:function(data){
+             console.log(data);
+             },
+             error: function(jqXHR, textStatus, errorThrown){
+             }
+             });
+             */
         });
 
         $(imporT).mouseover(function() {
