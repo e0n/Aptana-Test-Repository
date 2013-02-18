@@ -19,6 +19,7 @@
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
 
         var markedNode;
+        var zoomOffset = 0;
         //var markedNodeFillBackup;
 
         var clickGroup = new Kinetic.Group({
@@ -92,11 +93,69 @@
                 height: 890
             });
 
+            // the following section is for zoom and drag
+//////////////////////////////////////////////////////////////////////////////////////////
+            var backgroundLayer = new Kinetic.Layer({
+                width: 10000,
+                height: 7000
+            });
+            backgroundLayer.setDraggable("draggable");
+            var background = new Kinetic.Rect({
+                x: -10000,
+                y: -10000,
+                width: 20000,
+                height: 20000,
+                fill: "#000000",
+                opacity: 0
+            });
+            backgroundLayer.add(background);
+
+            background.on("mouseover touchstart", function(){
+                stage.setDraggable(true);
+            });
+
+            background.on("mouseout touchend", function(){
+                stage.setDraggable(false);
+            });
+            background.on("dragend", function(){
+               stage.getUserPosition();
+            });
+
+            var zoom = function(e) {
+                var zoomAmount = e.wheelDeltaY*0.001;
+                if(zoomAmount == -0.12){
+                    zoomOffset = zoomOffset-1;
+                    if(zoomOffset == -5){
+                        zoomAmount = 0;
+                        zoomOffset = -4;
+                    }
+                    stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
+                    stage.setScale(stage.getScale().x+zoomAmount);
+                    stage.setX ( stage.getWidth()/2 );
+                    stage.setY ( stage.getHeight()/2 );
+                }
+                if(zoomAmount == 0.12){
+                    zoomOffset = zoomOffset+1;
+                    if(zoomOffset == 5){
+                        zoomAmount = 0;
+                        zoomOffset = 4;
+                    }
+                    stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
+                    stage.setScale(stage.getScale().x+zoomAmount);
+                    stage.setX ( stage.getWidth()/2 );
+                    stage.setY ( stage.getHeight()/2 );
+                }
+                stage.draw();
+            };
+            document.addEventListener("mousewheel", zoom, false);
+//////////////////////////////////////////////////////////////////////////////////////////
 
             //Layer for shapes
             var layer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
+
+
 
             // Oval Shape 1
             var base = new newNodeFactory.CreateBaseNode(stage, layer);
@@ -190,6 +249,7 @@
 
 
             // add the layer to the stage
+            stage.add(backgroundLayer);
             stage.add(layer);
             stage.add(messageLayer);
         };
