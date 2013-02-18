@@ -429,7 +429,7 @@ newNodeFactory = {
                     resultNode = node;
                 }
             }
-            alert(markedArray.length);
+            //alert(markedArray.length);
             return resultNode;
         };
 
@@ -441,7 +441,7 @@ newNodeFactory = {
             if( node.id != 'ovalX') {
                 markedArray.push(node);
             };
-            alert(markedArray.length);
+            //alert(markedArray.length);
         };
 
 
@@ -568,7 +568,7 @@ newNodeFactory = {
                     resultNode = node;
                 }
             }
-            alert(markedArray.length);
+            //alert(markedArray.length);
             return resultNode;
         };
 
@@ -580,7 +580,7 @@ newNodeFactory = {
             if( node.id != 'ovalX') {
                 markedArray.push(node);
             }
-            alert(markedArray.length);
+            //alert(markedArray.length);
         };
 
         this.fillBackground = function( color ) {
@@ -629,7 +629,7 @@ function buildNodeFunctions(thisNode) {
         document.body.style.cursor = "default";
     });
     thisNode.shape.on("click", function() {
-        alert("SHADE CLICKED!");
+        //alert("SHADE CLICKED!");
         //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
@@ -648,6 +648,7 @@ function buildNodeFunctions(thisNode) {
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
         //clickNode(thisNode, thisNode.layer);
         thisNode.drawConnectionLine.start();
+        showselecedNodeMenu(thisNode, thisNode.layer);
     });
     thisNode.group.on("dragend", function(){
 
