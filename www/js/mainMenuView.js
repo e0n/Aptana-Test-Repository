@@ -66,7 +66,7 @@ $(document).ready(function() {
                 '-o-transform': rotationValue,
                 '-ms-transform': rotationValue,
                 'transform': rotationValue
-            });;
+            });
         });
 
         $(neW).mouseover(function() {

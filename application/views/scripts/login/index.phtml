@@ -24,14 +24,14 @@
                              or
                             <a href="login/tryout">Try it out</a>
                         </p>
-                        <? if(isset($this->errorMessage)){ ?>
+                        <?php if(isset($this->errorMessage)){ ?>
                             <p class="error">
                                 <?
                                     echo $this->errorMessage;
                                     unset($this->errorMessage);
                                 ?>
                             </p>
-                        <? } ?>
+                        <?php } ?>
                         <p>
                             <label for="username" class="uname" data-icon="u" > Your email or username </label>
                             <input id="username" name="username" required="required" type="text" placeholder="myusername or myemail@mail.com"/>
@@ -57,14 +57,14 @@
                             Already a member ?
                             <a href="#tologin" class="to_register"> Go and log in </a>
                         </p>
-                        <? if(isset($this->errorMessage)){ ?>
+                        <?php if(isset($this->errorMessage)){ ?>
                         <p class="error">
-                            <?
+                            <?php
                                 echo $this->errorMessage;
                                 unset($this->errorMessage);
                             ?>
                         </p>
-                        <? } ?>
+                        <?php } ?>
                         <p>
                             <label for="usernamesignup" class="uname" data-icon="u">Your username</label>
                             <input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="username" />

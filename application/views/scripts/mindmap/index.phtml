@@ -90,10 +90,39 @@
         window.onload = function() {
             var stage = new Kinetic.Stage({
                 container: "container",
-                width: 1750,
-                height: 890
+                width: 1840,
+                height: 950
             });
 
+            stage.setHeight(screen.height - 200);
+            stage.setWidth(screen.width - 70);
+
+            var newScreenWidthScale = 1.0; //(screen.width / ( 1920 / 100)) / 100;
+            var newScreenHeightScale = (screen.height / ( 1080 / 100)) / 100;
+
+            var scaleValue = 'scale(' + newScreenWidthScale + ',' + newScreenHeightScale +')';
+
+            $("header").css({
+                '-moz-transform': scaleValue,
+                '-webkit-transform': scaleValue,
+                '-o-transform': scaleValue,
+                '-ms-transform': scaleValue,
+                'transform': scaleValue});
+            $("footer").css({
+                '-moz-transform': scaleValue,
+                '-webkit-transform': scaleValue,
+                '-o-transform': scaleValue,
+                '-ms-transform': scaleValue,
+                'transform': scaleValue});
+
+            var headerOffset = $("header").offset();
+            var top = '-' + headerOffset.top + 'px';
+            var left = '-' + headerOffset.left + 'px';
+            $("header").css("margin-top", top).css("margin-left", left);
+
+            var canvasOffset = $(".kineticjs-content").offset();
+            var canvasLeft = '-' + (canvasOffset.left - 70) + 'px';
+            $(".kineticjs-content").css("margin-left", canvasLeft);
 
             //Layer for shapes
             var layer = new Kinetic.Layer();
@@ -190,12 +219,10 @@
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
 
-
             // add the layer to the stage
             stage.add(layer);
             stage.add(messageLayer);
         };
-
 
     </script>
 
