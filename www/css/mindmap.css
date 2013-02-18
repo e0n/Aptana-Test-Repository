@@ -1,5 +1,5 @@
 body {overflow: hidden;}
-div#container {padding-top: 1%; padding-left: 4%;}
+div#container {padding-top: 1%;}
 header div#welcome {float: right;}
 header div#mainmenu div#menubutton {
     background-image: url(../../www/images/logo.png);
@@ -13,6 +13,17 @@ header div#mainmenu div#menubutton:hover {
 header div#mainmenu div#menubody {
     display: none;
     z-index: 200;
+}
+header h1{
+    text-align: center;
+    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+    font-size: 35px;
+    line-height: 35px;
+    position: relative;
+    font-weight: 400;
+    color: rgb(29, 162, 193);
+    text-shadow: 0px 3px 2px #12535D;
+    padding: 0px 0px 5px 0px;
 }
 #overlay {
     position: fixed;
