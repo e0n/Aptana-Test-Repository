@@ -87,7 +87,9 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(load).on('click', function(){
-            //TODO handle load
+            //TODO get saved json stage
+            //transform
+            //replace actual stage
         });
 
         $(save).mouseover(function() {
@@ -97,7 +99,10 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(save).on('click', function(){
-            //TODO handle save
+            //TODO get stage
+            //stage = document.getElementById('container').get....;
+            //jsonStage = stage.toJSON();
+            //save json Stage
         });
 
         $(imporT).mouseover(function() {

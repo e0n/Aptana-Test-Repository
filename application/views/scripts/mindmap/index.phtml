@@ -60,6 +60,7 @@
                 //clickArray.push(node);
 
             } else {
+
                 markedNode.resetMarkedNodes(node);
 //                while (clickArray.length != 0) {
 //                    clickArray[0].fillBackground(clickArray[0].backgroundColorBackup);
@@ -83,6 +84,7 @@
             }
 
             layer.draw();
+
         }
 
         //onload function
@@ -220,24 +222,24 @@
 
             var nodeToCopy;
             //Button for copying a node
-            var newLoadMapButton1 = debugGUI.buildNewMenuButton();
-            newLoadMapButton1.setText('Copy');
-            newLoadMapButton1.setPosition(770, 120);
-            newLoadMapButton1.on("click", function(){
+            var newCopyButton = debugGUI.buildNewMenuButton();
+            newCopyButton.setText('Copy');
+            newCopyButton.setPosition(770, 120);
+            newCopyButton.on("click", function(){
                 nodeToCopy = markedNode;
             });
-            layer.add(newLoadMapButton1);
+            layer.add(newCopyButton);
 
             //Button for pasting a node
-            var newLoadMapButton = debugGUI.buildNewMenuButton();
-            newLoadMapButton.setText('Paste');
-            newLoadMapButton.setPosition(900, 120);
-            newLoadMapButton.on("click", function(){
-                var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
+            var newPasteButton = debugGUI.buildNewMenuButton();
+            newPasteButton.setText('Paste');
+            newPasteButton.setPosition(900, 120);
+            newPasteButton.on("click", function(){
+                var nodeToPaste = new newNodeFactory.newRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });
-            layer.add(newLoadMapButton);
+            layer.add(newPasteButton);
 
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -252,6 +254,10 @@
             stage.add(backgroundLayer);
             stage.add(layer);
             stage.add(messageLayer);
+
+            //TODO Save the layer to compare after changes have been made, for new map warning
+            //firstStage = stage;//.toJSON();
+
         };
 
 
