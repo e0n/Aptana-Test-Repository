@@ -67,7 +67,6 @@
 //                }
 //                clickArray.push(node);
 
-                showselecedNodeMenu(node, layer);
                 markedNode.fillBackground(markedNode.backgroundColorBackup);
                 markedNode.hideAnchors();
                 if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
@@ -81,7 +80,7 @@
                     markedNode.newHideButton.show();
                 }
             }
-
+            showselecedNodeMenu(node, layer);
             layer.draw();
 
         }

@@ -9,12 +9,18 @@ menuController = {
     },
 
     preferencesAction: function(){
+        var data = {};//
+        data.push({"id":deineJsonobjekt});
         $.ajax({
-            url: "http://localhost/teamp/Public/menu/preferences",
-            type: "GET",
-            data: {"ff": "asd"},
+            url: "<?php echo $this->baseUrl('mindmap/save'); ?>",
+            type: "POST",
+            dataType:'json',
+            data: data,
             success:function(data){
                 console.log(data);
+            },
+            error: function(jqXHR, textStatus, errorThrown){
+
             }
         });
     }

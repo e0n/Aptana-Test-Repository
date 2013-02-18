@@ -13,13 +13,15 @@ function showselecedNodeMenu(node, layer) {
     var italic = 'a#italic';
     var underline = 'a#underline';
     $(menu).css('display', 'block');
+    var canvasHeight = $(".kineticjs-content").height();
     if(node.typ == 'rect'){
-        $(menu).css('top',  layer.getHeight() - markedNode.group.getY());
+        $(menu).css('top',  - canvasHeight + markedNode.group.getY() - ($(menu).height() * 2));
         $(menu).css('left',  markedNode.group.getX() - (markedNode.text.getWidth()/2));
     } else {
-        $(menu).css('top', layer.getHeight() - (markedNode.group.getY() - 40));
+        $(menu).css('top', - canvasHeight + (markedNode.group.getY() - 40));
         $(menu).css('left', markedNode.group.getX());
     }
+    console.log(canvasHeight);
 
     $(size).change(function(){
         markedNode.text.setFontSize($(sizeSelected).val());
