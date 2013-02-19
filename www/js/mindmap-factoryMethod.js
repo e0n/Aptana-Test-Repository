@@ -1,17 +1,43 @@
-/*
- mindmap-factoryMethod
-
+/**
+ * Factory for NodeObjects.
+ *
+ * Can produce ellipses, rectangles and the base Node
+ * Note that ellipse is not full supported right now
+ * @see NewEllipseNode
+ * @see NewRectNode
+ * @see CreateBaseNode
  */
 newNodeFactory = {
+    /**
+     * Variable to calculate ids
+     * @type int
+     */
     var: sumOfNodes = 0,
+    /**
+     * Variable to save baseNode
+     * @type node
+     */
     var: rootNode = null,
+    /**
+     * Array for marking funcion
+     * @type int[]
+     */
     var: markedArray = 0,
+    /**
+     * Variable to drag multiple targets (not used jet)
+     * @type Kinetic.Group
+     */
     var: dragGroup = 0,
 
-    // -----
-    // Creates a new node with ellipse shape
-    // -----
-
+    /**
+     * Construct a new ellipse node.
+     * @class This is the basic Ellipse class.
+     * The ellipse node was the first node-type implemented and replaced by the rectangle Node
+     * @constructor
+     * @param {layer} layer TODO : Where comes it from?
+     * @param {Node} parent The node which is marked for creating the new one.
+     * @return A new node
+     */
     NewEllipseNode : function (layer, parent){
 
         var thisNode = this;
@@ -21,6 +47,14 @@ newNodeFactory = {
         this.childElements = [];
         this.typ = 'ellipse';
 
+        /**
+         * The Group of Kinetic elements
+         * @type Kinetic.Group
+         * @see #shape
+         * @see #text
+         * @see #newShowButton
+         * @see #newHideButton
+         */
         this.group = new Kinetic.Group({
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
@@ -28,6 +62,10 @@ newNodeFactory = {
             visible: true
         });
 
+        /**
+         * Shape of a node (only needed in Ellipse node)
+         * @type Kinetic.Ellipse
+         */
         this.shape = new Kinetic.Ellipse({
             x: 0,
             y: 0,
@@ -52,6 +90,10 @@ newNodeFactory = {
         addHovers(this.group, 'ease-in');
         this.group.add(this.shape);
 
+        /**
+         * The text element to display comments in mindmap
+         * @type Kinetic.Text
+         */
         this.text = new Kinetic.Text({
             x: -thisNode.shape.getWidth()/2,
             y: -thisNode.shape.getHeight()/4,
@@ -66,6 +108,10 @@ newNodeFactory = {
             cornerRadius: 5
         });
 
+        /**
+         * Hidebutton to hide children of a node
+         * @type Kinetic.Text
+         */
         this.newHideButton = new Kinetic.Text({
             x: -thisNode.shape.getWidth()/2,
             y: -thisNode.shape.getHeight()/2,
@@ -82,6 +128,10 @@ newNodeFactory = {
             cornerRadius: 0
         });
 
+        /**
+         * Showbutton to display children of a node
+         * @type Kinetic.Text
+         */
         this.newShowButton = new Kinetic.Text({
             x: -thisNode.shape.getWidth()/2+12,
             y: -thisNode.shape.getHeight()/2,
@@ -102,22 +152,58 @@ newNodeFactory = {
         this.newShowButton.hide();
         this.group.add(this.newHideButton);
 
+        /**
+         * fills Background of a node with a color
+         * @param {hexColor} color New backgroundcolor of the node
+         */
         this.fillBackground = function (color) {
             thisNode.shape.setFill(color);
         };
 
+        /**
+         * returns Backgroundcolor of a node
+         * @return hexcolor of backgroundcolor
+         */
         this.getBackground = function() {
             return thisNode.shape.getFill();
         };
 
         this.group.add(this.text);
 
+        /**
+         * XPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #yConnectPosition
+         */
         this.xConnectPosition = this.group.getX();
+        /**
+         * YPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #xConnectPosition
+         */
         this.yConnectPosition = this.group.getY();
 
+        /**
+         * XPosition of the parents connection point
+         * @type int
+         * @see #yParent
+         */
         var xParent = parent.xConnectPosition;
+        /**
+         * YPosition of the parents connection point
+         * @type int
+         * @see #xParent
+         */
         var yParent = parent.yConnectPosition;
 
+        /**
+         * Connectionline between child and parent
+         * @type Kinetic.Line
+         * @see #xConnectPosition
+         * @see #yConnectPosition
+         * @see #xParent
+         * @see #yParent
+         */
         var connectionLine = new Kinetic.Line({
             y: yParent,
             x: xParent,
@@ -134,6 +220,11 @@ newNodeFactory = {
             }
         });
 
+        /**
+         * Animation to redraw connection line if child/parent is moved
+         * @type Kinetic.Animation
+         * @see #connectionLine
+         */
         this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
                 thisNode.xConnectPosition = thisNode.group.getX();
@@ -153,7 +244,10 @@ newNodeFactory = {
         // Add the Child to the Parents child array
         parent.childElements.push(this);
 
-        //function to show the hidden children
+        /**
+         * Function to show hidden children
+         * @param {layer} layer Main layer
+         */
         this.showChildren = function(layer) {
             for(var count = 0; count < this.childElements.length; count++){
                 this.childElements[count].showChildren(layer);
@@ -165,7 +259,10 @@ newNodeFactory = {
             layer.draw();
         };
 
-        //function to hide the children
+        /**
+         * Function to hide shown children
+         * @param {layer} layer Main layer
+         */
         this.hideChildren = function(layer) {
             for(var count = 0; count < this.childElements.length; count++){
                 this.childElements[count].hideChildren(layer);
@@ -177,13 +274,22 @@ newNodeFactory = {
             layer.draw();
         };
 
+        /**
+         * Function to shown anchor point if node is selected
+         */
         this.showAnchors = function() {
 
         };
+        /**
+         * Function to hide anchor point if node is deselected
+         */
         this.hideAnchors = function() {
 
         };
 
+        /**
+         * Deletes a marked node
+         */
         this.deleteNode = function (layer) {
 
         };
@@ -194,30 +300,71 @@ newNodeFactory = {
         layer.draw();
     },
 
-    // -----
-    // Creates a new node with rect shape
-    // -----
-
+    /**
+     * Construct a new rectangle node.
+     * @class This is the basic Rectangle class.
+     * The rectangle is the main used node
+     * @constructor
+     * @param {layer} layer TODO : Where comes it from?
+     * @param {Node} parent The node which is marked for creating the new one.
+     * @return A new node
+     */
     NewRectNode : function (layer, parent){
 
+        /**
+         * Saves this node
+         * @type {Node}
+         */
         var thisNode = this;
+        /**
+         * Parentnode of this node
+         * @type {Node}
+         */
         this.parentNode = parent;
+        /**
+         * TODO: layer nachfragen
+         * @type {layer}
+         */
         this.layer = layer;
+        /**
+         * Backup for backgroundcolor
+         * @type {String}
+         */
         this.backgroundColorBackup = '#F7F7F7';
+        /**
+         * Array of node-childs
+         * @type {Array}
+         */
         this.childElements = [];
+        /**
+         * Type of node
+         * @type {String}
+         */
         this.typ = 'rect';
+        /**
+         * Id of node
+         * @type {String}
+         */
         this.id = 'shape'+sumOfNodes;
 
+        /**
+         * The Group of Kinetic elements
+         * @type Kinetic.Group
+         * @see #shape
+         * @see #text
+         * @see #newShowButton
+         * @see #newHideButton
+         */
         this.group = new Kinetic.Group({
-//            stroke: 'C7C7C7',
-//            strokeWidth: 5,
             x: parent.xConnectPosition + 100,
             y: parent.yConnectPosition + 100,
             draggable: true
-//            fill: '#FF0000',
-//            visible: true
         });
 
+        /**
+         * Shape of a node (only needed in Ellipse node)
+         * @type Kinetic.Ellipse
+         */
         this.shape = new Kinetic.Rect({
             x: 0,
             y: 0,
@@ -227,6 +374,10 @@ newNodeFactory = {
             id: 'shape'+sumOfNodes
         });
 
+        /**
+         * DebugShape of a node to show (0/0) pos of group
+         * @type Kinetic.Rect
+         */
         this.debugShape = new Kinetic.Rect({
             x: -10,
             y: -10,
@@ -240,6 +391,10 @@ newNodeFactory = {
         });
         this.group.add(this.debugShape);
 
+        /**
+         * The text element to display comments in mindmap
+         * @type Kinetic.Text
+         */
         this.text = new Kinetic.Text({
             x: 0,
             y: 0,
@@ -263,10 +418,18 @@ newNodeFactory = {
             cornerRadius: 5
         });
 
+        /**
+         * fills Background of a node with a color
+         * @param {hexColor} color New backgroundcolor of the node
+         */
         this.fillBackground = function( color ) {
             thisNode.text.setFill(color);
         };
 
+        /**
+         * returns Backgroundcolor of a node
+         * @return hexcolor of backgroundcolor
+         */
         this.getBackground = function() {
             return thisNode.text.getFill();
         };
@@ -277,9 +440,23 @@ newNodeFactory = {
 
         addHovers(this.group, 'ease-in');
 
+        /**
+         * XPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #yConnectPosition
+         */
         this.xConnectPosition = this.group.getX() + this.text.getWidth()/2;
+        /**
+         * YPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #xConnectPosition
+         */
         this.yConnectPosition = this.group.getY() + this.text.getHeight()/2;
 
+        /**
+         * Showbutton to display children of a node
+         * @type Kinetic.Text
+         */
         this.newShowButton = new Kinetic.Text({
             x: -thisNode.shape.getWidth()-35,
             y: -thisNode.shape.getHeight()-15,
@@ -296,6 +473,10 @@ newNodeFactory = {
             cornerRadius: 0
         });
 
+        /**
+         * Hidebutton to hide children of a node
+         * @type Kinetic.Text
+         */
         this.newHideButton = new Kinetic.Text({
             x: -thisNode.shape.getWidth()-35,
             y: -thisNode.shape.getHeight()-15,
@@ -318,12 +499,33 @@ newNodeFactory = {
         this.group.add(this.newHideButton);
         this.newShowButton.hide();
         this.newHideButton.hide();
+        /**
+         * Boolean variable for shown/hidden children
+         * @type {Boolean}
+         */
         this.areThereHiddenChildren = false;
 
-
+        /**
+         * XPosition of the parents connection point
+         * @type int
+         * @see #yParent
+         */
         var xParent = parent.xConnectPosition;
+        /**
+         * YPosition of the parents connection point
+         * @type int
+         * @see #xParent
+         */
         var yParent = parent.yConnectPosition;
 
+        /**
+         * Connectionline between child and parent
+         * @type Kinetic.Line
+         * @see #xConnectPosition
+         * @see #yConnectPosition
+         * @see #xParent
+         * @see #yParent
+         */
         var connectionLine = new Kinetic.Line({
             y: yParent,
             x: xParent,
@@ -340,6 +542,11 @@ newNodeFactory = {
             }
         });
 
+        /**
+         * Animation to redraw connection line if child/parent is moved
+         * @type Kinetic.Animation
+         * @see #connectionLine
+         */
         this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
                 thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getX() + thisNode.text.getWidth()/2;
@@ -359,7 +566,10 @@ newNodeFactory = {
         // Add the Child to the Parents child array
         parent.childElements.push(this);
 
-        //function to show the hidden children
+        /**
+         * Function to show hidden children
+         * @param {layer} layer Main layer
+         */
         this.showChildren = function(layer) {
             for(var count = 0; count < this.childElements.length; count++){
                 this.childElements[count].showChildren(layer);
@@ -371,7 +581,10 @@ newNodeFactory = {
             layer.draw();
         };
 
-        //function to hide the children
+        /**
+         * Function to hide shown children
+         * @param {layer} layer Main layer
+         */
         this.hideChildren = function(layer) {
             for(var count = 0; count < this.childElements.length; count++){
                 this.childElements[count].hideChildren(layer);
@@ -384,6 +597,10 @@ newNodeFactory = {
             layer.draw();
         };
 
+        /**
+         * Deletes a marked node and all its children
+         * @param {layer} layer Main layer
+         */
         this.deleteNode = function (layer) {
 
             while ( this.childElements.length != 0 ) {
@@ -403,6 +620,13 @@ newNodeFactory = {
             layer.draw();
         };
 
+        /**
+         * This function is called when multiple nodes are marked and a node is clicked
+         * if the node is not yet marked, it will be marked and added to the marked group
+         * if the node is already marked, it will be dismarked and removed from marked group
+         * @param {node} node The clicked node
+         * @return The function will return the node which should be marked: a new one or an old when removing a node
+         */
         this.toggleNode = function(node) {
             var isNotInArry = true;
             var resultNode = rootNode;
@@ -432,6 +656,10 @@ newNodeFactory = {
             return resultNode;
         };
 
+        /**
+         * This function is called when a single node is clicked to remove all nodes in the marked-nodes-array and dismarks them.
+         * @param node
+         */
         this.resetMarkedNodes = function(node) {
             while(markedArray.length != 0) {
                 markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
@@ -442,14 +670,31 @@ newNodeFactory = {
             };
         };
 
-
+        /**
+         * anchor at the top left corner of the node group
+         * @type {Kinetic.Circle} topLeftAnchor
+         */
         this.topLeftAnchor = addAnchor(thisNode, 0,0,"topLeft");
+        /**
+         * anchor at the top right corner of the node group
+         * @type {Kinetic.Circle} topRightAnchor
+         */
         this.topRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),0,"topRight");
+        /**
+         * anchor at the bottom right corner of the node group
+         * @type {Kinetic.Circle} bottomRightAnchor
+         */
         this.bottomRightAnchor = addAnchor(thisNode, thisNode.text.getWidth(),thisNode.text.getHeight(),"bottomRight");
+        /**
+         * anchor at the bottom left corner of the node group
+         * @type {Kinetic.Circle} bottomLeftAnchor
+         */
         this.bottomLeftAnchor = addAnchor(thisNode, 0,thisNode.text.getHeight(),"bottomLeft");
 
 
-
+        /**
+         * Function to shown anchor point if node is selected
+         */
         this.showAnchors = function() {
             var topLeft = thisNode.group.get(".topLeft")[0];
             topLeft.setVisible(true);
@@ -461,6 +706,9 @@ newNodeFactory = {
             bottomLeft.setVisible(true);
         };
 
+        /**
+         * Function to hide anchor point if node is deselected
+         */
         this.hideAnchors = function() {
             var topLeft = thisNode.group.get(".topLeft")[0];
             topLeft.setVisible(false);
@@ -482,10 +730,16 @@ newNodeFactory = {
         layer.draw();
     },
 
-    // -----
-    // Creates the base Node with ellipse shape
-    // -----
-
+    /**
+     * Construct the base node.
+     * @class This is the basic base class.
+     * The base node is the first node created and is used as root node.
+     * It's not movable or deletable
+     * @constructor
+     * @param {layer} layer TODO : Where comes it from?
+     * @param {stage} stage TODO : Where comes it from?
+     * @return The Basic Node
+     */
     CreateBaseNode: function(stage, layer){
         var thisNode = this;
         this.childElements = [];
@@ -541,7 +795,7 @@ newNodeFactory = {
         };
 
         this.toggleNode = function(node) {
-            var isNotInArry = true;
+            var isNotInArray = true;
             var resultNode = rootNode;
 
             if (node.id != 'ovalX') {
@@ -552,16 +806,16 @@ newNodeFactory = {
                         if(markedArray.length != 0) {
                             resultNode = markedArray[0];
                         }
-                        isNotInArry = false;
+                        isNotInArray = false;
                         node.fillBackground(node.backgroundColorBackup);
                         node.hideAnchors();
-                        if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                            markedNode.newHideButton.hide();
+                        if(node.childElements.length != 0 && node.areThereHiddenChildren == false){
+                            node.newHideButton.hide();
                         }
                         break;
                     }
                 }
-                if( isNotInArry ) {
+                if( isNotInArray ) {
                     markedArray.push(node);
                     resultNode = node;
                 }
@@ -617,6 +871,12 @@ newNodeFactory = {
 
 };
 
+/**
+ * Builds basic node functions.
+ * Event functions: mouse-, click-, touch- and drag-events
+ * Text: setter getter
+ * @param {node} thisNode On this node the functions will be added
+ */
 function buildNodeFunctions(thisNode) {
     thisNode.group.on("mouseover", function() {
         document.body.style.cursor = "pointer";
@@ -664,7 +924,11 @@ function buildNodeFunctions(thisNode) {
     };
 }
 
-// closes gap between group and text in a node, also shifts anchors afterwards
+/**
+ * Closes gap between group and text in a Node when dragged
+ * Also shifts anchors afterwards to the correct position
+ * @param {node} thisNode The dragged node
+ */
 function updateNoteGroup(thisNode) {
 
     // correct X-Gap between group and text
@@ -688,6 +952,12 @@ function updateNoteGroup(thisNode) {
     thisNode.bottomRightAnchor.setY(thisNode.text.getHeight());
 }
 
+/**
+ * Manages the anchors of a node when note is resized
+ * Resizes the text-field
+ * @param {node} thisNode The dragged node
+ * @param {addAnchor} activeAnchor
+ */
 function update(thisNode, activeAnchor) {
 
     var topLeft = thisNode.group.get(".topLeft")[0];
@@ -728,6 +998,14 @@ function update(thisNode, activeAnchor) {
     }
 }
 
+/**
+ * Creates a resize-anchor
+ * Adds events on anchors
+ * @param {node} thisNode The dragged node
+ * @param {int} x x position where the anchor is created
+ * @param {int} y y position where the anchor is created
+ * @param {string} name name of position: topLeft, topRight, bottomRight, bottomLeft
+ */
 function addAnchor(thisNode, x, y, name) {
     var layer = thisNode.layer;
 
@@ -801,6 +1079,10 @@ function addAnchor(thisNode, x, y, name) {
     return anchor;
 }
 
+/**
+ * Updates anchor bounds to prevent resizing behind opposites anchor
+ * @param {node} thisNode The resized node
+ */
 function updateAnchorBounds(thisNode) {
     thisNode.leftBound =                                thisNode.group.getX();
     thisNode.rightBound = thisNode.text.getWidth()    + thisNode.group.getX();
@@ -809,6 +1091,12 @@ function updateAnchorBounds(thisNode) {
     thisNode.topBound =                                 thisNode.group.getY();
 }
 
+/**
+ * Hovers on mouseover
+ * Uncommented because of autolayout... ask tobi, if you like ps.: ER IST TOT, JIM!
+ * @param {shape} shape TODO: tobbi fragen :)
+ * @param {easing} easing TODO: tobbi fragen :)
+ */
 function addHovers(shape, easing) {
     //TODO Uncommented because of autolayout... ask tobi, if you like ps.: ER IST TOT, JIM!
 //    shape.on('mouseover touchstart', function() {
@@ -833,6 +1121,11 @@ function addHovers(shape, easing) {
 //    });
 }
 
+/**
+ * Hovers on mouseover
+ * @param {shape} shape TODO: tobbi fragen :)
+ * @param {easing} easing TODO: tobbi fragen :)
+ */
 function addHoversForLittleButtons(shape, easing) {
     shape.on('mouseover touchstart', function() {
         this.moveToTop();
