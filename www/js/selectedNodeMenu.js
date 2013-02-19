@@ -3,7 +3,7 @@
  * Date: 10.02.13
  */
 
-function showselecedNodeMenu(node, layer) {
+function showselecedNodeMenu(markedNode, layer) {
     var menu = 'footer div#selectedNodeMenu';
     var font = 'select#font'
     var fontSelected = 'select#font > option:selected';
@@ -12,16 +12,20 @@ function showselecedNodeMenu(node, layer) {
     var bold = 'a#bold';
     var italic = 'a#italic';
     var underline = 'a#underline';
+    var colorText = 'div#colorSelector';
+    var colorShape = 'div#borderColorSelector';
+    var colorTextInput = 'div#colorSelector > input';
+    var colorShapeInput = 'div#borderColorSelector > input';
     $(menu).css('display', 'block');
     var canvasHeight = $(".kineticjs-content").height();
-    if(node.typ == 'rect'){
-        $(menu).css('top',  - canvasHeight + markedNode.group.getY() - ($(menu).height() * 2));
-        $(menu).css('left',  markedNode.group.getX() - (markedNode.text.getWidth()/2));
+    if(markedNode.typ == 'rect'){
+        var newScreenHeightScale = (screen.height / ( 1080 / 100)) / 100;
+        $(menu).css('top',  - canvasHeight + (markedNode.group.getAbsolutePosition().y * 0.8));
+        $(menu).css('left',  markedNode.group.getAbsolutePosition().x + (markedNode.text.getWidth()/2.3));
     } else {
         $(menu).css('top', - canvasHeight + (markedNode.group.getY() - 40));
         $(menu).css('left', markedNode.group.getX());
     }
-    console.log(canvasHeight);
 
     $(size).change(function(){
         markedNode.text.setFontSize($(sizeSelected).val());
@@ -58,5 +62,29 @@ function showselecedNodeMenu(node, layer) {
             markedNode.text.setFontStyle('underline');
         }
         layer.draw();
+    });
+
+    $(colorText).click(function(){
+        $(colorTextInput).css("visibility", "visible").trigger("focus");
+    });
+
+    $(colorTextInput).blur(function() {
+        $(colorTextInput).css("visibility", "hidden");
+    });
+    $(colorTextInput).change(function(){
+        markedNode.text.setTextFill($(colorTextInput).val());
+        $(colorTextInput).trigger("blur");
+    });
+
+    $(colorShape).click(function(){
+        $(colorShapeInput).css("visibility", "visible").trigger("focus");
+    });
+
+    $(colorShapeInput).blur(function() {
+        $(colorShapeInput).css("visibility", "hidden");
+    });
+    $(colorShapeInput).change(function(){
+        markedNode.text.setFill($(colorShapeInput).val());
+        $(colorShapeInput).trigger("blur");
     });
 }

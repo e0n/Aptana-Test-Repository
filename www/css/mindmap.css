@@ -1,5 +1,4 @@
 body {overflow: hidden;}
-div#container {padding-top: 1%; padding-left: 4%;}
 header div#welcome {float: right;}
 header div#mainmenu div#menubutton {
     background-image: url(../../www/images/logo.png);
@@ -14,12 +13,25 @@ header div#mainmenu div#menubody {
     display: none;
     z-index: 200;
 }
+header h1{
+    text-align: center;
+    font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+    font-size: 35px;
+    line-height: 35px;
+    position: relative;
+    font-weight: 400;
+    color: rgb(29, 162, 193);
+    text-shadow: 0px 3px 2px #12535D;
+    padding: 0px 0px 5px 0px;
+}
 #overlay {
     position: fixed;
     z-index:199;
     top: 0px;
     left: 0px;
     height:100%;
+    min-height: 1080px;
+    min-width: 1920px;
     width:100%;
     background-color: #000000;
     opacity: 0.85;
@@ -42,8 +54,8 @@ header div#mainmenu div#menubody div#new {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 5%;
-    margin-left: 35%;
+    margin-top: 80px;
+    margin-left: 600px;
 }
 header div#mainmenu div#menubody div#new:hover {
     background-image: url(../../www/images/new-hover.png);
@@ -56,8 +68,8 @@ header div#mainmenu div#menubody div#load {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 3%;
-    margin-left: 57%;
+    margin-top: 10px;
+    margin-left: 1050px;
 }
 header div#mainmenu div#menubody div#load:hover {
     background-image: url(../../www/images/load-hover.png);
@@ -70,8 +82,8 @@ header div#mainmenu div#menubody div#save {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 30%;
-    margin-left: 65%;
+    margin-top: 290px;
+    margin-left: 1250px;
 }
 header div#mainmenu div#menubody div#save:hover {
     background-image: url(../../www/images/save-hover.png);
@@ -84,8 +96,8 @@ header div#mainmenu div#menubody div#import {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 57%;
-    margin-left: 57%;
+    margin-top: 580px;
+    margin-left: 1100px;
 }
 header div#mainmenu div#menubody div#import:hover {
     background-image: url(../../www/images/import-hover.png);
@@ -98,8 +110,8 @@ header div#mainmenu div#menubody div#export {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 57%;
-    margin-left: 33%;
+    margin-top: 630px;
+    margin-left: 720px;
 }
 header div#mainmenu div#menubody div#export:hover {
     background-image: url(../../www/images/export-hover.png);
@@ -112,8 +124,8 @@ header div#mainmenu div#menubody div#logout {
     height: 200px;
     width: 200px;
     z-index: 200;
-    margin-top: 32%;
-    margin-left: 25%;
+    margin-top: 400px;
+    margin-left: 500px;
 }
 header div#mainmenu div#menubody div#logout:hover {
     background-image: url(../../www/images/logout-hover.png);
@@ -122,8 +134,8 @@ header div#mainmenu div#menubody div#logout:hover {
 header div#mainmenu div#menubody a#text {
     position: absolute;
     z-index: 200;
-    margin-top: 48%;
-    margin-left: 50%;
+    margin-top: 500px;
+    margin-left: 960px;
     color: #3D9DB3;
     font-size: 35px;
 }

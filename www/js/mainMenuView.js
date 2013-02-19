@@ -16,17 +16,17 @@ function setMenuText(val){
     if(val != ''){
         $(text).html(val);
         if(document.menuTextLeft == undefined) {
-            document.menuTextLeft = $(text).offset().left;
+            document.menuTextLeft = $(text).offset().left + 150;
         }
         $(text).css('margin-left', document.menuTextLeft - ($(text).width() / 2));
         if(document.menuTextTop == undefined){
-            document.menuTextTop = $(text).offset().top;
+            document.menuTextTop = $(text).offset().top + 50;
         }
         $(text).css('margin-top', document.menuTextTop - ($(text).height() / 2) - 130);
     } else {
         $(text).html('');
-        $(text).css('margin-left', '50%');
-        $(text).css('margin-top', '48%');
+        $(text).css('margin-left', '960px');
+        $(text).css('margin-top', '500px');
     }
 
 }
@@ -46,10 +46,12 @@ $(document).ready(function() {
         var text = 'header div#mainmenu div#menubody a#text';
         if($(body).css('display') == 'none') {  //Wenn Menü nicht angezeigt wird
             $(body).css('display', 'block');   //dann mach es sichtbar
+            $('div#container').css("visibility","hidden");
         }
 
         $(overlay).on('click', function() {
             $(body).css('display', 'none'); //wird das overlay angeklickt soll das Menu wieder verschwinden
+            $('div#container').css("visibility","visible");
         });
 
         setMenuText('');
@@ -76,7 +78,9 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(neW).on('click', function(){
-            //TODO ask for save mindmap
+            //TODO ask for saving mindmap if it has changed
+            //something like if(Kinetic.Node.create(firstStage).toJSON() != stage.toJSON())
+            //   alert('Dont u wanna save it first?');
             location.reload();
         });
 
@@ -86,8 +90,17 @@ $(document).ready(function() {
         $(load).mouseleave(function() {
             setMenuText('');
         });
+        var testSavedStage;
         $(load).on('click', function(){
-            //TODO handle load
+            //get saved json stage
+            jsonStage = testSavedStage;
+            // create a stage from JSON
+            aNewStage = Kinetic.Node.create(jsonStage, 'container');//or like Kinetic.Node.create(jsonStage);
+            //TODO replace actual stage
+            //http://www.html5canvastutorials.com/kineticjs/html5-canvas-load-complex-stage-with-kineticjs/
+            //TODO get saved json stage
+            //transform
+            //replace actual stage
         });
 
         $(save).mouseover(function() {
@@ -97,7 +110,30 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(save).on('click', function(){
-            //TODO handle save
+            //Get global stage
+            jsonStage = stage.toJSON();
+            testSavedStage = jsonStage;//TODO temporal for testing from/to a variable
+            alert('stage was saved in testSavedStage variable');
+            //Send json to server
+            /*
+             var data = {};
+             data.push({"id":jsonStage});
+             $.ajax({
+             url: "<?php echo $this->baseUrl('mindmap/save'); ?>",
+             type: "POST",
+             dataType:'json',
+             data: data,
+             success:function(data){
+             console.log(data);
+             },
+             error: function(jqXHR, textStatus, errorThrown){
+             }
+             });
+             */
+            //TODO get stage
+            //stage = document.getElementById('container').get....;
+            //jsonStage = stage.toJSON();
+            //save json Stage
         });
 
         $(imporT).mouseover(function() {
