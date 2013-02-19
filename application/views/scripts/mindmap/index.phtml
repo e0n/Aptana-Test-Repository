@@ -86,14 +86,22 @@
 
         //onload function
         window.onload = function() {
+            // Button stage
+            var buttonStage = new Kinetic.Stage({
+                container: "container"
+            });
+            //Map stage
             stage = new Kinetic.Stage({
-                container: "container",
-                width: 1840,
-                height: 950
+                container: "container"
             });
 
+            //Set stage Dimensions
+            buttonStageWidth = 120*2.3;
+            buttonStage.setHeight(screen.height - 230);
+            buttonStage.setWidth(buttonStageWidth);
             stage.setHeight(screen.height - 230);
-            stage.setWidth(screen.width - 70);
+            stage.setWidth(screen.width - (40+buttonStageWidth));
+
             // the following section is for zoom and drag the stage
             var backgroundLayer = new Kinetic.Layer({
                 width: 10000,
@@ -175,7 +183,8 @@
             };
             document.addEventListener("mousewheel", zoom, false);
 
-
+            //Layer for the buttons
+            var buttonLayer = new Kinetic.Layer();
             //Layer for shapes
             var layer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
@@ -198,7 +207,7 @@
             newShowButton.on("click", function(){
                 markedNode.showChildren(layer);
             });
-            layer.add(newShowButton);
+            buttonLayer.add(newShowButton);
 
             //Button for hiding the marked node
             //this functionality would be used later for hide/minimize parts of the mindmap
@@ -206,7 +215,7 @@
             newHideButton.on("click", function(){
                 markedNode.hideChildren(layer);
             });
-            layer.add(newHideButton);
+            buttonLayer.add(newHideButton);
 
             // this buttons deletes current marked node and all its children
             var newDeleteButton = debugGUI.buildNewDeleteButton();
@@ -217,20 +226,20 @@
                 markedNode.fillBackground('#3D9DB3');
                 layer.draw();
             });
-            layer.add(newDeleteButton);
+            buttonLayer.add(newDeleteButton);
 
             //Button for FactoryMethod of creating new Nodes
             var newEllipseButton = debugGUI.buildNewEllipseButton();
             newEllipseButton.on("click", function(){
                 new newNodeFactory.NewEllipseNode(layer, markedNode);
             });
-            layer.add(newEllipseButton);
+            buttonLayer.add(newEllipseButton);
 
             var newRectButton = debugGUI.buildNewRectButton();
             newRectButton.on("click", function(){
                 new newNodeFactory.NewRectNode(layer, markedNode);
             });
-            layer.add(newRectButton);
+            buttonLayer.add(newRectButton);
 
             var newEditTextButton = debugGUI.buildNewEditTextButton();
             newEditTextButton.on("click", function(){
@@ -240,28 +249,28 @@
                     markedNode.setText(newText);
                 }
             });
-            layer.add(newEditTextButton);
+            buttonLayer.add(newEditTextButton);
 
             var nodeToCopy;
             //Button for copying a node
             var newCopyButton = debugGUI.buildNewMenuButton();
             newCopyButton.setText('Copy');
-            newCopyButton.setPosition(270, 35);
+            newCopyButton.setPosition(140, 120);
             newCopyButton.on("click", function(){
                 nodeToCopy = markedNode;
             });
-            layer.add(newCopyButton);
+            buttonLayer.add(newCopyButton);
 
             //Button for pasting a node
             var newPasteButton = debugGUI.buildNewMenuButton();
             newPasteButton.setText('Paste');
-            newPasteButton.setPosition(400, 35);
+            newPasteButton.setPosition(140, 210);
             newPasteButton.on("click", function(){
                 var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });
-            layer.add(newPasteButton);
+            buttonLayer.add(newPasteButton);
 
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -271,6 +280,8 @@
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
 
+            // add button layer to buttons stage
+            buttonStage.add(buttonLayer);
             // add the layer to the stage
             stage.add(backgroundLayer);
             stage.add(layer);
