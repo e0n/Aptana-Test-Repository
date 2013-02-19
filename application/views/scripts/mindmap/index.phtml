@@ -3,9 +3,6 @@
   Date: 24.10.2012
  -->
 
-<!DOCTYPE html>
-<html>
-<head>
     <style>
         body {
             margin: 1px;
@@ -19,6 +16,7 @@
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
 
         var markedNode;
+        var zoomOffset = 0;
         //var markedNodeFillBackup;
 
         var clickGroup = new Kinetic.Group({
@@ -28,6 +26,9 @@
         });
 
         var clickArray = [];
+
+        var stage; //Global for accessing from mainMenuView
+        var firstStage;
 
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
@@ -59,7 +60,6 @@
                 //clickArray.push(node);
 
             } else {
-
                 markedNode.resetMarkedNodes(node);
 //                while (clickArray.length != 0) {
 //                    clickArray[0].fillBackground(clickArray[0].backgroundColorBackup);
@@ -82,21 +82,35 @@
             }
             showselecedNodeMenu(node, layer);
             layer.draw();
-
         }
 
         //onload function
         window.onload = function() {
-            var stage = new Kinetic.Stage({
+            stage = new Kinetic.Stage({
                 container: "container",
                 width: 1840,
                 height: 950
             });
 
-            stage.setHeight(screen.height - 200);
+            stage.setHeight(screen.height - 230);
             stage.setWidth(screen.width - 70);
+            // the following section is for zoom and drag the stage
+            var backgroundLayer = new Kinetic.Layer({
+                width: 10000,
+                height: 7000
+            });
+            backgroundLayer.setDraggable("draggable");
+            var background = new Kinetic.Rect({
+                x: -10000,
+                y: -10000,
+                width: 20000,
+                height: 20000,
+                fill: "#000000",
+                opacity: 0
+            });
+            backgroundLayer.add(background);
 
-            var newScreenWidthScale = 1.0; //(screen.width / ( 1920 / 100)) / 100;
+            var newScreenWidthScale = (screen.width / ( 1920 / 100)) / 100;
             var newScreenHeightScale = (screen.height / ( 1080 / 100)) / 100;
 
             var scaleValue = 'scale(' + newScreenWidthScale + ',' + newScreenHeightScale +')';
@@ -122,6 +136,45 @@
             var canvasOffset = $(".kineticjs-content").offset();
             var canvasLeft = '-' + (canvasOffset.left - 70) + 'px';
             $(".kineticjs-content").css("margin-left", canvasLeft);
+
+            background.on("mouseover touchstart", function(){
+                stage.setDraggable(true);
+            });
+
+            background.on("mouseout touchend", function(){
+                stage.setDraggable(false);
+            });
+
+            var zoom = function(e) {
+                var zoomAmount = e.wheelDeltaY*0.001;
+                if(zoomAmount == -0.12){
+                    zoomOffset = zoomOffset-1;
+                    if(zoomOffset == -5){
+                        zoomAmount = 0;
+                        zoomOffset = -4;
+                    } else {
+                    stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
+                    stage.setScale(stage.getScale().x+zoomAmount);
+                    stage.setX ( stage.getWidth()/2 );
+                    stage.setY ( stage.getHeight()/2 );
+                    }
+                }
+                if(zoomAmount == 0.12){
+                    zoomOffset = zoomOffset+1;
+                    if(zoomOffset == 5){
+                        zoomAmount = 0;
+                        zoomOffset = 4;
+                    } else {
+                    stage.setOffset (stage.getMousePosition().x, stage.getMousePosition().y );
+                    stage.setScale(stage.getScale().x+zoomAmount);
+                    stage.setX ( stage.getWidth()/2 );
+                    stage.setY ( stage.getHeight()/2 );
+                    }
+                }
+                stage.draw();
+            };
+            document.addEventListener("mousewheel", zoom, false);
+
 
             //Layer for shapes
             var layer = new Kinetic.Layer();
@@ -191,24 +244,24 @@
 
             var nodeToCopy;
             //Button for copying a node
-            var newLoadMapButton1 = debugGUI.buildNewMenuButton();
-            newLoadMapButton1.setText('Copy');
-            newLoadMapButton1.setPosition(770, 120);
-            newLoadMapButton1.on("click", function(){
+            var newCopyButton = debugGUI.buildNewMenuButton();
+            newCopyButton.setText('Copy');
+            newCopyButton.setPosition(270, 35);
+            newCopyButton.on("click", function(){
                 nodeToCopy = markedNode;
             });
-            layer.add(newLoadMapButton1);
+            layer.add(newCopyButton);
 
             //Button for pasting a node
-            var newLoadMapButton = debugGUI.buildNewMenuButton();
-            newLoadMapButton.setText('Paste');
-            newLoadMapButton.setPosition(900, 120);
-            newLoadMapButton.on("click", function(){
+            var newPasteButton = debugGUI.buildNewMenuButton();
+            newPasteButton.setText('Paste');
+            newPasteButton.setPosition(400, 35);
+            newPasteButton.on("click", function(){
                 var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
             });
-            layer.add(newLoadMapButton);
+            layer.add(newPasteButton);
 
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -219,15 +272,19 @@
             });
 
             // add the layer to the stage
+            stage.add(backgroundLayer);
             stage.add(layer);
             stage.add(messageLayer);
+
+            //Save the stage to compare after changes have been made, for new map warning
+            firstStage = stage;
+
         };
 
     </script>
 
-</head>
-<body>
 <header>
+    <h1>Open Your Mind</h1>
     <div id="welcome">
         Welcome, <?=$this->username?><br>
         <a id="logoutAction" href="login/logout" >Click here to logout</a>
@@ -235,6 +292,7 @@
     <div id="mainmenu">
         <div id="menubutton"></div>
         <div id="menubody">
+            <a href="#" id="text"></a>
             <div id="overlay"></div>
             <div id="menuPointer"></div>
             <div id="new"></div>
@@ -243,12 +301,10 @@
             <div id="import"></div>
             <div id="export"></div>
             <div id="logout"></div>
-            <a href="#" id="text"></a>
         </div>
     </div>
 </header>
     <div id="container"></div>
-</body>
 <footer>
     <div align="center" >Copyright © Open Your Mind 2012-2013</div>
     <div id="selectedNodeMenu" style="display: none;">
@@ -283,9 +339,8 @@
             <a href="#" id="bold"><b>F</b></a>
             <a href="#" id="italic"><i>K</i></a>
             <a href="#" id="underline"><u>U</u></a>
-            <div id="colorSelector"></div>
-            <div id="borderColorSelector"></div>
+            <div id="colorSelector"><input class="color {pickerClosable:true}" style="visibility: hidden; width: 0px;"/></div>
+            <div id="borderColorSelector"><input class="color {pickerClosable:true}" style="visibility: hidden; width: 0px;"/></div>
         </div>
     </div>
 </footer>
-</html>
