@@ -22,7 +22,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -50,7 +56,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -78,7 +90,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -106,7 +124,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -134,7 +158,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -162,7 +192,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
@@ -188,7 +224,13 @@ debugGUI = {
             padding: 20,
             align: 'center',
             fontStyle: 'italic',
-            cornerRadius: 5
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
         });
         // add cursor styling for shape oval
         button.on("mouseover", function() {
