@@ -38,7 +38,7 @@ newNodeFactory = {
      * @class This is the basic Ellipse class.
      * The ellipse node was the first node-type implemented and replaced by the rectangle Node
      * @constructor
-     * @param {layer} layer TODO : Where comes it from?
+     * @param {layer} layer This parameter describes the layer where the new created object should be drawn
      * @param {Node} parent The node which is marked for creating the new one.
      * @return A new node
      */
@@ -91,7 +91,6 @@ newNodeFactory = {
             draggable: true
         });
         sumOfNodes++;
-        addHovers(this.group, 'ease-in');
         this.group.add(this.shape);
 
         /**
@@ -309,7 +308,7 @@ newNodeFactory = {
      * @class This is the basic Rectangle class.
      * The rectangle is the main used node
      * @constructor
-     * @param {layer} layer TODO : Where comes it from?
+     * @param {layer} layer This parameter describes the layer where the new created object should be drawn
      * @param {Node} parent The node which is marked for creating the new one.
      * @return A new node
      */
@@ -329,7 +328,7 @@ newNodeFactory = {
          */
         this.parentNode = parent;
         /**
-         * TODO: layer nachfragen
+         * This is where objects could be drawn
          * @type {layer}
          */
         this.layer = layer;
@@ -377,7 +376,6 @@ newNodeFactory = {
             y: 0,
             //stroke: 'C7C7C7',
             //strokeWidth: 0,
-            //TODO id entfernen
             id: 'shape'+sumOfNodes
         });
 
@@ -393,7 +391,6 @@ newNodeFactory = {
             fill: '#FF0000',
             visible: true,
             //strokeWidth: 0,
-            //TODO id entfernen
             id: 'shape'+sumOfNodes
         });
         this.group.add(this.debugShape);
@@ -445,7 +442,6 @@ newNodeFactory = {
 
         sumOfNodes++;
 
-        addHovers(this.group, 'ease-in');
 
         /**
          * XPosition of the connection point for the drawConnectionLine animation
@@ -745,7 +741,7 @@ newNodeFactory = {
      * The base node is the first node created and is used as root node.
      * It's not movable or deletable
      * @constructor
-     * @param {layer} layer TODO : Where it comes from?
+     * @param {layer} layer This parameter describes the layer where the new created object should be drawn
      * @param {stage} stage TODO : Where it comes from?
      * @return The Basic Node
      */
@@ -1169,39 +1165,10 @@ function updateAnchorBounds(thisNode) {
 }
 
 /**
- * Hovers on mouseover
- * Uncommented because of autolayout... ask tobi, if you like ps.: ER IST TOT, JIM!
- * @param {shape} shape TODO: tobbi fragen :)
- * @param {easing} easing TODO: tobbi fragen :)
- */
-function addHovers(shape, easing) {
-    //TODO Uncommented because of autolayout... ask tobi, if you like ps.: ER IST TOT, JIM!
-//    shape.on('mouseover touchstart', function() {
-//        this.transitionTo({
-//            scale: {
-//                x: 1.1,
-//                y: 1.1
-//            },
-//            duration: 0.3,
-//            easing: easing
-//        });
-//    });
-//    shape.on('mouseout touchend', function() {
-//        this.transitionTo({
-//            scale: {
-//                x: 1,
-//                y: 1
-//            },
-//            duration: 0.3,
-//            easing: easing
-//        });
-//    });
-}
-
-/**
- * Hovers on mouseover
- * @param {shape} shape TODO: tobbi fragen :)
- * @param {easing} easing TODO: tobbi fragen :)
+ * Hovers on mouseover for little buttons:  + and -
+ * for resize and hide
+ * @param {shape} shape The shape which the button belongs to
+ * @param {easing} easing The way the shape behave on the mouseover effect
  */
 function addHoversForLittleButtons(shape, easing) {
     shape.on('mouseover touchstart', function() {
