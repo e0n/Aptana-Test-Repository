@@ -3,6 +3,7 @@
  *
  * Can produce ellipses, rectangles and the base Node
  * Note that ellipse is not full supported right now
+ * @class This is the factory class to create nodes
  * @see NewEllipseNode
  * @see NewRectNode
  * @see CreateBaseNode
@@ -402,7 +403,7 @@ newNodeFactory = {
         this.text = new Kinetic.Text({
             x: 0,
             y: 0,
-            text: 'Test Inhalt Test Inhalt',
+            text: 'New content',
             textFill: '#555',
             fontSize: 16,
             fontFamily: 'Calibri',
@@ -552,8 +553,7 @@ newNodeFactory = {
          */
         this.drawConnectionLine = new Kinetic.Animation({
             func: function() {
-                thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getX() + thisNode.text.getWidth()/2;
-                thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getY() + thisNode.text.getHeight()/2;
+                thisNode.updateConnectionpoints();
                 xParent = parent.xConnectPosition;
                 yParent = parent.yConnectPosition;
                 connectionLine.setX(xParent);
@@ -561,6 +561,11 @@ newNodeFactory = {
                 connectionLine.setPoints([0,0,thisNode.xConnectPosition - xParent, thisNode.yConnectPosition - yParent]);
             }
         });
+
+        this.updateConnectionpoints = function () {
+            thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getX() + thisNode.text.getWidth()/2;
+            thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getY() + thisNode.text.getHeight()/2;
+        };
 
         buildNodeFunctions(thisNode);
 
@@ -746,6 +751,8 @@ newNodeFactory = {
      * @return The Basic Node
      */
     CreateBaseNode: function(stage, layer){
+        this.stage = stage;
+        this.layer = layer;
         var thisNode = this;
         this.childElements = [];
         this.id = 'ovalX';
