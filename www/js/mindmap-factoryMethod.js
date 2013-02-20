@@ -749,6 +749,14 @@ newNodeFactory = {
 
         markedArray = [];
 
+        /**
+         * The Group of Kinetic elements
+         * @type Kinetic.Group
+         * @see #shape
+         * @see #text
+         * @see #newShowButton
+         * @see #newHideButton
+         */
         this.group = new Kinetic.Group({
             stroke: "#C7C7C7",
             strokeWidth: 1 ,
@@ -756,6 +764,10 @@ newNodeFactory = {
             y: stage.getHeight() / 2
         });
 
+        /**
+         * Shape of a node (only needed in Ellipse node)
+         * @type Kinetic.Ellipse
+         */
         this.shape = new Kinetic.Ellipse({
             x: 0,
             y: 0,
@@ -769,6 +781,10 @@ newNodeFactory = {
             id: 'oval0'
         });
 
+        /**
+         * The text element to display comments in mindmap
+         * @type Kinetic.Text
+         */
         this.text = new Kinetic.Text({
             x: -thisNode.shape.getWidth()/2,
             y: -thisNode.shape.getHeight()/4,
@@ -783,17 +799,37 @@ newNodeFactory = {
             cornerRadius: 5
         });
 
+        /**
+         * NOT NEEDED Function to shown anchor point if node is selected
+         * BaseNode has no Anchors
+         */
         this.showAnchors = function() {
 
         };
+        /**
+         * NOT NEEDED Function to hide anchor point if node is deselected
+         * BaseNode has no Anchors
+         */
         this.hideAnchors = function() {
 
         };
 
+        /**
+         * NOT NEEDED Deletes a marked node and all its children
+         * BaseNode can not be deleted
+         * @param {layer} layer Main layer
+         */
         this.deleteNode = function (layer) {
 
         };
 
+        /**
+         * This function is called when multiple nodes are marked and a node is clicked
+         * if the node is not yet marked, it will be marked and added to the marked group
+         * if the node is already marked, it will be dismarked and removed from marked group
+         * @param {node} node The clicked node
+         * @return The function will return the node which should be marked: a new one or an old when removing a node
+         */
         this.toggleNode = function(node) {
             var isNotInArray = true;
             var resultNode = rootNode;
@@ -823,6 +859,10 @@ newNodeFactory = {
             return resultNode;
         };
 
+        /**
+         * This function is called when a single node is clicked to remove all nodes in the marked-nodes-array and dismarks them.
+         * @param node
+         */
         this.resetMarkedNodes = function(node) {
             while(markedArray.length != 0) {
                 markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
@@ -833,18 +873,34 @@ newNodeFactory = {
             }
         };
 
+        /**
+         * fills Background of a node with a color
+         * @param {hexColor} color New backgroundcolor of the node
+         */
         this.fillBackground = function( color ) {
             thisNode.shape.setFill(color);
         };
 
+        /**
+         * returns Backgroundcolor of a node
+         * @return hexcolor of backgroundcolor
+         */
         this.getBackground = function() {
             return thisNode.shape.getFill();
         };
 
+        /**
+         * Text setter in BasicNode
+         * @param newText String with new text
+         */
         this.setText = function(newText) {
             this.text.setText(newText);
             layer.draw();
         };
+        /**
+         * Text getter in BasicNode
+         * @return Text of node
+         */
         this.getText = function() {
             return this.text.getText();
         };
@@ -852,7 +908,17 @@ newNodeFactory = {
         this.group.add(this.shape);
         this.group.add(this.text);
 
+        /**
+         * XPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #yConnectPosition
+         */
         this.xConnectPosition = this.group.getX();
+        /**
+         * YPosition of the connection point for the drawConnectionLine animation
+         * @type int
+         * @see #xConnectPosition
+         */
         this.yConnectPosition = this.group.getY();
 
         // add cursor styling for shape oval
