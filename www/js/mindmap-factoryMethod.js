@@ -29,6 +29,10 @@ newNodeFactory = {
      */
     var: dragGroup = 0,
 
+    testJasminAdd : function  (a, b) {
+        return (a + b);
+    },
+
     /**
      * Construct a new ellipse node.
      * @class This is the basic Ellipse class.
@@ -311,6 +315,9 @@ newNodeFactory = {
      */
     NewRectNode : function (layer, parent){
 
+        this.testJasminAdd = function  (a, b) {
+            return (a + b);
+        }
         /**
          * Saves this node
          * @type {Node}
@@ -728,6 +735,8 @@ newNodeFactory = {
         layer.add(this.group);
         layer.add(parent.group);
         layer.draw();
+
+        return thisNode;
     },
 
     /**
@@ -736,8 +745,8 @@ newNodeFactory = {
      * The base node is the first node created and is used as root node.
      * It's not movable or deletable
      * @constructor
-     * @param {layer} layer TODO : Where comes it from?
-     * @param {stage} stage TODO : Where comes it from?
+     * @param {layer} layer TODO : Where it comes from?
+     * @param {stage} stage TODO : Where it comes from?
      * @return The Basic Node
      */
     CreateBaseNode: function(stage, layer){
@@ -933,6 +942,7 @@ newNodeFactory = {
         });
 
         layer.add(this.group);
+        return thisNode;
     }
 
 };
