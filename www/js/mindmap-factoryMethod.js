@@ -418,8 +418,6 @@ newNodeFactory = {
             align: 'center',
             fontStyle: 'italic',
             fill: "#F7F7F7",
-            //stroke: 'C7C7C7',
-            //strokeWidth: 0,
             shadow: {
                 color: 'black',
                 blur: 10,

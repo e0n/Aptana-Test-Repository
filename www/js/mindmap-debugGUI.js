@@ -7,6 +7,9 @@
  */
 
 debugGUI = {
+    var: markedNode = 0,
+    var: autoLayoutIsOn = true,
+
     buildNewEllipseButton : function () {
         var button = new Kinetic.Text({
             x: 140,
@@ -275,5 +278,123 @@ debugGUI = {
             document.body.style.cursor = "default";
         });
         return button;
+    },
+
+    updateMarkedNode: function(newNode) {
+        this.markedNode = newNode;
+    },
+
+    buildDebugButtons : function(nodeLayer, buttonLayer, baseNode) {
+
+        var nodeToCopy;
+
+        //Button for showing the marked node
+        //this functionality would be used later for hide/minimize (and reshow) parts of the mindmap
+        var newShowButton = this.buildNewShowButton();
+        newShowButton.on("click", function(){
+            markedNode.showChildren(nodeLayer);
+        });
+        buttonLayer.add(newShowButton);
+
+        //Button for hiding the marked node
+        //this functionality would be used later for hide/minimize parts of the mindmap
+        var newHideButton = this.buildNewHideButton();
+        newHideButton.on("click", function(){
+            markedNode.hideChildren(nodeLayer);
+        });
+        buttonLayer.add(newHideButton);
+
+        //Button for hiding the marked node
+        //this functionality would be used later for hide/minimize parts of the mindmap
+        var newAutoLayoutButton = this.buildNewAutoLayoutButton();
+        newAutoLayoutButton.on("click", function(){
+            if(autoLayoutIsOn){
+                autoLayout.setAutoLayout(false);
+                autoLayoutIsOn = false;
+                $("#derberDialog").append('<p>Automatische Anordung ist ausgeschaltet!</p>')
+            }else {
+                autoLayout.setAutoLayout(true);
+                autoLayoutIsOn = true;
+                $("#derberDialog").append('<p>Automatische Anordung ist eingeschaltet!</p>')
+            }
+            $("#derberDialog").css("visibility","visible");
+            $( "#derberDialog" ).dialog({
+                autoOpen: false,
+                modal: true,
+                title : 'Autolayout',
+                buttons: {
+                    OK: function(){
+                        $( "#derberDialog").empty();
+                        $( "#derberDialog" ).dialog( "close" );
+                    }
+                }
+            });
+            $( "#derberDialog" ).dialog( "open" );
+        });
+        buttonLayer.add(newAutoLayoutButton);
+
+        // this buttons deletes current marked node and all its children
+        var newDeleteButton = debugGUI.buildNewDeleteButton();
+        newDeleteButton.on("click", function(){
+            markedNode.deleteNode(nodeLayer);
+            markedNode = baseNode;
+            markedNode.fillBackground('#3D9DB3');
+            nodeLayer.draw();
+        });
+        buttonLayer.add(newDeleteButton);
+
+        //Button for FactoryMethod of creating new Nodes
+        var newEllipseButton = debugGUI.buildNewEllipseButton();
+        newEllipseButton.on("click", function(){
+            new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+        });
+        buttonLayer.add(newEllipseButton);
+
+        var newRectButton = debugGUI.buildNewRectButton();
+        newRectButton.on("click", function(){
+            new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+        });
+        buttonLayer.add(newRectButton);
+
+//        var newEditTextButton = debugGUI.buildNewEditTextButton();
+//        newEditTextButton.on("click", function(){
+//            var newText=prompt("Please enter a new name", markedNode.getText());
+//            if (newText !=null )
+//            {
+//                markedNode.setText(newText);
+//            }
+//        });
+
+        var newEditTextButton = debugGUI.buildNewEditTextButton();
+        newEditTextButton.on("click", function(){
+            editText();
+        });
+
+        buttonLayer.add(newEditTextButton);
+
+        var newCopyButton = debugGUI.buildNewMenuButton();
+        newCopyButton.setText('Copy');
+        newCopyButton.setPosition(140, 120);
+        newCopyButton.on("click", function(){
+            nodeToCopy = markedNode;
+        });
+        buttonLayer.add(newCopyButton);
+
+        //Button for pasting a node
+        var newPasteButton = debugGUI.buildNewMenuButton();
+        newPasteButton.setText('Paste');
+        newPasteButton.setPosition(140, 210);
+        newPasteButton.on("click", function(){
+            if(nodeToCopy.typ == 'rect'){
+                var nodeToPaste = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            } else {
+                var nodeToPaste = new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+            }
+            var text = nodeToCopy.getText();
+            nodeToPaste.setText(text);
+            nodeToPaste.fillBackground(nodeToPaste.text.getFill());
+            nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
+        });
+        buttonLayer.add(newPasteButton);
     }
 };

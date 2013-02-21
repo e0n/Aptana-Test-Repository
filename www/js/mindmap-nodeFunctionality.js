@@ -24,7 +24,7 @@ function buildNodeFunctions(thisNode) {
         //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
-        clickNode(thisNode, thisNode.layer, event);
+        nodeMarking.clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.newHideButton.on("click", function(){
         thisNode.hideChildren(thisNode.layer);
@@ -36,11 +36,7 @@ function buildNodeFunctions(thisNode) {
         //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.group.on("dblclick", function() {
-        var newText=prompt("Please enter a new name", thisNode.getText());
-        if (newText !=null )
-        {
-            thisNode.setText(newText);
-        }
+        editText();
     });
     thisNode.group.on("dragstart dragend", function(){
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
@@ -261,5 +257,33 @@ function update(thisNode, activeAnchor) {
     if(width && height) {
         thisNode.text.setSize(width, height);
     }
+}
+
+/**
+ * Rename function with JQuery Dialog
+ * @desc Opens up a JQuery UI Dialog and provides an input field to enter a new Node text.
+ * @name editText
+ */
+function editText() {
+    var name = 'input#enterText';
+    var parent = $(name).parent('fieldset');
+    $(parent).css("visibility","visible");
+    $("#newText").css("visibility","visible");
+    $( "#newText" ).dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            OK: function(){
+                var value = $(name).val();
+                markedNode.setText(value);
+                $( "#enterText").val(value);
+                $( "#newText" ).dialog( "close" );
+            },
+            Cancel: function(){
+                $( "#newText" ).dialog( "close" );
+            }
+        }
+    });
+    $( "#newText" ).dialog( "open" );
 }
 
