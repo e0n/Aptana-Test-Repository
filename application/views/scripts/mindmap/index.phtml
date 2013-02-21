@@ -15,18 +15,8 @@
     <script>
         //variable for the sum of Nodes - is on 2 because of 2 standard nodes already existing
 
-        var markedNode;
         var zoomOffset = 0;
         var baseUrl = '<?php echo $this->baseUrl(); ?>';
-        //var markedNodeFillBackup;
-
-        var clickGroup = new Kinetic.Group({
-            x: 0,
-            y: 0,
-            draggable: true
-        });
-
-        var clickArray = [];
 
         var stage; //Global for accessing from mainMenuView
         var firstStage;
@@ -39,50 +29,6 @@
             context.fillStyle = 'black';
             context.fillText(message, 10, 25);
             context.fillText(sumOfNodes, 250, 25);
-        }
-
-
-        // Marks nodes and saves fill color
-        function clickNode(node, layer, event) {
-            if (event.ctrlKey) {
-                markedNode.hideAnchors();
-                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                    markedNode.newHideButton.hide();
-                }
-                //markedNode.shape.setFill(markedNodeFillBackup);
-                markedNode = markedNode.toggleNode(node);
-                //markedNodeFillBackup = markedNode.getBackground();//markedNode.shape.getFill();
-                markedNode.fillBackground('#3D9DB3');
-                markedNode.showAnchors();
-                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                    markedNode.newHideButton.show();
-                }
-
-                //clickArray.push(node);
-
-            } else {
-                markedNode.resetMarkedNodes(node);
-//                while (clickArray.length != 0) {
-//                    clickArray[0].fillBackground(clickArray[0].backgroundColorBackup);
-//                    clickArray.shift();
-//                }
-//                clickArray.push(node);
-
-                markedNode.fillBackground(markedNode.backgroundColorBackup);
-                markedNode.hideAnchors();
-                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                    markedNode.newHideButton.hide();
-                }
-
-                markedNode = node;
-                markedNode.fillBackground('#3D9DB3');
-                markedNode.showAnchors();
-                if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
-                    markedNode.newHideButton.show();
-                }
-                showselecedNodeMenu(node, layer);
-            }
-            layer.draw();
         }
 
         //onload function
@@ -187,102 +133,18 @@
             //Layer for the buttons
             var buttonLayer = new Kinetic.Layer();
             //Layer for shapes
-            var layer = new Kinetic.Layer();
+            var nodeLayer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
-            // Oval Shape 1
-            var base = new newNodeFactory.CreateBaseNode(stage, layer);
-            markedNode = base;
-            //markedNodeFillBackup = base.getBackground();
-            markedNode.fillBackground('#3D9DB3');
+            // Creating base node
+            var base = new newNodeFactory.CreateBaseNode(stage, nodeLayer);
+            nodeMarking.setMarked(base);
 
-
-            //Oval Shape 2
-            //var rectNode = new newNodeFactory.NewRectNode(layer, base);
-
-
-            //Button for showing the marked node
-            //this functionality would be used later for hide/minimize (and reshow) parts of the mindmap
-            var newShowButton = debugGUI.buildNewShowButton();
-            newShowButton.on("click", function(){
-                markedNode.showChildren(layer);
-            });
-            buttonLayer.add(newShowButton);
-
-            //Button for hiding the marked node
-            //this functionality would be used later for hide/minimize parts of the mindmap
-            var newHideButton = debugGUI.buildNewHideButton();
-            newHideButton.on("click", function(){
-                markedNode.hideChildren(layer);
-            });
-            buttonLayer.add(newHideButton);
-
-            // this buttons deletes current marked node and all its children
-            var newDeleteButton = debugGUI.buildNewDeleteButton();
-            newDeleteButton.on("click", function(){
-                markedNode.deleteNode(layer);
-                markedNode = base;
-                //markedNodeFillBackup = base.getBackground();
-                markedNode.fillBackground('#3D9DB3');
-                layer.draw();
-            });
-            buttonLayer.add(newDeleteButton);
-
-            //Button for FactoryMethod of creating new Nodes
-            var newEllipseButton = debugGUI.buildNewEllipseButton();
-            newEllipseButton.on("click", function(){
-                new newNodeFactory.NewEllipseNode(layer, markedNode);
-            });
-            buttonLayer.add(newEllipseButton);
-
-            var newRectButton = debugGUI.buildNewRectButton();
-            newRectButton.on("click", function(){
-                new newNodeFactory.NewRectNode(layer, markedNode);
-            });
-            buttonLayer.add(newRectButton);
-
-            var newEditTextButton = debugGUI.buildNewEditTextButton();
-            newEditTextButton.on("click", function(){
-                var newText=prompt("Please enter a new name", markedNode.getText());
-                if (newText !=null )
-                {
-                    markedNode.setText(newText);
-                }
-            });
-            buttonLayer.add(newEditTextButton);
-
-            var nodeToCopy;
-            //Button for copying a node
-            var newCopyButton = debugGUI.buildNewMenuButton();
-            newCopyButton.setText('Copy');
-            newCopyButton.setPosition(140, 120);
-            newCopyButton.on("click", function(){
-                nodeToCopy = markedNode;
-            });
-            buttonLayer.add(newCopyButton);
-
-            //Button for pasting a node
-            var newPasteButton = debugGUI.buildNewMenuButton();
-            newPasteButton.setText('Paste');
-            newPasteButton.setPosition(140, 210);
-            newPasteButton.on("click", function(){
-                if(nodeToCopy.typ == 'rect'){
-                    var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
-                } else {
-                    var nodeToPaste = new newNodeFactory.NewEllipseNode(layer, markedNode);
-                }
-                var text = nodeToCopy.getText();
-                nodeToPaste.setText(text);
-                nodeToPaste.fillBackground(nodeToPaste.text.getFill());
-                nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
-            });
-            buttonLayer.add(newPasteButton);
-
+            debugGUI.buildDebugButtons(nodeLayer, buttonLayer, base);
 
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
-
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
@@ -291,7 +153,7 @@
             buttonStage.add(buttonLayer);
             // add the layer to the stage
             stage.add(backgroundLayer);
-            stage.add(layer);
+            stage.add(nodeLayer);
             stage.add(messageLayer);
 
             //Save the stage to compare after changes have been made, for new map warning
