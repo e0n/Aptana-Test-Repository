@@ -1,10 +1,20 @@
 <?php
 /**
+ *  The menu controls things like
+ * - Save/Load
+ * - Import/Export
+ * - New Map
+ * - Logout
+ *
  * User: pascal
  * Date: 05.05.12
  */
 class MenuController extends Zend_Controller_Action
 {
+    /**
+     * Saves a json encoded brain map in data directory
+     * @return string a json encoded brain map
+     */
     public function saveAction() {
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
@@ -53,6 +63,9 @@ class MenuController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Loads a previously saved a json encoded brain map from the data directory
+     */
     public function loadAction(){
         $storage = new Zend_Auth_Storage_Session();
         $data = $storage->read();
