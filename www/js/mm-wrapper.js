@@ -1,6 +1,8 @@
 
 
 mmWrapper = {
+    var: hashTable = {},
+
     import: function () {
 
         $('#file').change(function(){
@@ -21,8 +23,9 @@ mmWrapper = {
     createMindmap : function (stringtext) {
 
         var xmlDoc;
-        var baseNode;
-        var hashTable = {};
+        var baseNode = document.rootNode;
+        console.log("intit " + baseNode);
+
         //for IE
         if (window.ActiveXObject)
         {
@@ -36,44 +39,47 @@ mmWrapper = {
             var parser = new DOMParser();
             xmlDoc = parser.parseFromString(stringtext,'text/xml');
         }
-        var x=xmlDoc.getElementsByTagName("node");
-        //alert(x[0].nodeValue);
 
+        var nodeWithAll = xmlDoc.childNodes;
+//        console.log(nodeWithAll);
 
-
-        //alert(x[0].getAttribute("TEXT"));
-        baseNode = document.rootNode;
-        baseNode.text.setText(x[0].getAttribute("TEXT"));
-        baseNode.layer.draw();
-
-        for(var count = 1; count < x.length; count++) {
-            var nextnodes = x[count];
-            mmWrapper.addChild(nextnodes, baseNode, hashTable);
-        }
-    },
-
-    addChild : function (node, parent, hashTable) {
-        //if(hashTable.hasOwnProperty())
-        var newNode = newNodeFactory.NewRectNode(parent.layer, parent);
-        newNode.setText(node.getAttribute("TEXT"));
-        var childNodes = node.getElementsByTagName("node");
-        //alert(childNodes);
-        if (childNodes.length) {
-            for(var count = 0; count < childNodes.length; count++) {
-                mmWrapper.addChild(childNodes[count], newNode);
-                //alert("child");
+        var nodeWithMap;
+        for (var i = 0; i < nodeWithAll.length; i++) {
+            if( nodeWithAll[i].nodeName == 'map') {
+                nodeWithMap = nodeWithAll[i].childNodes;
+//                console.log("special base node", nodeWithMap);
             }
-        } else {
         }
-        //alert(nodes.getAttribute("TEXT"));
+
+        var nodeWithBase;
+//        console.log(nodeWithMap);
+        for (var i = 0; i < nodeWithMap.length; i++) {
+
+            if( nodeWithMap[i].nodeName == 'node') {
+                nodeWithBase = nodeWithMap[i].childNodes;
+            }
+        }
+
+        for (var i = 0; i < nodeWithBase.length; i++) {
+
+            if( nodeWithBase[i].nodeName == 'node') {
+                console.log("basenode " + baseNode);
+                nodeChildren(nodeWithBase[i], baseNode);
+            }
+        }
+
+        function nodeChildren(thisNodeXML, parentNode) {
+            console.log("nodechild " + parentNode);
+            var newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
+            newNode.setText(thisNodeXML.getAttribute("TEXT"));
+            newNode.id = thisNodeXML.getAttribute("ID");
+            var childArray = null;
+            childArray = thisNodeXML.childNodes;
+            for (var i = 0; i < childArray.length; i++) {
+                if( childArray[i].nodeName == 'node') {
+                    nodeChildren(childArray[i], newNode);
+                }
+            }
+        };
     }
 }
-
-//function addChild2 (nodes, parent) {
-//    //var newNode = newNodeFactory.NewRectNode(parent.layer, parent);
-//    //newNode.setText(nodes[0].getAttribute("TEXT"));
-//    alert(nodes[0].getAttribute("TEXT"));
-//    for(var count = 0; count < nodes.length; count++) {
-//        mmWrapper.addChild2(nodes[count], null);
-//    }
-//}
