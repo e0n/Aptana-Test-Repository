@@ -165,12 +165,22 @@
         };
 
         //Functions for the side menu
+
+        /**
+         * Creates a new Ellipse
+         */
         function NewEllipse(){
             new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
         }
+        /**
+         * Creates a new Rectangle
+         */
         function NewRectangle(){
             new newNodeFactory.NewRectNode(nodeLayer, markedNode);
         }
+        /**
+         * Edit the text of a node
+         */
         function EditText(){
             var newText=prompt("Please enter a new name", markedNode.getText());
             if (newText !=null )
@@ -178,9 +188,15 @@
                 markedNode.setText(newText);
             }
         }
+        /**
+         * Copy a node
+         */
         function CopyNode(){
             nodeToCopy = markedNode;
         }
+        /**
+         * Paste a node if a node was copied
+         */
         function PasteNode(){
             if(nodeToCopy.typ == 'rect'){
                 var nodeToPaste = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
@@ -192,15 +208,24 @@
             nodeToPaste.fillBackground(nodeToPaste.text.getFill());
             nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
         }
+        /**
+         * Deletes the selected node
+         */
         function DeleteNode(){
             markedNode.deleteNode(nodeLayer);
             markedNode = baseNode;
             markedNode.fillBackground('#3D9DB3');
             nodeLayer.draw();
         }
+        /**
+         * @see hideChildren()
+         */
         function HideNode(){
             markedNode.hideChildren(nodeLayer);
         }
+        /**
+         * @see showChildren()
+         */
         function ShowNode(){
             markedNode.showChildren(nodeLayer);
         }
