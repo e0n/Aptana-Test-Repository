@@ -18,6 +18,7 @@
         var markedNode;
         var zoomOffset = 0;
         var autoLayoutIsOn = true;
+        var baseUrl = '<?php echo $this->baseUrl(); ?>';
         //var markedNodeFillBackup;
 
         var clickGroup = new Kinetic.Group({
@@ -80,8 +81,8 @@
                 if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                     markedNode.newHideButton.show();
                 }
+                showselecedNodeMenu(node, layer);
             }
-            showselecedNodeMenu(node, layer);
             layer.draw();
         }
 
@@ -256,14 +257,44 @@
             });
             buttonLayer.add(newRectButton);
 
+//            var newEditTextButton = debugGUI.buildNewEditTextButton();
+//            newEditTextButton.on("click", function(){
+//                var newText=prompt("Please enter a new name", markedNode.getText());
+//                if (newText !=null )
+//                {
+//                    markedNode.setText(newText);
+//                }
+//            });
+//            buttonLayer.add(newEditTextButton);
+
+
+
             var newEditTextButton = debugGUI.buildNewEditTextButton();
-            newEditTextButton.on("click", function(){
-                var newText=prompt("Please enter a new name", markedNode.getText());
-                if (newText !=null )
-                {
-                    markedNode.setText(newText);
+            newEditTextButton.on('click', function(){
+                if(autoLayoutIsOn){
+                    $("#derberDialog").append('<p>Automatische Anordung ist eingeschaltet!</p>')
+                } else {
+                    $("#derberDialog").append('<p>Automatische Anordung ist ausgeschaltet!</p>')
                 }
+                    $("#derberDialog").css("visibility","visible");
+                    $( "#derberDialog" ).dialog({
+                        autoOpen: false,
+                        modal: true,
+                        title : 'Autolayout',
+                        buttons: {
+                            OK: function(){
+                                $( "#derberDialog").empty();
+                                $( "#derberDialog" ).dialog( "close" );
+                            }
+                        }
+                    });
+                    $( "#derberDialog" ).dialog( "open" );
+//                $('div#derberdialog > p ').val('miiiiesertyp');
+//                $('div#derberdialog').css("visibility","visible");
+//                $('div#derberdialog').dialog();
+//                $('div#derberdialog').dialog("open");
             });
+
             buttonLayer.add(newEditTextButton);
 
             var nodeToCopy;
@@ -281,9 +312,15 @@
             newPasteButton.setText('Paste');
             newPasteButton.setPosition(140, 210);
             newPasteButton.on("click", function(){
-                var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
+                if(nodeToCopy.typ == 'rect'){
+                    var nodeToPaste = new newNodeFactory.NewRectNode(layer, markedNode);
+                } else {
+                    var nodeToPaste = new newNodeFactory.NewEllipseNode(layer, markedNode);
+                }
                 var text = nodeToCopy.getText();
                 nodeToPaste.setText(text);
+                nodeToPaste.fillBackground(nodeToPaste.text.getFill());
+                nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
             });
             buttonLayer.add(newPasteButton);
 
@@ -329,8 +366,6 @@
             <div id="logout"></div>
         </div>
     </div>
-
-
 </header>
     <div id="container"></div>
 <footer>
@@ -366,9 +401,25 @@
         <div id="bottom">
             <a href="#" id="bold"><b>F</b></a>
             <a href="#" id="italic"><i>K</i></a>
-            <a href="#" id="underline"><u>U</u></a>
             <div id="colorSelector"><input class="color {pickerClosable:true}" style="visibility: hidden; width: 0px;"/></div>
             <div id="borderColorSelector"><input class="color {pickerClosable:true}" style="visibility: hidden; width: 0px;"/></div>
         </div>
+    </div>
+    <div id="saveDialog" title="Save" style="visibility: hidden;">
+        <form>
+            <fieldset>
+                <label for="filename">Bitte geben Sie einen Dateinamen an.</label>
+                <input type="text" name="name" id="filename" class="text ui-widget-content ui-corner-all" />
+            </fieldset>
+        </form>
+    </div>
+    <div id="derberDialog" style="visibility: hidden;">
+        <p></p>
+    </div>
+    <div id="confirmDialog" style="visibility: hidden;">
+        <p></p>
+    </div>
+    <div id="loadDialog" title="Load" style="visibility: hidden;">
+        <div id="fileTree"></div>
     </div>
 </footer>

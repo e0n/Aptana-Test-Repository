@@ -8,6 +8,9 @@
 
     <?php echo $this->headTitle() ?>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.1/themes/base/jquery-ui.css" />
+    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.1/jquery-ui.js"></script>
     <?php
     $css = scandir(BASE_PATH . '/www/css');
     foreach($css as $value) {
@@ -21,7 +24,7 @@
             echo '<script type="text/javascript" src="' . $this->baseUrl('/../www/js/'. $value ) .'"></script>';
     }
     ?>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    <!--<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
 </head>
 <body>
 <div id="content"><?php echo $this->layout()->content ?></div>

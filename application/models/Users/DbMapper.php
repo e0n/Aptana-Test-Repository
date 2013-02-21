@@ -42,6 +42,22 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
         return false;
     }
 
+    public function getID($username)
+    {
+        $tableAdapter = $this->getTable()->getAdapter();
+        $select = $tableAdapter->select();
+
+        $select->from('users',array('id'));//todo 1st param should be a variable like $this->_name
+        $select->where('username=?',$username);
+        //fetch Query
+        $result = $tableAdapter->fetchOne($select);
+
+        if($result){
+            return $result;
+        }
+        return false;
+    }
+
     //search in db for this email and return the corresponding username.
     public function getUsernameFromEmail($email){
         $tableAdapter = $this->getTable()->getAdapter();
