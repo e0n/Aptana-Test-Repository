@@ -69,17 +69,25 @@ mmWrapper = {
         }
 
         function nodeChildren(thisNodeXML, parentNode) {
-            console.log("nodechild " + parentNode);
-            var newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
+            //console.log("nodechild " + parentNode.id);
+
+
+            var newNode = null;
+            newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
             newNode.setText(thisNodeXML.getAttribute("TEXT"));
             newNode.id = thisNodeXML.getAttribute("ID");
+
+
             var childArray = null;
             childArray = thisNodeXML.childNodes;
+//            console.log(childArray);
             for (var i = 0; i < childArray.length; i++) {
                 if( childArray[i].nodeName == 'node') {
+                    console.log(i + " " + newNode.id);
                     nodeChildren(childArray[i], newNode);
                 }
             }
+            console.log("ende forschleife");
         };
     }
 }
