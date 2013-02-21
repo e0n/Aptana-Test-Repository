@@ -418,8 +418,6 @@ newNodeFactory = {
             align: 'center',
             fontStyle: 'italic',
             fill: "#F7F7F7",
-            //stroke: 'C7C7C7',
-            //strokeWidth: 0,
             shadow: {
                 color: 'black',
                 blur: 10,
@@ -953,6 +951,13 @@ newNodeFactory = {
         });
         this.group.on("click", function() {
             nodeMarking.clickNode(thisNode, layer, event);
+        });
+        this.group.on("dblclick", function() {
+            var newText=prompt("Please enter a new name", thisNode.getText());
+            if (newText !=null )
+            {
+                thisNode.setText(newText);
+            }
         });
 
         layer.add(this.group);

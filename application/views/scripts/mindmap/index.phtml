@@ -21,6 +21,9 @@
         var stage; //Global for accessing from mainMenuView
         var firstStage;
 
+        //Layer for shapes
+        var nodeLayer
+
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
             var context = messageLayer.getContext();
@@ -33,21 +36,14 @@
 
         //onload function
         window.onload = function() {
-            // Button stage
-            var buttonStage = new Kinetic.Stage({
-                container: "container"
-            });
             //Map stage
             stage = new Kinetic.Stage({
                 container: "container"
             });
 
             //Set stage Dimensions
-            buttonStageWidth = 120*2.3;
-            buttonStage.setHeight(screen.height - 230);
-            buttonStage.setWidth(buttonStageWidth);
-            stage.setHeight(screen.height - 230);
-            stage.setWidth(screen.width - (40+buttonStageWidth));
+            stage.setHeight(screen.height - 250);
+            stage.setWidth(screen.width - 10);
 
             // the following section is for zoom and drag the stage
             var backgroundLayer = new Kinetic.Layer({
@@ -130,10 +126,7 @@
             };
             document.addEventListener("mousewheel", zoom, false);
 
-            //Layer for the buttons
-            var buttonLayer = new Kinetic.Layer();
-            //Layer for shapes
-            var nodeLayer = new Kinetic.Layer();
+            nodeLayer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
@@ -141,16 +134,12 @@
             var base = new newNodeFactory.CreateBaseNode(stage, nodeLayer);
             nodeMarking.setMarked(base);
 
-            debugGUI.buildDebugButtons(nodeLayer, buttonLayer, base);
-
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
 
-            // add button layer to buttons stage
-            buttonStage.add(buttonLayer);
             // add the layer to the stage
             stage.add(backgroundLayer);
             stage.add(nodeLayer);
@@ -160,6 +149,64 @@
             firstStage = stage;
 
         };
+
+        //Functions for the side menu
+
+        /**
+         * Creates a new Ellipse
+         */
+        function NewEllipse(){
+            new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+        }
+        /**
+         * Creates a new Rectangle
+         */
+        function NewRectangle(){
+            var newNode = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            markedNode = newNode;
+            editText();
+        }
+        /**
+         * Copy a node
+         */
+        function CopyNode(){
+            nodeToCopy = markedNode;
+        }
+        /**
+         * Paste a node if a node was copied
+         */
+        function PasteNode(){
+            if(nodeToCopy.typ == 'rect'){
+                var nodeToPaste = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            } else {
+                var nodeToPaste = new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+            }
+            var text = nodeToCopy.getText();
+            nodeToPaste.setText(text);
+            nodeToPaste.fillBackground(nodeToPaste.text.getFill());
+            nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
+        }
+        /**
+         * Deletes the current marked node and all its children
+         */
+        function DeleteNode(){
+            markedNode.deleteNode(nodeLayer);
+            markedNode = baseNode;
+            markedNode.fillBackground('#3D9DB3');
+            nodeLayer.draw();
+        }
+        /**
+         * @see hideChildren()
+         */
+        function HideNode(){
+            markedNode.hideChildren(nodeLayer);
+        }
+        /**
+         * @see showChildren()
+         */
+        function ShowNode(){
+            markedNode.showChildren(nodeLayer);
+        }
 
     </script>
 
@@ -184,6 +231,37 @@
         </div>
     </div>
 </header>
+    <div id="Menu">
+        <div>
+            <span onclick="NewEllipse()">New Ellipse</span>
+        </div>
+        <div>
+            <span onclick="NewRectangle()">New Rectangle</span>
+        </div>
+        <div>
+            <span onclick="editText()">Edit Text</span>
+        </div>
+        <div>
+            <span onclick="CopyNode()">Copy</span>
+        </div>
+        <div>
+            <span onclick="PasteNode()">Paste</span>
+        </div>
+        <div>
+            <span onclick="DeleteNode()">Delete</span>
+        </div>
+        <div>
+            <span onclick="HideNode()">Hide</span>
+        </div>
+        <div>
+            <span onclick="ShowNode()">Show</span>
+        </div>
+        <div>
+            <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
+        </div>
+    </div>
+    <br>
+    <br>
     <div id="container"></div>
     <input type="file" id="file"/>
     <output id="list"></output>
@@ -248,6 +326,17 @@
                 <input type="text" name="name" id="filename" class="text ui-widget-content ui-corner-all" />
             </fieldset>
         </form>
+    </div>
+    <div id="newText" title="Umbenennen" style="visibility: hidden;">
+        <form>
+            <fieldset>
+                <label for="enterText">Bitte geben Sie eine neue Bezeichnung ein</label>
+                <input type="text" name="name" id="enterText" class="text ui-widget-content ui-corner-all" onfocus='this.value=" ";'/>
+            </fieldset>
+        </form>
+    </div>
+    <div id="derberDialog" style="visibility: hidden;">
+        <p></p>
     </div>
     <div id="confirmDialog" style="visibility: hidden;">
         <p></p>
