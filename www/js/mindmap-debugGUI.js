@@ -8,7 +8,6 @@
 
 debugGUI = {
     var: markedNode = 0,
-    var: autoLayoutIsOn = true,
 
     buildNewEllipseButton : function () {
         var button = new Kinetic.Text({
@@ -308,28 +307,7 @@ debugGUI = {
         //this functionality would be used later for hide/minimize parts of the mindmap
         var newAutoLayoutButton = this.buildNewAutoLayoutButton();
         newAutoLayoutButton.on("click", function(){
-            if(autoLayoutIsOn){
-                autoLayout.setAutoLayout(false);
-                autoLayoutIsOn = false;
-                $("#derberDialog").append('<p>Automatische Anordung ist ausgeschaltet!</p>')
-            }else {
-                autoLayout.setAutoLayout(true);
-                autoLayoutIsOn = true;
-                $("#derberDialog").append('<p>Automatische Anordung ist eingeschaltet!</p>')
-            }
-            $("#derberDialog").css("visibility","visible");
-            $( "#derberDialog" ).dialog({
-                autoOpen: false,
-                modal: true,
-                title : 'Autolayout',
-                buttons: {
-                    OK: function(){
-                        $( "#derberDialog").empty();
-                        $( "#derberDialog" ).dialog( "close" );
-                    }
-                }
-            });
-            $( "#derberDialog" ).dialog( "open" );
+            autoLayoutOnAndOff();
         });
         buttonLayer.add(newAutoLayoutButton);
 
@@ -355,15 +333,6 @@ debugGUI = {
             new newNodeFactory.NewRectNode(nodeLayer, markedNode);
         });
         buttonLayer.add(newRectButton);
-
-//        var newEditTextButton = debugGUI.buildNewEditTextButton();
-//        newEditTextButton.on("click", function(){
-//            var newText=prompt("Please enter a new name", markedNode.getText());
-//            if (newText !=null )
-//            {
-//                markedNode.setText(newText);
-//            }
-//        });
 
         var newEditTextButton = debugGUI.buildNewEditTextButton();
         newEditTextButton.on("click", function(){
