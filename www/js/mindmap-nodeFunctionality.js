@@ -6,7 +6,14 @@
  * @fileOverview This is the class where some functionality are added to the nodes
  */
 
-/**
+    /**
+     * This variable defines if the automatic layout functionality is on or off.
+     * @type boolean
+     */
+    var autoLayoutIsOn = true;
+
+
+    /**
 * Builds basic node functions.
 * Event functions: mouse-, click-, touch- and drag-events
 * Text: setter getter
@@ -285,5 +292,35 @@ function editText() {
         }
     });
     $( "#newText" ).dialog( "open" );
+}
+
+/**
+ * Rename function with JQuery Dialog
+ * @desc Opens up a JQuery UI Dialog and provides an input field to enter a new Node text.
+ * @name editText
+ */
+function autoLayoutOnAndOff() {
+    if(autoLayoutIsOn){
+        autoLayout.setAutoLayout(false);
+        autoLayoutIsOn = false;
+        $("#derberDialog").append('<p>Automatische Anordung ist ausgeschaltet!</p>')
+    }else {
+        autoLayout.setAutoLayout(true);
+        autoLayoutIsOn = true;
+        $("#derberDialog").append('<p>Automatische Anordung ist eingeschaltet!</p>')
+    }
+    $("#derberDialog").css("visibility","visible");
+    $( "#derberDialog" ).dialog({
+        autoOpen: false,
+        modal: true,
+        title : 'Autolayout',
+        buttons: {
+            OK: function(){
+                $( "#derberDialog").empty();
+                $( "#derberDialog" ).dialog( "close" );
+            }
+        }
+    });
+    $( "#derberDialog" ).dialog( "open" );
 }
 
