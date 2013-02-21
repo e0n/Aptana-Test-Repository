@@ -36,13 +36,16 @@ mmWrapper = {
             var parser = new DOMParser();
             xmlDoc = parser.parseFromString(stringtext,'text/xml');
         }
+        var map = xmlDoc.getElementsByTagName("map");
+        var mapChild = map[0];
+        console.log(mapChild.getElementsByTagName("node"));
         var x=xmlDoc.getElementsByTagName("node");
         //alert(x[0].nodeValue);
 
 
 
         //alert(x[0].getAttribute("TEXT"));
-        baseNode = document.rootNode;
+        baseNode = document.baseNode;
         baseNode.text.setText(x[0].getAttribute("TEXT"));
         baseNode.layer.draw();
 
@@ -54,7 +57,8 @@ mmWrapper = {
 
     addChild : function (node, parent, hashTable) {
         //if(hashTable.hasOwnProperty())
-        var newNode = newNodeFactory.NewRectNode(parent.layer, parent);
+        var newNode = null;
+        newNode = newNodeFactory.NewRectNode(document.nodeLayer/*parent.layer*/, parent);
         newNode.setText(node.getAttribute("TEXT"));
         var childNodes = node.getElementsByTagName("node");
         //alert(childNodes);
