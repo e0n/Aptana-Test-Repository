@@ -12,6 +12,10 @@ class LoginController extends Zend_Controller_Action
     }
 
     public function tryoutAction(){
+        /* Tryout session for the new guest
+         * Username and password are needed
+         */
+
         $users_mapper = new Model_Users_DbMapper();
         $auth = Zend_Auth::getInstance();
         $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');
@@ -31,6 +35,11 @@ class LoginController extends Zend_Controller_Action
     }
 
     public function loginAction(){
+        /* Login session for the user
+         * Checking of username and password in the data bank
+         * When they are valid, the process goes on
+         * Otherwise error report shows up and re-login should be done
+         */
         $users_mapper = new Model_Users_DbMapper();
         if($this->getRequest()->isPost()){
             $data = $this->_request->getPost();
@@ -69,6 +78,11 @@ class LoginController extends Zend_Controller_Action
     }
 
     public function signupAction(){
+        /* Signup session for the new user
+         * Checking of username, password and email adress in the data bank
+         * When they are valid, the process goes on
+         * Otherwise error report shows up and re-signin should be done
+         */
         $users_mapper = new Model_Users_DbMapper();
         if($this->getRequest()->isPost()){
 
