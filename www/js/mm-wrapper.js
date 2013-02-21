@@ -37,7 +37,7 @@ mmWrapper = {
             xmlDoc = parser.parseFromString(stringtext,'text/xml');
         }
         var x=xmlDoc.getElementsByTagName("node");
-        alert(x[0].nodeValue);
+        //alert(x[0].nodeValue);
 
 
 
@@ -48,16 +48,16 @@ mmWrapper = {
 
         for(var count = 1; count < x.length; count++) {
             var nextnodes = x[count];
-            mmWrapper.addChild(nextnodes, baseNode);
+            mmWrapper.addChild(nextnodes, baseNode, hashTable);
         }
     },
 
     addChild : function (node, parent, hashTable) {
-        if(hashTable.hasOwnProperty())
+        //if(hashTable.hasOwnProperty())
         var newNode = newNodeFactory.NewRectNode(parent.layer, parent);
         newNode.setText(node.getAttribute("TEXT"));
         var childNodes = node.getElementsByTagName("node");
-        alert(childNodes);
+        //alert(childNodes);
         if (childNodes.length) {
             for(var count = 0; count < childNodes.length; count++) {
                 mmWrapper.addChild(childNodes[count], newNode);
