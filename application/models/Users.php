@@ -4,6 +4,9 @@
  * Date: Halloween 2012
  */
 
+/**
+ * Getters and Setters for the user Database
+ */
 class Model_Users extends Lib_Db_Model
 {
     protected $_username;

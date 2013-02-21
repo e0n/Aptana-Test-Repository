@@ -16,8 +16,6 @@ class LoginController extends Zend_Controller_Action
      * Username and password are not needed
      */
     public function tryoutAction(){
-
-
         $users_mapper = new Model_Users_DbMapper();
         $auth = Zend_Auth::getInstance();
         $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');
@@ -48,7 +46,7 @@ class LoginController extends Zend_Controller_Action
         if($this->getRequest()->isPost()){
             $data = $this->_request->getPost();
             $username = $data['username'];
-            if(strpos($username,'@') and strpos($username,'.')){// Is an email adress
+            if(strpos($username,'@') and strpos($username,'.')){// Is an email address
                 $temp_username = $users_mapper->getUsernameFromEmail($username);
                 if($temp_username !== false)
                     $username = $temp_username;
