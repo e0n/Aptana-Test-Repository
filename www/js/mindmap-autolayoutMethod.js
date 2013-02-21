@@ -1,59 +1,69 @@
 /**
  * Autolayout-Class.
  *
- * Thic class provides all necessary functionality for the autolayout.
+ * This class provides all necessary functionality for the autolayout.
  * Autolayout is the function that assures that nodes are arranged side by side instead of covering another Node
+ *
+ * @fileOverview This class provides all necessary functionality for the autolayout.
  */
 autoLayout = {
     /**
-     * x coordinate of the newObject
+     * This is the X-coordinate of the newObject.
      * @type int
+     * @global
+     * @name xOfObject
      */
     var: xOfObject = 0,
 
     /**
-     * y coordinate of the newObject
+     * This is the Y-coordinate of the newObject.
      * @type int
+     * @global
+     * @name yOfObject
      */
     var: yOfObject = 0,
 
     /**
-     * this variable represents the rootNode
+     * This variable represents the rootNode.
      * @type node
+     * @global
+     * @name rootNode
      */
     var: rootNode = null,
 
     /**
-     * This function is the external interface and entry point. HAAAAAALLLOOOO
+     * This function is the external interface and entry point.
      *
-     * @param {newObject} newObject This is the object which has to be arranged on the map.
-     * @param {parent} parent The parent Node of the Node which has to be arranged.
-     * @param {rootBaseNode} rootBaseNode The Basenode of the mindmap.
+     * @method
+     * @global
+     * @param {Node} newObject This is the object which has to be arranged on the map.
+     * @param {Node} parent The parent Node of the Node which has to be arranged.
+     * @param {Node} rootBaseNode The Base-node of the mindmap.
      */
-    autoLayout : function (newObject, parent, rootBaseNode){
+    autoLayoutMethod : function (newObject, parent, rootBaseNode){
     xOfObject = newObject.group.getX();
     yOfObject = newObject.group.getY();
     rootNode = rootBaseNode;
-    checkForCollision(newObject,parent);
+    checkForCollisionMethod(newObject,parent);
     }
 }
 
     /**
      *  This Function iterates through all existing nodes on the map to make sure the Node do not cover one of them.
-     * @param {newObject} newObject This is the object which has to be arranged on the map.
-     * @param {parent} parent The parent Node of the Node which has to be arranged.
+     * @method
+     * @param {Node} newObject This is the object which has to be arranged on the map.
+     * @param {Node} parent The parent Node of the Node which has to be arranged.
      */
-    function checkForCollision(newObject, parent){
-        // Check if the newObject collidates with root node, but root node Ellipse sucks...
-        checkForOverlying(newObject,rootNode);
+    function checkForCollisionMethod(newObject, parent){
+        checkForOverlyingMethod(newObject,rootNode);
         for(var count = 0; count < parent.childElements.length; count++ ){
             if(newObject.id != parent.childElements[count].id){
-                checkForOverlying(newObject, parent.childElements[count]);
+                checkForOverlyingMethod(newObject, parent.childElements[count]);
                 if(parent.childElements[count].childElements.length != 0){
-                    checkForCollision(newObject, parent.childElements[count])
+                    checkForCollisionMethod(newObject, parent.childElements[count])
                 }
             } else if(newObject.childElements.length != 0){
-                checkForCollision(newObject, newObject);
+                checkForCollisionMethod(newObject, newObject);
             }
         }
     }
@@ -61,10 +71,11 @@ autoLayout = {
     /**
      * This function does the comparing of two different nodes.
      * In different cases would be proofed if an node overlays another node.
-     * @param {newObject} newObject This is the object which has to be arranged on the map
-     * @param {objectToCompare} objectToCompare This is the object which is actually compared to the newObject
+     * @method
+     * @param {Node} newObject This is the object which has to be arranged on the map.
+     * @param {Node} objectToCompare This is the object which is actually compared to the newObject.
      */
-    function checkForOverlying(newObject, objectToCompare){
+    function checkForOverlyingMethod(newObject, objectToCompare){
         //Fall 2
         if(
             (((xOfObject + newObject.text.getWidth()) > (objectToCompare.group.getX() + objectToCompare.text.getWidth())) &&
@@ -77,7 +88,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject + 49;
             yOfObject = yOfObject - 49;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         //Fall 3
@@ -91,7 +102,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject - 51;
             yOfObject = yOfObject + 51;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
 
@@ -106,7 +117,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject + 53;
             yOfObject = yOfObject + 53;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         //Fall 1
@@ -120,7 +131,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject - 56;
             yOfObject = yOfObject - 56;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         //Fall 5
@@ -134,7 +145,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject + 50;
             yOfObject = yOfObject + 50;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         // Fall 6
@@ -149,7 +160,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject - 55;
             yOfObject = yOfObject - 60;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         // Fall 7
@@ -164,7 +175,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject + 60;
             yOfObject = yOfObject + 59;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         // Fall 8
@@ -179,7 +190,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject + 55;
             yOfObject = yOfObject + 49;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         } else
 
         // Fall 9
@@ -194,7 +205,7 @@ autoLayout = {
             ){
             xOfObject = xOfObject - 49;
             yOfObject = yOfObject - 55;
-            checkForCollision(newObject, rootNode);
+            checkForCollisionMethod(newObject, rootNode);
         }
 
     }
