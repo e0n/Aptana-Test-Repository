@@ -766,6 +766,7 @@ newNodeFactory = {
         this.childElements = [];
         this.id = 'ovalX';
         rootNode = thisNode;
+        document.rootNode = thisNode;
         this.backgroundColorBackup = '#F7F7F7';
 
         markedArray = [];
@@ -951,7 +952,7 @@ newNodeFactory = {
             document.body.style.cursor = "default";
         });
         this.group.on("click", function() {
-            clickNode(thisNode, layer, event);
+            nodeMarking.clickNode(thisNode, layer, event);
         });
 
         layer.add(this.group);

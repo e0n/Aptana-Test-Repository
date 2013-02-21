@@ -184,6 +184,15 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(imporT).on('click', function(){
+//            [18:10:57] MoOaaaA: .trigger("click")
+//                [18:11:24] MoOaaaA: $('#file').trigger("click")
+//                [18:12:44 | Bearbeitet 18:13:03] MoOaaaA: [18:12] MoOaaaA:
+//
+//                <<< $('#file')$('#file').("visibility","hidden");
+//            $('#file').("visibility","visible");
+            $('#file').trigger("click");
+            mmWrapper.import();
+//            $('#file').("visibility","hidden");
             //TODO handle import
         });
 
