@@ -184,7 +184,8 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(imporT).on('click', function(){
-            //TODO handle import
+            $('#file').trigger("click");
+            mmWrapper.import();
         });
 
         $(exporT).mouseover(function() {
