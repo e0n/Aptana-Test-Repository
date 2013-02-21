@@ -24,7 +24,7 @@ function buildNodeFunctions(thisNode) {
         //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
-        clickNode(thisNode, thisNode.layer, event);
+        nodeMarking.clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.newHideButton.on("click", function(){
         thisNode.hideChildren(thisNode.layer);
