@@ -1,8 +1,6 @@
 
 
 mmWrapper = {
-    var: hashTable = {},
-
     import: function () {
 
         $('#file').change(function(){
@@ -39,6 +37,8 @@ mmWrapper = {
             var parser = new DOMParser();
             xmlDoc = parser.parseFromString(stringtext,'text/xml');
         }
+        var x=xmlDoc.getElementsByTagName("node");
+        //alert(x[0].nodeValue);
 
         var nodeWithAll = xmlDoc.childNodes;
 //        console.log(nodeWithAll);

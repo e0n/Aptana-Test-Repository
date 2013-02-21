@@ -40,6 +40,7 @@
             stage = new Kinetic.Stage({
                 container: "container"
             });
+            document.stage = stage;
 
             //Set stage Dimensions
             stage.setHeight(screen.height - 250);
@@ -127,11 +128,13 @@
             document.addEventListener("mousewheel", zoom, false);
 
             nodeLayer = new Kinetic.Layer();
+            document.nodeLayer = nodeLayer;
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
             // Creating base node
             var base = new newNodeFactory.CreateBaseNode(stage, nodeLayer);
+            document.baseNode = base;
             nodeMarking.setMarked(base);
 
             //function for mouse coordinates on shape - only for debugging and development
@@ -230,7 +233,6 @@
             <div id="logout"></div>
         </div>
     </div>
-</header>
     <div id="Menu">
         <div>
             <span onclick="NewEllipse()">New Ellipse</span>
@@ -260,6 +262,7 @@
             <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
         </div>
     </div>
+</header>
     <br>
     <br>
     <div id="container"></div>
