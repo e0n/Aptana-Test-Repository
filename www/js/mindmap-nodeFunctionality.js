@@ -327,6 +327,12 @@ function autoLayoutOnAndOff() {
             }
         }
     });
+    $('#derberDialog').find('input').keypress(function(e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            $(this).parent().parent().parent().parent().find('.ui-dialog-buttonpane').find('button:first').click(); /* Assuming the first one is the action button */
+            return false;
+        }
+    });
     $( "#derberDialog" ).dialog( "open" );
 }
 
