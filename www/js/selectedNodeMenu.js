@@ -3,7 +3,7 @@
  * Date: 10.02.13
  */
 
-function showselecedNodeMenu(markedNode, layer) {
+function showselecedNodeMenu(markedNodes, layer) {
     var menu = 'footer div#selectedNodeMenu';
     var font = 'select#font'
     var fontSelected = 'select#font > option:selected';
@@ -11,7 +11,6 @@ function showselecedNodeMenu(markedNode, layer) {
     var sizeSelected = 'select#size > option:selected';
     var bold = 'a#bold';
     var italic = 'a#italic';
-    var underline = 'a#underline';
     var colorText = 'div#colorSelector';
     var colorShape = 'div#borderColorSelector';
     var colorTextInput = 'div#colorSelector > input';
@@ -19,9 +18,8 @@ function showselecedNodeMenu(markedNode, layer) {
     $(menu).css('display', 'block');
     var canvasHeight = $(".kineticjs-content").height();
     if(markedNode.typ == 'rect'){
-        var newScreenHeightScale = (screen.height / ( 1080 / 100)) / 100;
         $(menu).css('top',  - canvasHeight + (markedNode.group.getAbsolutePosition().y * 0.8));
-        $(menu).css('left',  markedNode.group.getAbsolutePosition().x + (markedNode.text.getWidth()/2.3));
+        $(menu).css('left',  markedNode.group.getAbsolutePosition().x + (markedNode.text.getWidth()/3.3));
     } else {
         $(menu).css('top', - canvasHeight + (markedNode.group.getY() - 40));
         $(menu).css('left', markedNode.group.getX());
@@ -55,15 +53,6 @@ function showselecedNodeMenu(markedNode, layer) {
         layer.draw();
     });
 
-    $(underline).click(function(){
-        if(markedNode.text.getFontStyle() == 'underline'){
-            markedNode.text.setFontStyle('normal');
-        } else {
-            markedNode.text.setFontStyle('underline');
-        }
-        layer.draw();
-    });
-
     $(colorText).click(function(){
         $(colorTextInput).css("visibility", "visible").trigger("focus");
     });
@@ -84,7 +73,8 @@ function showselecedNodeMenu(markedNode, layer) {
         $(colorShapeInput).css("visibility", "hidden");
     });
     $(colorShapeInput).change(function(){
-        markedNode.text.setFill($(colorShapeInput).val());
+        //markedNode.shape.setFill($(colorShapeInput).val());
+        markedNode.backgroundColorBackup = $(colorShapeInput).val();
         $(colorShapeInput).trigger("blur");
     });
 }
