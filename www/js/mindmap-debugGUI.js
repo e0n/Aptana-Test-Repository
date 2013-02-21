@@ -213,6 +213,41 @@ debugGUI = {
         return button;
     },
 
+
+    buildNewAutoLayoutButton : function () {
+        var button = new Kinetic.Text({
+            x: 140,
+            y: 300,
+            stroke: '#555',
+            strokeWidth: 2,
+            fill: '#ddd',
+            text: 'AutoLayout',
+            fontSize: 13,
+            fontFamily: 'Calibri',
+            textFill: '#555',
+            width: 120,
+            padding: 20,
+            align: 'center',
+            fontStyle: 'italic',
+            cornerRadius: 5,
+            shadow: {
+                color: '#3D9DB3',
+                blur: 3,
+                offset: [5, 5],
+                opacity: 1
+            }
+        });
+        // add cursor styling for shape oval
+        button.on("mouseover", function() {
+            document.body.style.cursor = "pointer";
+        });
+        button.on("mouseout", function() {
+            document.body.style.cursor = "default";
+        });
+
+        return button;
+    },
+
     buildNewMenuButton : function() {
         var button = new Kinetic.Text({
             stroke: '#555',
@@ -268,6 +303,14 @@ debugGUI = {
         });
         buttonLayer.add(newHideButton);
 
+        //Button for hiding the marked node
+        //this functionality would be used later for hide/minimize parts of the mindmap
+        var newAutoLayoutButton = this.buildNewAutoLayoutButton();
+        newAutoLayoutButton.on("click", function(){
+            autoLayoutOnAndOff();
+        });
+        buttonLayer.add(newAutoLayoutButton);
+
         // this buttons deletes current marked node and all its children
         var newDeleteButton = debugGUI.buildNewDeleteButton();
         newDeleteButton.on("click", function(){
@@ -287,18 +330,17 @@ debugGUI = {
 
         var newRectButton = debugGUI.buildNewRectButton();
         newRectButton.on("click", function(){
-            new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            var newNode = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            markedNode = newNode;
+            editText();
         });
         buttonLayer.add(newRectButton);
 
         var newEditTextButton = debugGUI.buildNewEditTextButton();
         newEditTextButton.on("click", function(){
-            var newText=prompt("Please enter a new name", markedNode.getText());
-            if (newText !=null )
-            {
-                markedNode.setText(newText);
-            }
+            editText();
         });
+
         buttonLayer.add(newEditTextButton);
 
         var newCopyButton = debugGUI.buildNewMenuButton();

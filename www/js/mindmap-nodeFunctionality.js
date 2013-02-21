@@ -6,7 +6,14 @@
  * @fileOverview This is the class where some functionality are added to the nodes
  */
 
-/**
+    /**
+     * This variable defines if the automatic layout functionality is on or off.
+     * @type boolean
+     */
+    var autoLayoutIsOn = true;
+
+
+    /**
 * Builds basic node functions.
 * Event functions: mouse-, click-, touch- and drag-events
 * Text: setter getter
@@ -35,6 +42,9 @@ function buildNodeFunctions(thisNode) {
     thisNode.group.on("touchstart touchend", function() {
         //clickNode(thisNode, thisNode.layer, event);
     });
+    thisNode.group.on("dblclick", function() {
+        editText();
+    });
     thisNode.group.on("dragstart dragend", function(){
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
         //clickNode(thisNode, thisNode.layer);
@@ -42,11 +52,9 @@ function buildNodeFunctions(thisNode) {
         showselecedNodeMenu(thisNode, thisNode.layer);
     });
     thisNode.group.on("dragend", function(){
-
         updateAnchorBounds(thisNode);
         autoLayout.autoLayoutMethod(thisNode, rootNode, rootNode);
         move(thisNode, xOfObject, yOfObject);
-
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();
@@ -256,5 +264,75 @@ function update(thisNode, activeAnchor) {
     if(width && height) {
         thisNode.text.setSize(width, height);
     }
+}
+
+/**
+ * Rename function with JQuery Dialog
+ * @desc Opens up a JQuery UI Dialog and provides an input field to enter a new Node text.
+ * @name editText
+ */
+function editText() {
+    var name = 'input#enterText';
+    var parent = $(name).parent('fieldset');
+    $(parent).css("visibility","visible");
+    $("#newText").css("visibility","visible");
+    $( "#newText" ).dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            OK: function(){
+                var value = $(name).val();
+                markedNode.setText(value);
+                $( "#enterText").val(value);
+                $( "#newText" ).dialog( "close" );
+            },
+            Cancel: function(){
+                $( "#newText" ).dialog( "close" );
+            }
+        }
+    });
+    $('#newText').find('input').keypress(function(e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            $(this).parent().parent().parent().parent().find('.ui-dialog-buttonpane').find('button:first').click(); /* Assuming the first one is the action button */
+            return false;
+        }
+    });
+    $( "#newText" ).dialog( "open" );
+}
+
+/**
+ * Rename function with JQuery Dialog
+ * @desc Opens up a JQuery UI Dialog and provides an input field to enter a new Node text.
+ * @name editText
+ */
+function autoLayoutOnAndOff() {
+    if(autoLayoutIsOn){
+        autoLayout.setAutoLayout(false);
+        autoLayoutIsOn = false;
+        $("#derberDialog").append('<p>Automatische Anordung ist ausgeschaltet!</p>')
+    }else {
+        autoLayout.setAutoLayout(true);
+        autoLayoutIsOn = true;
+        $("#derberDialog").append('<p>Automatische Anordung ist eingeschaltet!</p>')
+    }
+    $("#derberDialog").css("visibility","visible");
+    $( "#derberDialog" ).dialog({
+        autoOpen: false,
+        modal: true,
+        title : 'Autolayout',
+        buttons: {
+            OK: function(){
+                $( "#derberDialog").empty();
+                $( "#derberDialog" ).dialog( "close" );
+            }
+        }
+    });
+    $('#derberDialog').find('input').keypress(function(e) {
+        if ((e.which && e.which == 13) || (e.keyCode && e.keyCode == 13)) {
+            $(this).parent().parent().parent().parent().find('.ui-dialog-buttonpane').find('button:first').click(); /* Assuming the first one is the action button */
+            return false;
+        }
+    });
+    $( "#derberDialog" ).dialog( "open" );
 }
 
