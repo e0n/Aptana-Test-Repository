@@ -94,7 +94,29 @@ $(document).ready(function() {
         $(load).on('click', function(){
             $('#loadDialog').css("visibility","visible");
             $('#fileTree').fileTree({ root: '',script: baseUrl + '/menu/load' }, function(file) {
-                alert(file);
+                var data = {};//
+                data.file = file;
+
+                $.ajax({
+                    url: baseUrl + '/menu/load',
+                    type: "GET",
+                    dataType:'json',
+                    data: data
+                }).done(function(data){
+                        if(typeof data.success != "undefined"){
+                            //document.stage.remove();
+                            $('div#container > div :last').remove();
+                            Kinetic.Node.create(JSON.stringify(data.success), 'container');
+                            //document.stage = Kinetic.Node.create(JSON.stringify(data.success), 'container');
+                            document.stage.draw();
+                        } else {
+                            title = 'Error';
+                            val.remove();
+                            val.append('<p>'+data.error+'</p>');
+                        }
+                        $( "#loadDialog" ).dialog( "close" );
+                        $('#overlay').trigger("click");
+                    });
             });
             $('#loadDialog').dialog({
                 autoOpen: false,
@@ -111,6 +133,7 @@ $(document).ready(function() {
             //TODO get saved json stage
             //transform
             //replace actual stage
+
         });
 
         $(save).mouseover(function() {
@@ -143,14 +166,16 @@ $(document).ready(function() {
                                 data: data
                             }).done(function(data){
                                     var title = '';
-                                    var val = $("div#confirmDialog > p");
+                                    var val = $("div#confirmDialog");
                                     val.css("visibility","visible");
-                                    if(data.success){
+                                    if(typeof data.success != "undefined"){
                                         title = 'Erfolgreich';
-                                        val.val(data.success);
+                                        val.remove();
+                                        val.append('<p>'+data.success+'</p>');
                                     } else {
                                         title = 'Error';
-                                        val.val(data.error);
+                                        val.remove();
+                                        val.append('<p>'+data.error+'</p>');
                                     }
                                     $("#confirmDialog").dialog({
                                         autoOpen: false,

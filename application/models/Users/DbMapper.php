@@ -4,14 +4,16 @@
  * Date: 11.08.12
  */
 
-// A Data Mapper maps a domain object to the database.
-// In our case, it will map our model, Model_Users, to our data source, Model_Users_DbTable.
+/**
+ * A Data Mapper maps a domain object to the database.
+ * In our case, it will map our model, Model_Users, to our data source, Model_Users_DbTable.
+ */
 class Model_Users_DbMapper extends Lib_Db_Mapper
 {
     protected $_dbTableName = "Model_Users_DbTable";
 
     /** 
-     * Saving the username, password and email adress into data bank
+     * Save the username, password and email address into database
      */
     public function save(Model_Users $users)
     {
@@ -30,14 +32,16 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
     }
 
     /** 
-     * Checking a user through the username as unique in the data bank query
+     * Check if a username is unique in the database
+     * @param string $username the user
+     * @return boolean if the user is unique
      */
     public function checkUnique($username)
     {
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
 
-        $select->from('users',array('username'));//todo 1st param should be a variable like $this->_name
+        $select->from('users',array('username'));
         $select->where('username=?',$username);
         //fetch Query
         $result = $tableAdapter->fetchOne($select);
@@ -49,14 +53,16 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
     }
 
     /** 
-     * Checking a user through the ID as unique in the data bank query
+     * Get the ID of a user
+     * @param string $username the user
+     * @return string the id or false if none was found
      */
     public function getID($username)
     {
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
 
-        $select->from('users',array('id'));//todo 1st param should be a variable like $this->_name
+        $select->from('users',array('id'));
         $select->where('username=?',$username);
         //fetch Query
         $result = $tableAdapter->fetchOne($select);
@@ -68,13 +74,15 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
     }
 
     /** 
-     * search in db for this email and return the corresponding username.
+     * Search in db for this email and return the corresponding username.
+     * @param string $email the users email
+     * @return string the user or false if none was found
      */
     public function getUsernameFromEmail($email)
     {
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
-        $select->from('users',array('username'));//todo 1st param should be a variable like $this->_name
+        $select->from('users',array('username'));
         $select->where('email=?',$email);
         //fetch Query
         $result = $tableAdapter->fetchOne($select);

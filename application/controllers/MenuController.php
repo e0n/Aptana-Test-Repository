@@ -36,7 +36,7 @@ class MenuController extends Zend_Controller_Action
             if (!is_dir($dir)) {
                 mkdir($dir);
             }
-                if (!$handle = fopen($dir.$filename.'.oym', "w")) {
+                if (!$handle = fopen($dir.$filename.'.oym', "a+")) {
                     $return["error"] = "Something went wrong!";
                     $this->view->return = json_encode($return);
                     return $this->view->return;
@@ -47,7 +47,7 @@ class MenuController extends Zend_Controller_Action
                     return $this->view->return;
                 }
                 fclose($handle);
-            $return["succuss"] = "File Saved!";
+            $return["success"] = "File Saved!";
             $this->view->return = json_encode($return);
             return $this->view->return;
         }
@@ -59,9 +59,9 @@ class MenuController extends Zend_Controller_Action
         if(!$data){
             $this->_redirect('login/login');
         }
+        $this->_helper->layout->disableLayout();
 
         if($this->getRequest()->isPost()) {
-            $this->_helper->layout->disableLayout();
             $mapper = new Model_Users_DbMapper();
 
 
@@ -92,7 +92,32 @@ class MenuController extends Zend_Controller_Action
                 }
             }
         } elseif($this->getRequest()->isGet()) {
+            $mapper = new Model_Users_DbMapper();
+            $file = $this->getRequest()->getParam('file');
+            $dir = '../data/';
+            $id = $mapper->getID($data->username);
+            $root = $dir . $id . '/' . $file;
+            if(!file_exists($root)) {
+                $return["error"] = "Something went wrong!";
+                $this->view->return = json_encode($return);
+                return $this->view->return;
+            }  else {
+                if (!$handle = fopen($root, "r")) {
+                    $return["error"] = "Something went wrong!";
+                    $this->view->return = json_encode($return);
+                    return $this->view->return;
+                }
+                if (!$string = fread($handle, filesize($root))) {
+                    $return["error"] = "Something went wrong!";
+                    $this->view->return = json_encode($return);
+                    return $this->view->return;
+                }
+                fclose($handle);
 
+                $return["success"] = unserialize($string);
+                $this->view->return = json_encode($return);
+                return $this->view->return;
+            }
         }
     }
 }
