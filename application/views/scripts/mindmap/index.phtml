@@ -21,6 +21,9 @@
         var stage; //Global for accessing from mainMenuView
         var firstStage;
 
+        //Layer for shapes
+        var nodeLayer
+
         //Function for Mouse Location
         function writeMessage(messageLayer, message) {
             var context = messageLayer.getContext();
@@ -132,8 +135,8 @@
 
             //Layer for the buttons
             var buttonLayer = new Kinetic.Layer();
-            //Layer for shapes
-            var nodeLayer = new Kinetic.Layer();
+
+            nodeLayer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
 
@@ -161,6 +164,62 @@
 
         };
 
+        //Functions for the side menu
+
+        /**
+         * Creates a new Ellipse
+         */
+        function NewEllipse(){
+            new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+        }
+        /**
+         * Creates a new Rectangle
+         */
+        function NewRectangle(){
+            new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+        }
+        /**
+         * Copy a node
+         */
+        function CopyNode(){
+            nodeToCopy = markedNode;
+        }
+        /**
+         * Paste a node if a node was copied
+         */
+        function PasteNode(){
+            if(nodeToCopy.typ == 'rect'){
+                var nodeToPaste = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            } else {
+                var nodeToPaste = new newNodeFactory.NewEllipseNode(nodeLayer, markedNode);
+            }
+            var text = nodeToCopy.getText();
+            nodeToPaste.setText(text);
+            nodeToPaste.fillBackground(nodeToPaste.text.getFill());
+            nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
+        }
+        /**
+         * Deletes the selected node
+         */
+        function DeleteNode(){
+            markedNode.deleteNode(nodeLayer);
+            markedNode = baseNode;
+            markedNode.fillBackground('#3D9DB3');
+            nodeLayer.draw();
+        }
+        /**
+         * @see hideChildren()
+         */
+        function HideNode(){
+            markedNode.hideChildren(nodeLayer);
+        }
+        /**
+         * @see showChildren()
+         */
+        function ShowNode(){
+            markedNode.showChildren(nodeLayer);
+        }
+
     </script>
 
 <header>
@@ -184,6 +243,37 @@
         </div>
     </div>
 </header>
+    <div id="Menu">
+        <div>
+            <span onclick="NewEllipse()">New Ellipse</span>
+        </div>
+        <div>
+            <span onclick="NewRectangle()">New Rectangle</span>
+        </div>
+        <div>
+            <span onclick="editText()">Edit Text</span>
+        </div>
+        <div>
+            <span onclick="CopyNode()">Copy</span>
+        </div>
+        <div>
+            <span onclick="PasteNode()">Paste</span>
+        </div>
+        <div>
+            <span onclick="DeleteNode()">Delete</span>
+        </div>
+        <div>
+            <span onclick="HideNode()">Hide</span>
+        </div>
+        <div>
+            <span onclick="ShowNode()">Show</span>
+        </div>
+        <div>
+            <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
+        </div>
+    </div>
+    <br>
+    <br>
     <div id="container"></div>
 <footer>
     <div align="center" >Copyright © Open Your Mind 2012-2013</div>
