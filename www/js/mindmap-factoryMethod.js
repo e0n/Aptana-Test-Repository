@@ -949,6 +949,13 @@ newNodeFactory = {
         this.group.on("click", function() {
             clickNode(thisNode, layer, event);
         });
+        this.group.on("dblclick", function() {
+            var newText=prompt("Please enter a new name", thisNode.getText());
+            if (newText !=null )
+            {
+                thisNode.setText(newText);
+            }
+        });
 
         layer.add(this.group);
         return thisNode;
