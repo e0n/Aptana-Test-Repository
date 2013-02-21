@@ -884,6 +884,7 @@ newNodeFactory = {
         this.resetMarkedNodes = function(node) {
             while(markedArray.length != 0) {
                 markedArray[0].fillBackground(markedArray[0].backgroundColorBackup);
+                console.log(markedArray[0]);
                 markedArray.shift();
             }
             if( node.id != 'ovalX') {
@@ -896,7 +897,7 @@ newNodeFactory = {
          * @param {hexColor} color New backgroundcolor of the node
          */
         this.fillBackground = function( color ) {
-            thisNode.shape.setFill(color);
+                thisNode.shape.setFill(color);
         };
 
         /**
