@@ -35,6 +35,13 @@ function buildNodeFunctions(thisNode) {
     thisNode.group.on("touchstart touchend", function() {
         //clickNode(thisNode, thisNode.layer, event);
     });
+    thisNode.group.on("dblclick", function() {
+        var newText=prompt("Please enter a new name", thisNode.getText());
+        if (newText !=null )
+        {
+            thisNode.setText(newText);
+        }
+    });
     thisNode.group.on("dragstart dragend", function(){
         // this line is necessary, because on mobile devices it isn't possible to "click" (Line 471)
         //clickNode(thisNode, thisNode.layer);
@@ -42,11 +49,9 @@ function buildNodeFunctions(thisNode) {
         showselecedNodeMenu(thisNode, thisNode.layer);
     });
     thisNode.group.on("dragend", function(){
-
         updateAnchorBounds(thisNode);
         autoLayout.autoLayoutMethod(thisNode, rootNode, rootNode);
         move(thisNode, xOfObject, yOfObject);
-
     });
     thisNode.parentNode.group.on("dragstart dragend", function() {
         thisNode.drawConnectionLine.start();

@@ -17,6 +17,7 @@
 
         var markedNode;
         var zoomOffset = 0;
+        var autoLayoutIsOn = true;
         //var markedNodeFillBackup;
 
         var clickGroup = new Kinetic.Group({
@@ -209,6 +210,20 @@
             });
             buttonLayer.add(newShowButton);
 
+            var newAutoLayoutButton = debugGUI.buildNewAutoLayoutButton();
+            newAutoLayoutButton.on("click", function(){
+                if(autoLayoutIsOn == true){
+                    autoLayoutIsOn = false;
+                    autoLayout.setAutoLayout(false);
+                    confirm("AutoLayout is off!");
+                } else if(autoLayoutIsOn == false){
+                    autoLayoutIsOn = true;
+                    autoLayout.setAutoLayout(true);
+                    confirm("AutoLayout is on!");
+                }
+            });
+            buttonLayer.add(newAutoLayoutButton);
+
             //Button for hiding the marked node
             //this functionality would be used later for hide/minimize parts of the mindmap
             var newHideButton = debugGUI.buildNewHideButton();
@@ -314,6 +329,8 @@
             <div id="logout"></div>
         </div>
     </div>
+
+
 </header>
     <div id="container"></div>
 <footer>

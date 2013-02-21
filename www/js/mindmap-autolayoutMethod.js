@@ -32,6 +32,14 @@ autoLayout = {
     var: rootNode = null,
 
     /**
+     * This variable defines if autolayout is on or not.
+     * @type boolean
+     * @global
+     * @name autoLayoutIsOn
+     */
+    var: autoLayoutIsOn = true,
+
+    /**
      * This function is the external interface and entry point.
      *
      * @method
@@ -41,11 +49,28 @@ autoLayout = {
      * @param {Node} rootBaseNode The Base-node of the mindmap.
      */
     autoLayoutMethod : function (newObject, parent, rootBaseNode){
-    xOfObject = newObject.group.getX();
-    yOfObject = newObject.group.getY();
-    rootNode = rootBaseNode;
-    checkForCollisionMethod(newObject,parent);
-    }
+        xOfObject = newObject.group.getX();
+        yOfObject = newObject.group.getY();
+        rootNode = rootBaseNode;
+        if(autoLayoutIsOn == true){
+            checkForCollisionMethod(newObject,parent);
+        }
+    },
+    /**
+     * This function is the external interface and entry point.
+     *
+     * @method
+     * @global
+     * @param {Node} newObject This is the object which has to be arranged on the map.
+     * @param {Node} parent The parent Node of the Node which has to be arranged.
+     * @param {Node} rootBaseNode The Base-node of the mindmap.
+     */
+     setAutoLayout : function (bool){
+        autoLayoutIsOn = bool;
+     }
+
+
+
 }
 
     /**
