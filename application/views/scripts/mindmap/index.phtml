@@ -179,16 +179,6 @@
             new newNodeFactory.NewRectNode(nodeLayer, markedNode);
         }
         /**
-         * Edit the text of a node
-         */
-        function EditText(){
-            var newText=prompt("Please enter a new name", markedNode.getText());
-            if (newText !=null )
-            {
-                markedNode.setText(newText);
-            }
-        }
-        /**
          * Copy a node
          */
         function CopyNode(){
@@ -261,7 +251,7 @@
             <span onclick="NewRectangle()">New Rectangle</span>
         </div>
         <div>
-            <span onclick="EditText()">Edit Text</span>
+            <span onclick="editText()">Edit Text</span>
         </div>
         <div>
             <span onclick="CopyNode()">Copy</span>
@@ -277,6 +267,9 @@
         </div>
         <div>
             <span onclick="ShowNode()">Show</span>
+        </div>
+        <div>
+            <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
         </div>
     </div>
     <br>
