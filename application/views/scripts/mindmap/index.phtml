@@ -215,56 +215,62 @@
 
 <header>
     <h1>Open Your Mind</h1>
-    <div id="welcome">
-        Welcome, <?=$this->username?><br>
-        <a id="logoutAction" href="login/logout" >Click here to logout</a>
-    </div>
-    <div id="mainmenu">
-        <div id="menubutton"></div>
-        <div id="menubody">
-            <a href="#" id="text"></a>
-            <div id="overlay"></div>
-            <div id="menuPointer"></div>
-            <div id="new"></div>
-            <div id="save"></div>
-            <div id="load"></div>
-            <div id="import"></div>
-            <div id="export"></div>
-            <div id="logout"></div>
-        </div>
-    </div>
-    <div id="Menu">
-        <div>
-            <span onclick="NewEllipse()">New Ellipse</span>
-        </div>
-        <div>
-            <span onclick="NewRectangle()">New Rectangle</span>
-        </div>
-        <div>
-            <span onclick="editText()">Edit Text</span>
-        </div>
-        <div>
-            <span onclick="CopyNode()">Copy</span>
-        </div>
-        <div>
-            <span onclick="PasteNode()">Paste</span>
-        </div>
-        <div>
-            <span onclick="DeleteNode()">Delete</span>
-        </div>
-        <div>
-            <span onclick="HideNode()">Hide</span>
-        </div>
-        <div>
-            <span onclick="ShowNode()">Show</span>
-        </div>
-        <div>
-            <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
-        </div>
-    </div>
+    <table style='width:100%'>
+        <th>
+            <div id="mainmenu">
+                <div id="menubutton"></div>
+                <div id="menubody">
+                    <a href="#" id="text"></a>
+                    <div id="overlay"></div>
+                    <div id="menuPointer"></div>
+                    <div id="new"></div>
+                    <div id="save"></div>
+                    <div id="load"></div>
+                    <div id="import"></div>
+                    <div id="export"></div>
+                    <div id="logout"></div>
+                </div>
+            </div>
+        </th>
+        <th>
+            <div id="Menu">
+                <div>
+                    <span onclick="NewEllipse()">New Ellipse</span>
+                </div>
+                <div>
+                    <span onclick="NewRectangle()">New Rectangle</span>
+                </div>
+                <div>
+                    <span onclick="editText()">Edit Text</span>
+                </div>
+                <div>
+                    <span onclick="CopyNode()">Copy</span>
+                </div>
+                <div>
+                    <span onclick="PasteNode()">Paste</span>
+                </div>
+                <div>
+                    <span onclick="DeleteNode()">Delete</span>
+                </div>
+                <div>
+                    <span onclick="HideNode()">Hide</span>
+                </div>
+                <div>
+                    <span onclick="ShowNode()">Show</span>
+                </div>
+                <div>
+                    <span onclick="autoLayoutOnAndOff()">Toggle AutoLayout</span>
+                </div>
+            </div>
+        </th>
+        <th>
+            <div id="welcome">
+                Welcome, <?=$this->username?><br>
+                <a id="logoutAction" href="login/logout" >Click here to logout</a>
+            </div>
+        </th>
+    </table>
 </header>
-    <br>
-    <br>
     <div id="container"></div>
     <input type="file" id="file"/>
     <output id="list"></output>
