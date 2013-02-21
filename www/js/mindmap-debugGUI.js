@@ -330,7 +330,9 @@ debugGUI = {
 
         var newRectButton = debugGUI.buildNewRectButton();
         newRectButton.on("click", function(){
-            new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            var newNode = new newNodeFactory.NewRectNode(nodeLayer, markedNode);
+            markedNode = newNode;
+            editText();
         });
         buttonLayer.add(newRectButton);
 
