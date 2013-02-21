@@ -1,4 +1,4 @@
-div#Menu {position: absolute;}
+div#Menu {text-align: center;font-size: 20px}
 div#Menu div {display: inline-block;}
 div#Menu div span {-webkit-border-radius: 10px; border-radius: 10px; border: solid; cursor: pointer; padding: 5px; background-color: #E7E7E7; }
 div#Menu ul {display: none; -webkit-border-radius: 10px; border-radius: 10px; border: solid; list-style-type: none; background-color: #E7E7E7; margin-top: 0.5em;}

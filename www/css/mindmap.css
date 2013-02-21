@@ -1,5 +1,4 @@
 body {overflow: hidden;}
-header div#welcome {float: right;}
 header div#mainmenu div#menubutton {
     background-image: url(../../www/images/logo.png);
     background-repeat: no-repeat;
