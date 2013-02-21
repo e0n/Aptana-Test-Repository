@@ -92,10 +92,20 @@ $(document).ready(function() {
         });
         var testSavedStage;
         $(load).on('click', function(){
+            $('#loadDialog').css("visibility","visible");
+            $('#fileTree').fileTree({ root: '',script: baseUrl + '/menu/load' }, function(file) {
+                alert(file);
+            });
+            $('#loadDialog').dialog({
+                autoOpen: false,
+                modal: true
+            });
+            $( "#loadDialog" ).dialog( "open" );
+
             //get saved json stage
-            jsonStage = testSavedStage;
+            //jsonStage = testSavedStage;
             // create a stage from JSON
-            aNewStage = Kinetic.Node.create(jsonStage, 'container');//or like Kinetic.Node.create(jsonStage);
+            //aNewStage = Kinetic.Node.create(jsonStage, 'container');//or like Kinetic.Node.create(jsonStage);
             //TODO replace actual stage
             //http://www.html5canvastutorials.com/kineticjs/html5-canvas-load-complex-stage-with-kineticjs/
             //TODO get saved json stage
@@ -110,30 +120,61 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(save).on('click', function(){
-            //Get global stage
-            jsonStage = stage.toJSON();
-            testSavedStage = jsonStage;//TODO temporal for testing from/to a variable
-            alert('stage was saved in testSavedStage variable');
-            //Send json to server
-            /*
-             var data = {};
-             data.push({"id":jsonStage});
-             $.ajax({
-             url: "<?php echo $this->baseUrl('mindmap/save'); ?>",
-             type: "POST",
-             dataType:'json',
-             data: data,
-             success:function(data){
-             console.log(data);
-             },
-             error: function(jqXHR, textStatus, errorThrown){
-             }
-             });
-             */
-            //TODO get stage
-            //stage = document.getElementById('container').get....;
-            //jsonStage = stage.toJSON();
-            //save json Stage
+            var name = 'input#filename';
+            var parent = $(name).parent('fieldset');
+            $(parent).css("visibility","visible");
+
+            $( "#saveDialog" ).dialog({
+                autoOpen: false,
+                modal: true,
+                buttons: {
+                    Save: function(){
+                        var val = $(name).val();
+                        if(val.length >= 3 && val.length <= 255){
+                            var jsonStage = stage.toJSON();
+
+                            var data = {};//
+                            data.save = jsonStage;
+                            data.mindmap = val;
+                            $.ajax({
+                                url: baseUrl + '/menu/save',
+                                type: "POST",
+                                dataType:'json',
+                                data: data
+                            }).done(function(data){
+                                    var title = '';
+                                    var val = $("div#confirmDialog > p");
+                                    val.css("visibility","visible");
+                                    if(data.success){
+                                        title = 'Erfolgreich';
+                                        val.val(data.success);
+                                    } else {
+                                        title = 'Error';
+                                        val.val(data.error);
+                                    }
+                                    $("#confirmDialog").dialog({
+                                        autoOpen: false,
+                                        modal: true,
+                                        title: title,
+                                        buttons:{
+                                            OK: function(){
+                                                $("#confirmDialog").dialog( "close" );
+                                            }
+                                        }
+                                    });
+                                    $( "#saveDialog" ).dialog( "close" );
+                                    $("#confirmDialog").dialog( "open" );
+
+                                });
+                        }
+                    },
+                    Cancel: function() {
+                        $(parent).css("visibility","hidden");
+                        $( "#saveDialog" ).dialog( "close" );
+                    }
+                }
+            });
+            $( "#saveDialog" ).dialog( "open" );
         });
 
         $(imporT).mouseover(function() {
