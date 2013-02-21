@@ -4,7 +4,7 @@
  * Date: 27.10.12
  */
 
-//TODO handle errors better
+
 class LoginController extends Zend_Controller_Action
 {
     function indexAction() {
@@ -14,7 +14,7 @@ class LoginController extends Zend_Controller_Action
     public function tryoutAction(){
         $users_mapper = new Model_Users_DbMapper();
         $auth = Zend_Auth::getInstance();
-        $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');//todo change users for a variable when u know how
+        $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');
         $authAdapter->setIdentityColumn('username')
             ->setCredentialColumn('password');
         $authAdapter->setIdentity('Guest')
@@ -43,7 +43,7 @@ class LoginController extends Zend_Controller_Action
             $password = $data['password'];
 
             $auth = Zend_Auth::getInstance();
-            $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');//todo change users for a variable when u know how
+            $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');
             $authAdapter->setIdentityColumn('username')
                 ->setCredentialColumn('password');
             $authAdapter->setIdentity($username)
@@ -98,7 +98,7 @@ class LoginController extends Zend_Controller_Action
             // sign automaticaly in
             // like this your don't have to write your login data again
             $auth = Zend_Auth::getInstance();
-            $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');//todo change users for a variable when u know how
+            $authAdapter = new Zend_Auth_Adapter_DbTable($users_mapper->getTable()->getAdapter(),'users');
             $authAdapter->setIdentityColumn('username')
                 ->setCredentialColumn('password');
             $authAdapter->setIdentity($newUser->getUsername())
@@ -117,6 +117,9 @@ class LoginController extends Zend_Controller_Action
     }
 
     public function logoutAction(){
+        /*Clear the actual session
+         *It is logged out
+         */
         $storage = new Zend_Auth_Storage_Session();
         $storage->clear();
         $this->_redirect('index');
