@@ -12,6 +12,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
 
     public function save(Model_Users $users)
     {
+        /* Saving the username, password and email adress into data bank
+         */
         $data = array(
             'username' => $users->getUsername(),
             'password' => $users->getPassword(),
@@ -28,6 +30,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
 
     public function checkUnique($username)
     {
+        /* Checking a user through the username as unique in the data bank query
+         */
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
 
@@ -44,6 +48,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
 
     public function getID($username)
     {
+        /* Checking a user through the ID as unique in the data bank query
+         */
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
 
@@ -58,8 +64,10 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
         return false;
     }
 
-    //search in db for this email and return the corresponding username.
+    
     public function getUsernameFromEmail($email){
+        /*search in db for this email and return the corresponding username.
+         */
         $tableAdapter = $this->getTable()->getAdapter();
         $select = $tableAdapter->select();
         $select->from('users',array('username'));//todo 1st param should be a variable like $this->_name
