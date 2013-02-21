@@ -36,21 +36,14 @@
 
         //onload function
         window.onload = function() {
-            // Button stage
-            var buttonStage = new Kinetic.Stage({
-                container: "container"
-            });
             //Map stage
             stage = new Kinetic.Stage({
                 container: "container"
             });
 
             //Set stage Dimensions
-            buttonStageWidth = 120*2.3;
-            buttonStage.setHeight(screen.height - 230);
-            buttonStage.setWidth(buttonStageWidth);
-            stage.setHeight(screen.height - 230);
-            stage.setWidth(screen.width - (40+buttonStageWidth));
+            stage.setHeight(screen.height - 250);
+            stage.setWidth(screen.width - 10);
 
             // the following section is for zoom and drag the stage
             var backgroundLayer = new Kinetic.Layer({
@@ -133,9 +126,6 @@
             };
             document.addEventListener("mousewheel", zoom, false);
 
-            //Layer for the buttons
-            var buttonLayer = new Kinetic.Layer();
-
             nodeLayer = new Kinetic.Layer();
             // MessageLayer for Mouseposition and other debug notes
             var messageLayer = new Kinetic.Layer();
@@ -144,16 +134,12 @@
             var base = new newNodeFactory.CreateBaseNode(stage, nodeLayer);
             nodeMarking.setMarked(base);
 
-            debugGUI.buildDebugButtons(nodeLayer, buttonLayer, base);
-
             //function for mouse coordinates on shape - only for debugging and development
             stage.on("mousemove", function() {
                 var mousePos = stage.getMousePosition();
                 writeMessage(messageLayer, 'x: ' + mousePos.x + ', y: ' + mousePos.y);
             });
 
-            // add button layer to buttons stage
-            buttonStage.add(buttonLayer);
             // add the layer to the stage
             stage.add(backgroundLayer);
             stage.add(nodeLayer);
@@ -201,7 +187,7 @@
             nodeToPaste.text.setTextFill(nodeToPaste.text.getTextFill());
         }
         /**
-         * Deletes the selected node
+         * Deletes the current marked node and all its children
          */
         function DeleteNode(){
             markedNode.deleteNode(nodeLayer);
