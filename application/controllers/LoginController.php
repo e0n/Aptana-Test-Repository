@@ -11,10 +11,12 @@ class LoginController extends Zend_Controller_Action
 
     }
 
+    /**
+     * Tryout session for the a guest
+     * Username and password are not needed
+     */
     public function tryoutAction(){
-        /* Tryout session for the new guest
-         * Username and password are needed
-         */
+
 
         $users_mapper = new Model_Users_DbMapper();
         $auth = Zend_Auth::getInstance();
@@ -34,12 +36,14 @@ class LoginController extends Zend_Controller_Action
         }
     }
 
+    /**
+    * Login session for the user
+    * Checks username and password in the data bank
+    * If they are valid, the process goes on
+    * Otherwise an error is reported and login should be done again
+    */
     public function loginAction(){
-        /* Login session for the user
-         * Checking of username and password in the data bank
-         * When they are valid, the process goes on
-         * Otherwise error report shows up and re-login should be done
-         */
+
         $users_mapper = new Model_Users_DbMapper();
         if($this->getRequest()->isPost()){
             $data = $this->_request->getPost();
@@ -77,12 +81,14 @@ class LoginController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Signup a new user
+     * Checks if data entered is correct
+     * and creates a new user in the DB
+     * After that the user is automatically signed in
+     */
     public function signupAction(){
-        /* Signup session for the new user
-         * Checking of username, password and email adress in the data bank
-         * When they are valid, the process goes on
-         * Otherwise error report shows up and re-signin should be done
-         */
+
         $users_mapper = new Model_Users_DbMapper();
         if($this->getRequest()->isPost()){
 
@@ -130,10 +136,12 @@ class LoginController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Clear the actual session
+     * User gets logged out
+     */
     public function logoutAction(){
-        /*Clear the actual session
-         *It is logged out
-         */
+
         $storage = new Zend_Auth_Storage_Session();
         $storage->clear();
         $this->_redirect('index');
