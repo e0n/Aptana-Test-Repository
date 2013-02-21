@@ -78,9 +78,6 @@ $(document).ready(function() {
             setMenuText('');
         });
         $(neW).on('click', function(){
-            //TODO ask for saving mindmap if it has changed
-            //something like if(Kinetic.Node.create(firstStage).toJSON() != stage.toJSON())
-            //   alert('Dont u wanna save it first?');
             location.reload();
         });
 
