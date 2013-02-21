@@ -10,7 +10,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
 {
     protected $_dbTableName = "Model_Users_DbTable";
 
-    /** Saving the username, password and email adress into data bank
+    /** 
+     * Saving the username, password and email adress into data bank
      */
     public function save(Model_Users $users)
     {
@@ -28,7 +29,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
         }
     }
 
-    /** Checking a user through the username as unique in the data bank query
+    /** 
+     * Checking a user through the username as unique in the data bank query
      */
     public function checkUnique($username)
     {
@@ -46,7 +48,8 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
         return false;
     }
 
-    /** Checking a user through the ID as unique in the data bank query
+    /** 
+     * Checking a user through the ID as unique in the data bank query
      */
     public function getID($username)
     {
@@ -64,8 +67,9 @@ class Model_Users_DbMapper extends Lib_Db_Mapper
         return false;
     }
 
-    /** search in db for this email and return the corresponding username.
-    */
+    /** 
+     * search in db for this email and return the corresponding username.
+     */
     public function getUsernameFromEmail($email)
     {
         $tableAdapter = $this->getTable()->getAdapter();
