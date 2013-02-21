@@ -568,6 +568,9 @@ newNodeFactory = {
             }
         });
 
+        /**
+         * Updates the location of the connectionpoint of the node after resizing or moving
+         */
         this.updateConnectionpoints = function () {
             thisNode.xConnectPosition = thisNode.group.getX() + thisNode.text.getX() + thisNode.text.getWidth()/2;
             thisNode.yConnectPosition = thisNode.group.getY() + thisNode.text.getY() + thisNode.text.getHeight()/2;
