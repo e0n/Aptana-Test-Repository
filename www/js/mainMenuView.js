@@ -16,11 +16,11 @@ function setMenuText(val){
     if(val != ''){
         $(text).html(val);
         if(document.menuTextLeft == undefined) {
-            document.menuTextLeft = $(text).offset().left + 300;
+            document.menuTextLeft = $(text).offset().left + 330;
         }
         $(text).css('margin-left', document.menuTextLeft - ($(text).width() / 2));
         if(document.menuTextTop == undefined){
-            document.menuTextTop = $(text).offset().top + 95;
+            document.menuTextTop = $(text).offset().top + 110;
         }
         $(text).css('margin-top', document.menuTextTop - ($(text).height() / 2) - 130);
     } else {
