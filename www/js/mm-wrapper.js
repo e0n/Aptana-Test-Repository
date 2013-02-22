@@ -43,51 +43,50 @@ mmWrapper = {
         var nodeWithAll = xmlDoc.childNodes;
 //        console.log(nodeWithAll);
 
-        var nodeWithMap;
-        for (var i = 0; i < nodeWithAll.length; i++) {
-            if( nodeWithAll[i].nodeName == 'map') {
-                nodeWithMap = nodeWithAll[i].childNodes;
-//                console.log("special base node", nodeWithMap);
-            }
-        }
+        var nodeWithMap = nodeWithAll[0].childNodes;
+//        for (var a = 0; a < nodeWithAll.length; a++) {
+//            if( nodeWithAll[a].nodeName == 'map') {
+//                nodeWithMap = nodeWithAll[a].childNodes;
+//                console.log(a);
+//            }
+//        }
 
-        var nodeWithBase;
+        var nodeWithBase = nodeWithMap[3].childNodes;
 //        console.log(nodeWithMap);
-        for (var i = 0; i < nodeWithMap.length; i++) {
+//        for (var b = 0; b < nodeWithMap.length; b++) {
+//
+//            if( nodeWithMap[b].nodeName == 'node') {
+//                nodeWithBase = nodeWithMap[b].childNodes;
+//                console.log(b);
+//            }
+//        }
 
-            if( nodeWithMap[i].nodeName == 'node') {
-                nodeWithBase = nodeWithMap[i].childNodes;
-            }
-        }
+        for (var c = 0; c < nodeWithBase.length; c++) {
 
-        for (var i = 0; i < nodeWithBase.length; i++) {
-
-            if( nodeWithBase[i].nodeName == 'node') {
+            if( nodeWithBase[c].nodeName == 'node') {
                 console.log("basenode " + baseNode);
-                nodeChildren(nodeWithBase[i], baseNode);
+                nodeChildren(nodeWithBase[c], baseNode);
             }
         }
 
         function nodeChildren(thisNodeXML, parentNode) {
             //console.log("nodechild " + parentNode.id);
 
-
             var newNode = null;
             newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
-            newNode.setText(thisNodeXML.getAttribute("TEXT"));
-            newNode.id = thisNodeXML.getAttribute("ID");
-
+//            newNode.setText(thisNodeXML.getAttribute("TEXT"));
+//            newNode.id = thisNodeXML.getAttribute("ID");
 
             var childArray = null;
+
             childArray = thisNodeXML.childNodes;
 //            console.log(childArray);
             for (var i = 0; i < childArray.length; i++) {
                 if( childArray[i].nodeName == 'node') {
-                    console.log(i + " " + newNode.id);
+                    console.log(thisNodeXML.getAttribute("ID")+ " with id " + newNode.id  + " calls " + childArray[i].getAttribute("ID"));
                     nodeChildren(childArray[i], newNode);
                 }
             }
-            console.log("ende forschleife");
         };
     }
 }

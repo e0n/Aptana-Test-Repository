@@ -5,7 +5,7 @@ nodeMarking = {
     // Marks nodes and saves fill color
     clickNode : function(node, layer, event) {
         if (event.ctrlKey) {
-            markedNode.hideAnchors();
+            var result = markedNode.hideAnchors();
             if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                 markedNode.newHideButton.hide();
             }
@@ -21,7 +21,7 @@ nodeMarking = {
             markedNode.resetMarkedNodes(node);
 
             markedNode.fillBackground(markedNode.backgroundColorBackup);
-            markedNode.hideAnchors();
+            var result = markedNode.hideAnchors();
             if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                 markedNode.newHideButton.hide();
             }
@@ -40,7 +40,7 @@ nodeMarking = {
 
     setMarked : function(node) {
         markedNode = node;
-        markedNode.fillBackground('#3D9DB3');
+        markedNode.fillBackground('#F7F7F7');
     }
 
 };

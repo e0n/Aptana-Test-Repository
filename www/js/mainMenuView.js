@@ -207,7 +207,7 @@ $(document).ready(function() {
         });
         $(imporT).on('click', function(){
             $('#file').trigger("click");
-            mmWrapper.import();
+//            mmWrapper.import();
         });
 
         $(exporT).mouseover(function() {
