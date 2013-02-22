@@ -43,8 +43,8 @@ header div#mainmenu div#menubody div#menuPointer {
     height: 500px;
     width: 500px;
     z-index: 200;
-    margin-top: 250px;/*cant touch this */
-    margin-left: 730px;
+    margin-top: 180px;/*cant touch this */
+    margin-left: 710px;
 }
 
 header div#mainmenu div#menubody div#new {
