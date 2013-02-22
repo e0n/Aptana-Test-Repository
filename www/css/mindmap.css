@@ -12,7 +12,8 @@ header div#mainmenu div#menubody {
     display: none;
     z-index: 200;
 }
-header { /*min-width: 1880px; This messes up the login screen*/ }
+header { min-width: 1880px;/*This messes up the login screen*/ }
+header h1#loginHeader { width: 1190px;/*So we do this for not looking like complete assholes */}
 header h1{
     text-align: center;
     font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
