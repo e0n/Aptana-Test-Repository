@@ -268,6 +268,28 @@
         </th>
     </table>
 </header>
+<!-- For right click -->
+<script type="text/javascript" src="http://www.javascripttoolbox.com/lib/contextmenu/source/jquery.contextmenu.js"> </script>
+<script type="text/javascript">
+    var rightClickMenu = [
+        {'New Rectangle':function(menuItem,menu) { NewRectangle(); } },
+        $.contextMenu.separator,
+        {'Edit Text':function(menuItem,menu) { editText(); } },
+        $.contextMenu.separator,
+        {'Copy':function(menuItem,menu) { CopyNode(); } },
+        $.contextMenu.separator,
+        {'Paste':function(menuItem,menu) { PasteNode(); } },
+        $.contextMenu.separator,
+        {'Delete':function(menuItem,menu) { DeleteNode(); } },
+        $.contextMenu.separator,
+        {'Hide':function(menuItem,menu) { HideNode(); } },
+        $.contextMenu.separator,
+        {'Show':function(menuItem,menu) { ShowNode(); } }
+    ];
+    $(function() {
+        $('div#container').contextMenu(rightClickMenu);
+    });
+</script>
     <div id="container"></div>
 <!--    <input type="file" id="file"/>-->
 <!--    <output id="list"></output>-->
