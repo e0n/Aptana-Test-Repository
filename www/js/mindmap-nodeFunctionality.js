@@ -27,8 +27,6 @@ function buildNodeFunctions(thisNode) {
         document.body.style.cursor = "default";
     });
     thisNode.shape.on("click", function() {
-        //alert("SHADE CLICKED!");
-        //clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.text.on("click", function() {
         nodeMarking.clickNode(thisNode, thisNode.layer, event);
@@ -40,7 +38,7 @@ function buildNodeFunctions(thisNode) {
         thisNode.showChildren(thisNode.layer);
     });
     thisNode.group.on("touchstart touchend", function() {
-        //clickNode(thisNode, thisNode.layer, event);
+        clickNode(thisNode, thisNode.layer, event);
     });
     thisNode.group.on("dblclick", function() {
         editText();

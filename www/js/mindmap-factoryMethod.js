@@ -390,17 +390,17 @@ newNodeFactory = {
          * DebugShape of a node to show (0/0) pos of group
          * @type Kinetic.Rect
          */
-        this.debugShape = new Kinetic.Rect({
-            x: -10,
-            y: -10,
-            height: 10,
-            width: 10,
-            fill: '#FF0000',
-            visible: true,
-            //strokeWidth: 0,
-            id: 'shape'+sumOfNodes
-        });
-        this.group.add(this.debugShape);
+//        this.debugShape = new Kinetic.Rect({
+//            x: -10,
+//            y: -10,
+//            height: 10,
+//            width: 10,
+//            fill: '#FF0000',
+//            visible: true,
+//            //strokeWidth: 0,
+//            id: 'shape'+sumOfNodes
+//        });
+//        this.group.add(this.debugShape);
 
         /**
          * The text element to display comments in mindmap
@@ -576,6 +576,10 @@ newNodeFactory = {
 
         buildNodeFunctions(thisNode);
 
+        this.reimplementEvents = function() {
+            buildNodeFunctions(thisNode);
+        }
+
         this.connectionLine = connectionLine;
 
         // Add the Child to the Parents child array
@@ -610,6 +614,8 @@ newNodeFactory = {
             this.newShowButton.show();
             this.areThereHiddenChildren = true;
             layer.draw();
+
+            return true;
         };
 
         /**
@@ -633,6 +639,8 @@ newNodeFactory = {
             this.connectionLine.remove();
 
             layer.draw();
+
+            return true;
         };
 
         /**
@@ -656,7 +664,7 @@ newNodeFactory = {
                         }
                         isNotInArry = false;
                         node.fillBackground(node.backgroundColorBackup);
-                        node.hideAnchors();
+                        var result = node.hideAnchors();
                         if(markedNode.childElements.length != 0 && markedNode.areThereHiddenChildren == false){
                             markedNode.newHideButton.hide();
                         }
@@ -683,6 +691,7 @@ newNodeFactory = {
             if( node.id != 'ovalX') {
                 markedArray.push(node);
             };
+            return true;
         };
 
         /**
@@ -719,6 +728,7 @@ newNodeFactory = {
             bottomRight.setVisible(true);
             var bottomLeft = thisNode.group.get(".bottomLeft")[0];
             bottomLeft.setVisible(true);
+            return true;
         };
 
         /**
@@ -733,6 +743,7 @@ newNodeFactory = {
             bottomRight.setVisible(false);
             var bottomLeft = thisNode.group.get(".bottomLeft")[0];
             bottomLeft.setVisible(false);
+            return true;
         };
 
         updateNoteGroup(thisNode);
@@ -763,6 +774,7 @@ newNodeFactory = {
         var thisNode = this;
         this.childElements = [];
         this.id = 'ovalX';
+        this.setID = 'ovalX';
         rootNode = thisNode;
         document.rootNode = thisNode;
         this.backgroundColorBackup = '#F7F7F7';
@@ -864,7 +876,7 @@ newNodeFactory = {
                         }
                         isNotInArray = false;
                         node.fillBackground(node.backgroundColorBackup);
-                        node.hideAnchors();
+                         var result = node.hideAnchors();
                         if(node.childElements.length != 0 && node.areThereHiddenChildren == false){
                             node.newHideButton.hide();
                         }
@@ -942,7 +954,6 @@ newNodeFactory = {
          */
         this.yConnectPosition = this.group.getY();
 
-        // add cursor styling for shape oval
         this.group.on("mouseover", function() {
             document.body.style.cursor = "pointer";
         });

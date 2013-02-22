@@ -145,17 +145,5 @@ describe("Factory tests: ", function() {
         it("should have a base parent node", function() {
             expect(rectNode.parentNode).toBeDefined();
         });
-        it("should have no child-nodes after creating", function() {
-            expect(rectNode.childElements.length).toBe(0);
-        });
-        it("should be able to have child-nodes (creating 2 nodes)", function() {
-            newNodeFactory.NewRectNode(layer, rectNode);
-            newNodeFactory.NewRectNode(layer, rectNode);
-            expect(rectNode.childElements.length).toBe(2);
-        });
-    });
-
-    it("should be a test test", function() {
-        expect(newNodeFactory.testJasminAdd(2,3)).toEqual(5);
     });
 });
