@@ -12,7 +12,7 @@ header div#mainmenu div#menubody {
     display: none;
     z-index: 200;
 }
-header { min-width: 1880px; }
+header { /*min-width: 1880px; This messes up the login screen*/ }
 header h1{
     text-align: center;
     font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
@@ -23,6 +23,13 @@ header h1{
     color: rgb(29, 162, 193);
     text-shadow: 0px 3px 2px #12535D;
     padding: 0px 0px 5px 0px;
+}
+/* Trick to look like if the shadow is the background */
+.context-menu-shadow {
+    outline-style:solid;
+    outline-width:10px;
+    outline-color:#000000;
+    opacity:0.2;
 }
 #overlay {
     position: fixed;
