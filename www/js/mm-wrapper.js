@@ -44,42 +44,60 @@ mmWrapper = {
 //        console.log(nodeWithAll);
 
         var nodeWithMap;
-        for (var i = 0; i < nodeWithAll.length; i++) {
-            if( nodeWithAll[i].nodeName == 'map') {
-                nodeWithMap = nodeWithAll[i].childNodes;
+        for (var a = 0; a < nodeWithAll.length; a++) {
+            if( nodeWithAll[a].nodeName == 'map') {
+                nodeWithMap = nodeWithAll[a].childNodes;
 //                console.log("special base node", nodeWithMap);
             }
         }
 
         var nodeWithBase;
 //        console.log(nodeWithMap);
-        for (var i = 0; i < nodeWithMap.length; i++) {
+        for (var b = 0; b < nodeWithMap.length; b++) {
 
-            if( nodeWithMap[i].nodeName == 'node') {
-                nodeWithBase = nodeWithMap[i].childNodes;
+            if( nodeWithMap[b].nodeName == 'node') {
+                nodeWithBase = nodeWithMap[b].childNodes;
             }
         }
 
-        for (var i = 0; i < nodeWithBase.length; i++) {
+        for (var c = 0; c < nodeWithBase.length; c++) {
 
-            if( nodeWithBase[i].nodeName == 'node') {
+            if( nodeWithBase[c].nodeName == 'node') {
+                var data = {};
                 console.log("basenode " + baseNode);
-                nodeChildren(nodeWithBase[i], baseNode);
+                console.log('c'+c);
+                var r = nodeChildren(nodeWithBase[c], baseNode);
+                sleep(100);
+                if(r == baseNode) {
+                    console.log("aSd");
+                }
             }
         }
 
         function nodeChildren(thisNodeXML, parentNode) {
             console.log("nodechild " + parentNode);
-            var newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
-            newNode.setText(thisNodeXML.getAttribute("TEXT"));
-            newNode.id = thisNodeXML.getAttribute("ID");
+            data.newNode = newNodeFactory.NewRectNode(parentNode.layer, parentNode);
+            data.newNode.setText(thisNodeXML.getAttribute("TEXT"));
+            data.newNode.id = thisNodeXML.getAttribute("ID");
             var childArray = null;
             childArray = thisNodeXML.childNodes;
-            for (var i = 0; i < childArray.length; i++) {
-                if( childArray[i].nodeName == 'node') {
-                    nodeChildren(childArray[i], newNode);
+            for (var d = 0; d < childArray.length; d++) {
+                console.log('d'+c + ' ' + d);
+                if( childArray[d].nodeName == 'node') {
+                    nodeChildren(childArray[d], data.newNode);
                 }
             }
+
+            return parentNode;
         };
+
+        function sleep(milliseconds) {
+            var start = new Date().getTime();
+            for (var i = 0; i < 1e7; i++) {
+                if ((new Date().getTime() - start) > milliseconds){
+                    break;
+                }
+            }
+        }
     }
 }
